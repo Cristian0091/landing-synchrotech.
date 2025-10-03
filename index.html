@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Automatizaciones para WhatsApp — SynchroTech</title>
+  <meta name="description" content="Diseño, implementación y optimización de automatizaciones para WhatsApp: ventas, soporte y recordatorios. Incrementa tus conversiones y ahorra tiempo." />
+  <style>
+    :root{--accent:#16a34a;--dark:#0f172a;--muted:#6b7280;--card:#ffffff}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; color:var(--dark); background:linear-gradient(180deg,#f8fafc 0%, #f1f5f9 100%)}
+    .container{max-width:1100px;margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo .mark{width:46px;height:46px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav a{margin-left:18px;text-decoration:none;color:var(--muted);font-weight:600}
+
+    .hero{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center;padding:36px 0}
+    .hero h1{font-size:28px;margin:0 0 12px}
+    .hero p{color:var(--muted);margin:0 0 18px;line-height:1.5}
+    .cta{display:flex;gap:12px}
+    .btn{background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:700}
+    .btn.ghost{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+    .feature{padding:14px;border-radius:10px;background:#fbfdff;border:1px solid #e6eef6}
+    .feature h4{margin:6px 0 0}
+
+    .how{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:34px 0}
+    .faq{margin-top:10px}
+    .pricing{display:flex;gap:18px;margin-top:18px}
+    .plan{flex:1;padding:18px;border-radius:10px;background:#fff;border:1px solid #e6eef6}
+
+    footer{padding:28px 0;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;}
+      .features{grid-template-columns:repeat(2,1fr)}
+      .how{grid-template-columns:1fr}
+    }
+    @media (max-width:600px){
+      .features{grid-template-columns:1fr}
+    }
+
+    /* small components */
+    .badge{display:inline-block;background:#eefdf4;color:#065f46;padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px}
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+    .testi{font-style:italic;color:#0f172a}
+    .contact-card input, .contact-card textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef6;margin-top:8px}
+    .contact-card label{font-weight:700;color:var(--muted);font-size:14px}
+    .testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .testimonial{background:#fff;border-radius:10px;padding:12px;border:1px solid #eef2f7}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="mark">WA</div>
+        <div>
+          <div style="font-weight:800">SynchroTech</div>
+          <div style="font-size:13px;color:var(--muted)">Automatizaciones y flujos para WhatsApp</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#servicios">Servicios</a>
+        <a href="#como">Cómo funciona</a>
+        <a href="#planes">Planes</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <span class="badge">Automatiza WhatsApp</span>
+        <h1>Incrementa ventas y reduce tiempos con automatizaciones para WhatsApp</h1>
+        <p>Diseño e implementación de chatbots, respuestas rápidas, secuencias de ventas y recordatorios automatizados que integran CRM, catálogos y notificaciones. Listo para pymes y profesionales.</p>
+        <div class="cta">
+          <a class="btn" href="https://wa.me/573118842454?text=Hola%20quiero%20info%20sobre%20automatizaciones">Contactar por WhatsApp</a>
+          <a class="btn ghost" href="#planes">Ver planes</a>
+        </div>
+
+        <div class="features" style="margin-top:20px">
+          <div class="feature"><strong>Implementación rápida</strong><div class="muted">De prueba a producción en días.</div></div>
+          <div class="feature"><strong>Integraciones</strong><div class="muted">CRM, Google Sheets, APIs.</div></div>
+          <div class="feature"><strong>Soporte</strong><div class="muted">Capacitación y acompañamiento.</div></div>
+        </div>
+      </div>
+
+      <aside class="card">
+        <div style="font-weight:800">Plan Demo</div>
+        <div class="muted" style="font-size:13px;margin-top:6px">Prueba de 7 días con 100 mensajes.</div>
+        <ul style="margin-top:14px;color:var(--muted);line-height:1.6">
+          <li>Configuración inicial</li>
+          <li>Secuencia de bienvenida</li>
+          <li>Formularios y captación</li>
+        </ul>
+        <a class="btn" style="display:block;margin-top:12px;text-align:center" href="https://wa.me/573118842454?text=Quiero%20la%20demo">Solicitar demo</a>
+      </aside>
+    </section>
+
+    <section id="servicios">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2>Servicios que ofrezco</h2>
+        <div class="muted">Soluciones a la medida</div>
+      </div>
+
+      <div class="how">
+        <div class="card">
+          <h3>Automatizaciones de ventas</h3>
+          <p class="muted">Flujos que califican leads, muestran catálogo y conectan a un agente cuando se requiere.</p>
+          <ul class="muted">
+            <li>Respuestas rápidas y menús interactivos</li>
+            <li>Carritos y pedidos por WhatsApp</li>
+            <li>Integración con pasarelas y CRM</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Soporte y atención al cliente</h3>
+          <p class="muted">Respuestas automáticas, horarios, transferencias a agentes y respuestas con historial del cliente.</p>
+          <ul class="muted">
+            <li>FAQs automáticas</li>
+            <li>Enrutamiento por intención</li>
+            <li>Notificaciones y seguimientos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="how" style="margin-top:6px">
+        <div class="card">
+          <h3>Recordatorios y notificaciones</h3>
+          <p class="muted">Recordatorios de citas, pagos y eventos con lógica condicional y reenvíos escalonados.</p>
+        </div>
+        <div class="card">
+          <h3>Automatizaciones administrativas</h3>
+          <p class="muted">Extractos, reportes y sincronización con hojas de cálculo o tu CRM.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="planes" style="margin-top:28px">
+      <h2>Planes</h2>
+      <div class="pricing">
+        <div class="plan">
+          <h3>Básico</h3>
+          <p class="muted">Ideal para emprendimientos</p>
+          <ul class="muted">
+            <li>Flujo básico de 5 pasos</li>
+            <li>Integración con Google Sheets</li>
+            <li>Soporte 7 días</li>
+          </ul>
+          <div style="font-weight:800;margin-top:10px">COP $XX.XXX / mes</div>
+          <a class="btn" href="https://wa.me/573118842454?text=Interesado%20en%20plan%20B%C3%A1sico" style="margin-top:10px;display:inline-block">Lo quiero</a>
+        </div>
+        <div class="plan">
+          <h3>Pro</h3>
+          <p class="muted">Para equipos de ventas</p>
+          <ul class="muted">
+            <li>Multiples flujos y variables</li>
+            <li>Integración con CRM</li>
+            <li>Soporte y capacitación</li>
+          </ul>
+          <div style="font-weight:800;margin-top:10px">COP $XXX.XXX / mes</div>
+          <a class="btn" href="https://wa.me/573118842454?text=Interesado%20en%20plan%20Pro" style="margin-top:10px;display:inline-block">Lo quiero</a>
+        </div>
+        <div class="plan">
+          <h3>Enterprise</h3>
+          <p class="muted">Soluciones a la medida</p>
+          <ul class="muted">
+            <li>Automatizaciones avanzadas</li>
+            <li>SLAs y soporte 24/7</li>
+            <li>Integraciones personalizadas</li>
+          </ul>
+          <div style="font-weight:800;margin-top:10px">Precio a medida</div>
+          <a class="btn" href="https://wa.me/573118842454?text=Solicito%20cotizaci%C3%B3n%20Enterprise" style="margin-top:10px;display:inline-block">Contactar</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" style="margin-top:34px;display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start">
+      <div>
+        <h2>Solicita una cotización / Demo</h2>
+        <p class="muted">Completa el formulario o haz clic en el botón para iniciar una conversación por WhatsApp.</p>
+
+        <div class="card contact-card">
+          <label>Nombre</label>
+          <input type="text" placeholder="Tu nombre" />
+          <label>Empresa (opcional)</label>
+          <input type="text" placeholder="Nombre de tu empresa" />
+          <label>Mensaje</label>
+          <textarea rows="4" placeholder="Cuéntame qué necesitas"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <a class="btn" href="https://wa.me/573118842454?text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n">Enviar por WhatsApp</a>
+            <button class="btn ghost" onclick="alert('El formulario es de ejemplo. Copia y adapta el formulario a tu backend.')">Enviar</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="card center">
+        <h3>Contacto rápido</h3>
+        <div class="muted" style="margin-bottom:10px">WhatsApp: +57 311 884 2454</div>
+        <div class="muted">Email: cristianvidales52qgmail.com</div>
+        <div style="margin-top:12px" class="testi">"Implementaron nuestro flujo de ventas y aumentamos conversiones un 28%" — Cliente Satisfecho</div>
+      </aside>
+    </section>
+
+    <section id="testimonios" style="margin-top:28px">
+      <h2>Testimonios de clientes satisfechos</h2>
+      <div class="testimonials">
+        <div class="testimonial">"Excelente servicio y soporte técnico. La automatización mejoró nuestra atención" — María López</div>
+        <div class="testimonial">"Muy profesionales, la integración con nuestro CRM fue impecable" — Juan Camacho</div>
+        <div class="testimonial">"Respuesta rápida y resultados visibles en ventas en pocas semanas" — Laura Ramírez</div>
+        <div class="testimonial">"Solución a la medida y soporte constante, 100% recomendados" — Andrés Torres</div>
+        <div class="testimonial">"Nos ayudaron a reducir tiempos de respuesta y aumentar la satisfacción" — Catalina Gómez</div>
+        <div class="testimonial">"La demo fue clara y la implementación sin contratiempos" — Felipe Rincón</div>
+        <div class="testimonial">"Gran trabajo, el flujo de mensajes nos permitió captar más clientes" — Diana Herrera</div>
+        <div class="testimonial">"Soporte excelente y muy buena comunicación durante todo el proceso" — Ricardo Mendoza</div>
+        <div class="testimonial">"Automatización estable y fácil de usar para nuestro equipo" — Carolina Suárez</div>
+        <div class="testimonial">"Mejoraron nuestros recordatorios de citas, reduciendo ausentismo" — Jorge Pineda</div>
+        <div class="testimonial">"Profesionales y cumplidos, la inversión valió la pena" — Natalia Vargas</div>
+        <div class="testimonial">"Atención personalizada y adaptaciones rápidas a nuestras necesidades" — Óscar Salazar</div>
+        <div class="testimonial">"Integraron pagos y catálogos sin problemas" — Paola Medina</div>
+        <div class="testimonial">"Aumentamos la conversión en campañas promocionales" — Sebastián Rojas</div>
+        <div class="testimonial">"El equipo de SynchroTech fue muy atento y eficiente" — Valeria Peña</div>
+        <div class="testimonial">"Recomendados para pymes que necesitan automatizar ventas" — Martín Castillo</div>
+        <div class="testimonial">"Implementación rápida y documentación clara" — Andrea Silva</div>
+        <div class="testimonial">"Excelente seguimiento posventa y mejoras continuas" — Luis Fernando Ortiz</div>
+        <div class="testimonial">"Nuestro servicio al cliente mejoró notablemente" — Mónica Duarte</div>
+        <div class="testimonial">"Solución robusta y escalable, muy contentos con los resultados" — Diego Álvarez</div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="muted">© 2025 SynchroTech — Automatizaciones WhatsApp</div>
+      <div class="muted">Desarrollado por SynchroTech</div>
+    </footer>
+  </div>
+
+  <script>
+    // Reemplaza los números y textos por tus datos reales antes de publicar.
+    // Si quieres que active un envío real, conecta el formulario a tu backend o usa un servicio como Formspree.
+  </script>
+</body>
+</html>
