@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricohelado Familiar - Los Mejores Helados Artesanales</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .floating-ice-cream {
+            position: absolute;
+            font-size: 4rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .ice1 { top: 20%; left: 10%; animation-delay: 0s; }
+        .ice2 { top: 60%; right: 15%; animation-delay: 1s; }
+        .ice3 { bottom: 20%; left: 20%; animation-delay: 2s; }
+
+        section {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .sabores {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .sabores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .sabor-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .sabor-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .sabor-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .sabor-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contacto {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .contacto-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contacto-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contacto-icon {
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        footer {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .nav-links { gap: 1rem; }
+            h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🍦 Ricohelado Familiar</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sabores">Sabores</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="floating-ice-cream ice1">🍦</div>
+        <div class="floating-ice-cream ice2">🍨</div>
+        <div class="floating-ice-cream ice3">🍧</div>
+        
+        <div class="hero-content">
+            <h1>Ricohelado Familiar</h1>
+            <p>Los helados más deliciosos hechos con amor para toda la familia</p>
+            <a href="#sabores" class="cta-button">Descubre Nuestros Sabores</a>
+        </div>
+    </section>
+
+    <section class="sabores" id="sabores">
+        <h2>Nuestros Deliciosos Sabores</h2>
+        <div class="sabores-grid">
+            <div class="sabor-card">
+                <div class="sabor-icon">🍓</div>
+                <h3>Fresa</h3>
+                <p>Cremoso helado de fresa natural</p>
+            </div>
+            <div class="sabor-card">
+                <div class="sabor-icon">🍫</div>
+                <h3>Chocolate</h3>
+                <p>Rico chocolate belga auténtico</p>
+            </div>
+            <div class="sabor-card">
+                <div class="sabor-icon">🥭</div>
+                <h3>Mango</h3>
+                <p>Sabor tropical irresistible</p>
+            </div>
+            <div class="sabor-card">
+                <div class="sabor-icon">🍦</div>
+                <h3>Vainilla</h3>
+                <p>Clásica y deliciosa vainilla</p>
+            </div>
+            <div class="sabor-card">
+                <div class="sabor-icon">🥥</div>
+                <h3>Coco</h3>
+                <p>Refrescante sabor a coco</p>
+            </div>
+            <div class="sabor-card">
+                <div class="sabor-icon">🍋</div>
+                <h3>Limón</h3>
+                <p>Fresco y cítrico natural</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contacto" id="contacto">
+        <h2>Visítanos</h2>
+        <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+            Estamos listos para servirte los mejores helados
+        </p>
+        <div class="contacto-info">
+            <div class="contacto-item">
+                <span class="contacto-icon">📍</span>
+                <div>
+                    <strong>Dirección</strong><br>
+                    Calle Principal #123<br>
+                    Florencia, Caquetá
+                </div>
+            </div>
+            <div class="contacto-item">
+                <span class="contacto-icon">📞</span>
+                <div>
+                    <strong>Teléfono</strong><br>
+                    (123) 456-7890
+                </div>
+            </div>
+            <div class="contacto-item">
+                <span class="contacto-icon">⏰</span>
+                <div>
+                    <strong>Horario</strong><br>
+                    Lun - Dom<br>
+                    10:00 AM - 9:00 PM
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Ricohelado Familiar. Todos los derechos reservados.</p>
+        <p style="margin-top: 0.5rem;">Hecho con ❤️ y mucho helado</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        document.querySelectorAll('.sabor-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.05) rotate(2deg)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+            });
+        });
+    </script>
+</body>
+</html>
