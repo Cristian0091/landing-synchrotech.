@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gasca Barber - Barbería profesional en Bogotá. Estilo, precisión y confianza en cada corte. Agenda tu cita por WhatsApp.">
+    <meta name="keywords" content="barbería, corte de cabello, fade, barba, Bogotá, barbería profesional">
+    <title>Gasca Barber - Estilo y Precisión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid #D4AF37;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #D4AF37;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: #D4AF37;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1200') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .cta-button {
+            background: #D4AF37;
+            color: #000;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            animation: fadeInUp 1.4s ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 5%;
+            background: #0a0a0a;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            color: #D4AF37;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: #1a1a1a;
+            padding: 2.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #D4AF37;
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .service-card p {
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 6rem 5%;
+            background: #000;
+        }
+
+        .carousel-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel img {
+            width: 100%;
+            flex-shrink: 0;
+            border-radius: 15px;
+            height: 600px;
+            object-fit: cover;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(212, 175, 55, 0.8);
+            color: #000;
+            border: none;
+            font-size: 2rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 50%;
+        }
+
+        .carousel-nav:hover {
+            background: #D4AF37;
+        }
+
+        .carousel-prev {
+            left: 20px;
+        }
+
+        .carousel-next {
+            right: 20px;
+        }
+
+        .carousel-indicators {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #555;
+            margin: 0 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator.active {
+            background: #D4AF37;
+            transform: scale(1.3);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 5%;
+            background: #0a0a0a;
+            text-align: center;
+        }
+
+        .contact-info {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #D4AF37;
+        }
+
+        .contact-card h3 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-card p {
+            color: #bbb;
+            line-height: 1.8;
+        }
+
+        .contact-card a {
+            color: #D4AF37;
+            text-decoration: none;
+        }
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: #fff;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            box-shadow: 0 5px 25px rgba(37, 211, 102, 0.5);
+            z-index: 1000;
+            transition: all 0.3s;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 35px rgba(37, 211, 102, 0.8);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 2px solid #D4AF37;
+            color: #bbb;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .carousel img {
+                height: 400px;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem 3%;
+            }
+
+            nav ul {
+                gap: 0.5rem;
+            }
+
+            nav a {
+                font-size: 0.7rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+
+            .carousel img {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Gasca Barber</div>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <h1>Estilo, Precisión y Confianza</h1>
+        <p>Tu look habla por ti — ven a Gasca Barber</p>
+        <a href="https://wa.me/573001234567?text=Hola,%20quiero%20agendar%20una%20cita" class="cta-button">Agenda tu Cita por WhatsApp</a>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="services">
+        <h2 class="section-title">Nuestros Servicios</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">✂️</div>
+                <h3>Corte Clásico</h3>
+                <p>Estilo tradicional y elegante, adaptado a tu personalidad.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔥</div>
+                <h3>Fade Moderno</h3>
+                <p>Degradados perfectos con técnicas profesionales.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🧔</div>
+                <h3>Arreglo de Barba</h3>
+                <p>Perfilado y cuidado especializado para tu barba.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">👁️</div>
+                <h3>Diseño de Cejas</h3>
+                <p>Definición y forma perfecta para tu mirada.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Tinte & Color</h3>
+                <p>Cambia tu estilo con coloración profesional.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💆</div>
+                <h3>Tratamiento Capilar</h3>
+                <p>Cuidado especializado para tu cabello y cuero cabelludo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="gallery">
+        <h2 class="section-title">Galería de Estilos</h2>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel">
+                <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=800" alt="Corte profesional 1">
+                <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800" alt="Fade moderno">
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800" alt="Estilo clásico">
+                <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=800" alt="Arreglo de barba">
+                <img src="https://images.unsplash.com/photo-1621607512214-68297480165e?w=800" alt="Corte degradado">
+                <img src="https://images.unsplash.com/photo-1620331309677-9efa6e34e6e2?w=800" alt="Estilo urbano">
+                <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=800" alt="Barbería profesional">
+                <img src="https://images.unsplash.com/photo-1622287162716-524c3c6e0c0e?w=800" alt="Diseño de barba">
+                <img src="https://images.unsplash.com/photo-1621607512264-3f5c8c5f1c8e?w=800" alt="Corte premium">
+                <img src="https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?w=800" alt="Estilo moderno">
+            </div>
+            <button class="carousel-nav carousel-prev" onclick="moveCarousel(-1)">&#10094;</button>
+            <button class="carousel-nav carousel-next" onclick="moveCarousel(1)">&#10095;</button>
+        </div>
+        <div class="carousel-indicators" id="indicators"></div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <h2 class="section-title">Contacto</h2>
+        <div class="contact-info">
+            <div class="contact-card">
+                <h3>📍 Ubicación</h3>
+                <p>Calle 10 #5-20<br>Bogotá, Colombia</p>
+            </div>
+            <div class="contact-card">
+                <h3>🕐 Horario</h3>
+                <p>Lunes a Sábado<br>9:00 AM - 8:00 PM<br>Domingos: 10:00 AM - 6:00 PM</p>
+            </div>
+            <div class="contact-card">
+                <h3>📱 Contacto</h3>
+                <p><a href="https://wa.me/573001234567">+57 300 123 4567</a><br>
+                <a href="https://instagram.com/gasca_barber" target="_blank">@gasca_barber</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Gasca Barber. Todos los derechos reservados. | Diseño profesional para caballeros con estilo.</p>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/573001234567?text=Hola,%20quiero%20agendar%20una%20cita" class="whatsapp-float" target="_blank">
+        💬
+    </a>
+
+    <script>
+        // Carousel functionality
+        let currentSlide = 0;
+        const carousel = document.getElementById('carousel');
+        const slides = carousel.children;
+        const totalSlides = slides.length;
+        const indicatorsContainer = document.getElementById('indicators');
+
+        // Create indicators
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('span');
+            indicator.className = 'indicator';
+            indicator.onclick = () => goToSlide(i);
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            indicators.forEach((ind, idx) => {
+                ind.classList.toggle('active', idx === currentSlide);
+            });
+        }
+
+        function moveCarousel(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            if (currentSlide >= totalSlides) currentSlide = 0;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Auto-advance carousel
+        setInterval(() => {
+            moveCarousel(1);
+        }, 5000);
+
+        // Initialize
+        updateCarousel();
+
+        // Smooth scroll enhancement
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
