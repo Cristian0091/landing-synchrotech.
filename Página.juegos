@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Memory Match - GameHub Mobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #4A00E0, #8E2DE2);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+        }
+        
+        #gameContainer {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            background: linear-gradient(to bottom, #4A00E0, #8E2DE2);
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #gameHeader {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        
+        #gameTitle {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        #gameStats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        #gameBoard {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            gap: 10px;
+        }
+        
+        .card {
+            width: calc(25% - 10px);
+            aspect-ratio: 1;
+            background-color: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card.matched {
+            animation: matchPulse 0.6s ease;
+            pointer-events: none;
+        }
+        
+        @keyframes matchPulse {
+            0% { transform: scale(1) rotateY(180deg); }
+            50% { transform: scale(1.1) rotateY(180deg); }
+            100% { transform: scale(1) rotateY(180deg); }
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .card-front {
+            background-color: #ffffff;
+            transform: rotateY(180deg);
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        #startScreen, #gameOverScreen, #difficultyScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        #gameOverScreen, #difficultyScreen {
+            display: none;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 300px;
+        }
+        
+        .btn {
+            background-color: #FF6B6B;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #finalScore {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        #backBtn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .difficulty-btn {
+            background-color: #4A00E0;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+            display: block;
+            width: 200px;
+        }
+        
+        .difficulty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .difficulty-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="gameHeader">
+            <div id="gameTitle">Memory Match</div>
+            <div id="gameStats">
+                <div class="stat">
+                    <span class="stat-label">Movimientos</span>
+                    <span class="stat-value" id="moves">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Parejas</span>
+                    <span class="stat-value" id="pairs">0/8</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="gameBoard"></div>
+        
+        <div id="startScreen">
+            <h1>Memory Match</h1>
+            <p>Pon a prueba tu memoria encontrando pares de cartas iguales</p>
+            <button class="btn" id="startBtn">Jugar</button>
+        </div>
+        
+        <div id="difficultyScreen">
+            <h1>Selecciona Dificultad</h1>
+            <button class="difficulty-btn" id="easyBtn">Fácil (4x3)</button>
+            <button class="difficulty-btn" id="mediumBtn">Medio (4x4)</button>
+            <button class="difficulty-btn" id="hardBtn">Difícil (6x4)</button>
+        </div>
+        
+        <div id="gameOverScreen">
+            <h1>¡Felicidades!</h1>
+            <div id="finalScore">Completado en 0 movimientos</div>
+            <button class="btn" id="restartBtn">Jugar de nuevo</button>
+        </div>
+        
+        <button id="backBtn">←</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameBoard = document.getElementById('gameBoard');
+            const movesElement = document.getElementById('moves');
+            const pairsElement = document.getElementById('pairs');
+            const startScreen = document.getElementById('startScreen');
+            const difficultyScreen = document.getElementById('difficultyScreen');
+            const gameOverScreen = document.getElementById('gameOverScreen');
+            const finalScoreElement = document.getElementById('finalScore');
+            const startBtn = document.getElementById('startBtn');
+            const easyBtn = document.getElementById('easyBtn');
+            const mediumBtn = document.getElementById('mediumBtn');
+            const hardBtn = document.getElementById('hardBtn');
+            const restartBtn = document.getElementById('restartBtn');
+            const backBtn = document.getElementById('backBtn');
+            
+            // Game variables
+            let gameRunning = false;
+            let cards = [];
+            let flippedCards = [];
+            let matchedPairs = 0;
+            let moves = 0;
+            let canFlip = true;
+            let difficulty = 'medium'; // easy, medium, hard
+            
+            // Card emojis
+            const emojis = [
+                '🍎', '🍌', '🍇', '🍓', '🍒', '🍑', '🍉', '🥝',
+                '🍊', '🍋', '🥭', '🍍', '🥥', '🥑', '🍆', '🥕',
+                '🌽', '🥒', '🥬', '🥦', '🧄', '🧅', '🍄', '🥜'
+            ];
+            
+            // Game functions
+            function startGame(selectedDifficulty) {
+                difficulty = selectedDifficulty;
+                gameRunning = true;
+                cards = [];
+                flippedCards = [];
+                matchedPairs = 0;
+                moves = 0;
+                canFlip = true;
+                
+                movesElement.textContent = moves;
+                
+                // Set grid size based on difficulty
+                let cols, rows;
+                switch(difficulty) {
+                    case 'easy':
+                        cols = 4;
+                        rows = 3;
+                        break;
+                    case 'medium':
+                        cols = 4;
+                        rows = 4;
+                        break;
+                    case 'hard':
+                        cols = 6;
+                        rows = 4;
+                        break;
+                }
+                
+                const totalCards = cols * rows;
+                const pairsNeeded = totalCards / 2;
+                
+                pairsElement.textContent = `0/${pairsNeeded}`;
+                
+                // Create card pairs
+                const selectedEmojis = emojis.slice(0, pairsNeeded);
+                const cardValues = [...selectedEmojis, ...selectedEmojis];
+                
+                // Shuffle cards
+                for (let i = cardValues.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cardValues[i], cardValues[j]] = [cardValues[j], cardValues[i]];
+                }
+                
+                // Clear board
+                gameBoard.innerHTML = '';
+                
+                // Set grid layout
+                gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                
+                // Create cards
+                cardValues.forEach((value, index) => {
+                    const card = createCard(value, index);
+                    cards.push(card);
+                    gameBoard.appendChild(card.element);
+                });
+                
+                startScreen.style.display = 'none';
+                difficultyScreen.style.display = 'none';
+                gameOverScreen.style.display = 'none';
+            }
+            
+            function createCard(value, index) {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.index = index;
+                
+                const cardFront = document.createElement('div');
+                cardFront.className = 'card-face card-front';
+                cardFront.textContent = value;
+                
+                const cardBack = document.createElement('div');
+                cardBack.className = 'card-face card-back';
+                cardBack.textContent = '?';
+                
+                cardElement.appendChild(cardFront);
+                cardElement.appendChild(cardBack);
+                
+                const card = {
+                    element: cardElement,
+                    value: value,
+                    index: index,
+                    isFlipped: false,
+                    isMatched: false
+                };
+                
+                cardElement.addEventListener('click', () => flipCard(card));
+                
+                return card;
+            }
+            
+            function flipCard(card) {
+                if (!gameRunning || !canFlip || card.isFlipped || card.isMatched) return;
+                
+                card.element.classList.add('flipped');
+                card.isFlipped = true;
+                flippedCards.push(card);
+                
+                if (flippedCards.length === 2) {
+                    canFlip = false;
+                    moves++;
+                    movesElement.textContent = moves;
+                    
+                    setTimeout(() => {
+                        checkMatch();
+                    }, 1000);
+                }
+            }
+            
+            function checkMatch() {
+                const [card1, card2] = flippedCards;
+                
+                if (card1.value === card2.value) {
+                    // Match found
+                    card1.element.classList.add('matched');
+                    card2.element.classList.add('matched');
+                    card1.isMatched = true;
+                    card2.isMatched = true;
+                    
+                    matchedPairs++;
+                    const totalPairs = cards.length / 2;
+                    pairsElement.textContent = `${matchedPairs}/${totalPairs}`;
+                    
+                    if (matchedPairs === totalPairs) {
+                        // Game completed
+                        setTimeout(() => {
+                            gameOver();
+                        }, 500);
+                    }
+                } else {
+                    // No match
+                    card1.element.classList.remove('flipped');
+                    card2.element.classList.remove('flipped');
+                    card1.isFlipped = false;
+                    card2.isFlipped = false;
+                }
+                
+                flippedCards = [];
+                canFlip = true;
+            }
+            
+            function gameOver() {
+                gameRunning = false;
+                finalScoreElement.textContent = `Completado en ${moves} movimientos`;
+                gameOverScreen.style.display = 'flex';
+            }
+            
+            // Event listeners
+            startBtn.addEventListener('click', () => {
+                startScreen.style.display = 'none';
+                difficultyScreen.style.display = 'flex';
+            });
+            
+            easyBtn.addEventListener('click', () => startGame('easy'));
+            mediumBtn.addEventListener('click', () => startGame('medium'));
+            hardBtn.addEventListener('click', () => startGame('hard'));
+            
+            restartBtn.addEventListener('click', () => {
+                difficultyScreen.style.display = 'flex';
+                gameOverScreen.style.display = 'none';
+            });
+            
+            backBtn.addEventListener('click', function() {
+                window.location.href = '../index.html';
+            });
+            
+            // Prevent scrolling on mobile
+            document.body.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html>
