@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sopa de Letras: Actividad Física y Bienestar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200') center/cover;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .intro {
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .game-container {
+            display: flex;
+            gap: 30px;
+            padding: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .board-section {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            gap: 2px;
+            background: #e5e7eb;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            user-select: none;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 3px;
+        }
+
+        .cell:hover {
+            background: #dbeafe;
+            transform: scale(1.1);
+        }
+
+        .cell.selected {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .cell.found {
+            background: #10b981;
+            color: white;
+        }
+
+        .words-section {
+            flex: 0 0 350px;
+            min-width: 300px;
+        }
+
+        .words-list {
+            background: #f9fafb;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .words-list h2 {
+            color: #1e40af;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .word-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .word-item {
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            border: 2px solid #e5e7eb;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .word-item.found {
+            text-decoration: line-through;
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #059669;
+        }
+
+        .controls {
+            text-align: center;
+            padding: 0 40px 40px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .progress {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            border: 2px solid #10b981;
+        }
+
+        .progress-text {
+            font-size: 1.2em;
+            color: #059669;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .intro {
+                font-size: 1em;
+            }
+
+            .grid {
+                grid-template-columns: repeat(15, 1fr);
+            }
+
+            .cell {
+                font-size: 0.7em;
+            }
+
+            .game-container {
+                padding: 20px;
+            }
+
+            .word-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>🏃‍♂️ Sopa de Letras: Actividad Física y Bienestar 💪</h1>
+                <p class="intro">
+                   Encuentra 30 palabras relacionadas con el ejercicio, 
+                    la salud y el bienestar. El deporte no solo fortalece tu cuerpo, también agudiza tu mente. 
+                    ¡Comienza a buscar y diviértete!
+                </p>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <div class="board-section">
+                <div id="grid" class="grid"></div>
+                <div class="progress">
+                    <div class="progress-text">Palabras encontradas: <span id="found-count">0</span> / 30</div>
+                </div>
+            </div>
+
+            <div class="words-section">
+                <div class="words-list">
+                    <h2>📋 Palabras a Encontrar</h2>
+                    <div id="words-list" class="word-columns"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="resetGame()">🔄 Reiniciar Juego</button>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 20px; color: white; font-size: 0.9em;">
+        <p>&copy; 2025 Todos los derechos reservados. Creado por CRISTIAN VIDALES estudiante del tecnico en sistemas tele informaticos del sena regional caqueta</p>
+    </footer>
+
+    <script>
+        const words = [
+            'EJERCICIO', 'ENTRENAMIENTO', 'RESISTENCIA', 'FUERZA', 'FLEXIBILIDAD',
+            'VELOCIDAD', 'AGILIDAD', 'COORDINACION', 'EQUILIBRIO', 'POTENCIA',
+            'CALENTAMIENTO', 'ESTIRAMIENTO', 'CARDIOVASCULAR', 'MUSCULACION', 'ENDORFINA',
+            'MOVIMIENTO', 'RENDIMIENTO', 'ENERGIA', 'DEPORTE', 'DISCIPLINA',
+            'MOTIVACION', 'BIENESTAR', 'SALUD', 'HIDRATACION', 'NUTRICION',
+            'RECUPERACION', 'POSTURA', 'TECNICA', 'CONDICION', 'META'
+        ];
+
+        const gridSize = 20;
+        let grid = [];
+        let wordPositions = [];
+        let foundWords = new Set();
+        let isSelecting = false;
+        let selectedCells = [];
+        let startCell = null;
+
+        function initGrid() {
+            grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
+            wordPositions = [];
+            foundWords.clear();
+            
+            words.forEach(word => placeWord(word));
+            fillEmptyCells();
+            renderGrid();
+            renderWordsList();
+            updateProgress();
+        }
+
+        function placeWord(word) {
+            const directions = [
+                [0, 1], [1, 0], [1, 1], [1, -1],
+                [0, -1], [-1, 0], [-1, -1], [-1, 1]
+            ];
+            
+            let placed = false;
+            let attempts = 0;
+            
+            while (!placed && attempts < 100) {
+                const dir = directions[Math.floor(Math.random() * directions.length)];
+                const row = Math.floor(Math.random() * gridSize);
+                const col = Math.floor(Math.random() * gridSize);
+                
+                if (canPlaceWord(word, row, col, dir)) {
+                    const positions = [];
+                    for (let i = 0; i < word.length; i++) {
+                        const r = row + dir[0] * i;
+                        const c = col + dir[1] * i;
+                        grid[r][c] = word[i];
+                        positions.push([r, c]);
+                    }
+                    wordPositions.push({ word, positions });
+                    placed = true;
+                }
+                attempts++;
+            }
+        }
+
+        function canPlaceWord(word, row, col, dir) {
+            for (let i = 0; i < word.length; i++) {
+                const r = row + dir[0] * i;
+                const c = col + dir[1] * i;
+                
+                if (r < 0 || r >= gridSize || c < 0 || c >= gridSize) return false;
+                if (grid[r][c] !== '' && grid[r][c] !== word[i]) return false;
+            }
+            return true;
+        }
+
+        function fillEmptyCells() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (grid[i][j] === '') {
+                        grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
+                    }
+                }
+            }
+        }
+
+        function renderGrid() {
+            const gridEl = document.getElementById('grid');
+            gridEl.innerHTML = '';
+            
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.textContent = grid[i][j];
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    
+                    cell.addEventListener('mousedown', handleMouseDown);
+                    cell.addEventListener('mouseenter', handleMouseEnter);
+                    cell.addEventListener('mouseup', handleMouseUp);
+                    
+                    gridEl.appendChild(cell);
+                }
+            }
+        }
+
+        function renderWordsList() {
+            const listEl = document.getElementById('words-list');
+            listEl.innerHTML = '';
+            
+            words.forEach(word => {
+                const item = document.createElement('div');
+                item.className = 'word-item';
+                item.textContent = word;
+                item.dataset.word = word;
+                if (foundWords.has(word)) {
+                    item.classList.add('found');
+                }
+                listEl.appendChild(item);
+            });
+        }
+
+        function handleMouseDown(e) {
+            isSelecting = true;
+            selectedCells = [];
+            startCell = { row: parseInt(e.target.dataset.row), col: parseInt(e.target.dataset.col) };
+            e.target.classList.add('selected');
+            selectedCells.push(startCell);
+        }
+
+        function handleMouseEnter(e) {
+            if (!isSelecting || !startCell) return;
+            
+            const row = parseInt(e.target.dataset.row);
+            const col = parseInt(e.target.dataset.col);
+            
+            document.querySelectorAll('.cell.selected').forEach(cell => {
+                if (!cell.classList.contains('found')) {
+                    cell.classList.remove('selected');
+                }
+            });
+            
+            selectedCells = getCellsInLine(startCell.row, startCell.col, row, col);
+            selectedCells.forEach(cell => {
+                const cellEl = document.querySelector(`[data-row="${cell.row}"][data-col="${cell.col}"]`);
+                if (cellEl && !cellEl.classList.contains('found')) {
+                    cellEl.classList.add('selected');
+                }
+            });
+        }
+
+        function handleMouseUp() {
+            if (!isSelecting) return;
+            isSelecting = false;
+            
+            const selectedWord = selectedCells.map(cell => grid[cell.row][cell.col]).join('');
+            const reversedWord = selectedWord.split('').reverse().join('');
+            
+            let foundWord = null;
+            if (words.includes(selectedWord) && !foundWords.has(selectedWord)) {
+                foundWord = selectedWord;
+            } else if (words.includes(reversedWord) && !foundWords.has(reversedWord)) {
+                foundWord = reversedWord;
+            }
+            
+            if (foundWord) {
+                foundWords.add(foundWord);
+                selectedCells.forEach(cell => {
+                    const cellEl = document.querySelector(`[data-row="${cell.row}"][data-col="${cell.col}"]`);
+                    cellEl.classList.remove('selected');
+                    cellEl.classList.add('found');
+                });
+                renderWordsList();
+                updateProgress();
+                
+                if (foundWords.size === words.length) {
+                    setTimeout(() => alert('¡Felicitaciones! 🎉 Has encontrado todas las palabras'), 300);
+                }
+            } else {
+                document.querySelectorAll('.cell.selected').forEach(cell => {
+                    if (!cell.classList.contains('found')) {
+                        cell.classList.remove('selected');
+                    }
+                });
+            }
+            
+            selectedCells = [];
+            startCell = null;
+        }
+
+        function getCellsInLine(r1, c1, r2, c2) {
+            const cells = [];
+            const dr = Math.sign(r2 - r1);
+            const dc = Math.sign(c2 - c1);
+            
+            if (dr === 0 && dc === 0) {
+                return [{ row: r1, col: c1 }];
+            }
+            
+            if (dr !== 0 && dc !== 0 && Math.abs(r2 - r1) !== Math.abs(c2 - c1)) {
+                return [{ row: r1, col: c1 }];
+            }
+            
+            let r = r1, c = c1;
+            while (true) {
+                cells.push({ row: r, col: c });
+                if (r === r2 && c === c2) break;
+                r += dr;
+                c += dc;
+            }
+            
+            return cells;
+        }
+
+        function updateProgress() {
+            document.getElementById('found-count').textContent = foundWords.size;
+        }
+
+        function resetGame() {
+            initGrid();
+        }
+
+        document.addEventListener('mouseup', () => {
+            if (isSelecting) {
+                handleMouseUp();
+            }
+        });
+
+        initGrid();
+    </script>
+</body>
+</html>
