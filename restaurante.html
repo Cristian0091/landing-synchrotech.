@@ -3,855 +3,800 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kunfu.china.col</title>
+    <title>Control Restaurante Pro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        :root {
+            --primary-color: #8B0000; /* Rojo vino */
+            --secondary-color: #000000; /* Negro */
+            --accent-color: #D4AF37; /* Dorado */
+            --light-color: #FFFFFF; /* Blanco */
+            --success-color: #4CAF50; /* Verde para pagado */
+            --danger-color: #F44336; /* Rojo para pendiente */
+            --background-color: #F5F5F5;
+            --text-color: #333333;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
-            color: #333;
+            background-color: var(--background-color);
+            color: var(--text-color);
             line-height: 1.6;
+            padding-bottom: 80px; /* Espacio para la barra inferior */
         }
 
-        /* Header */
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+
         header {
-            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
-            color: white;
-            padding: 1.5rem 0;
-            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-color);
+            padding: 15px;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2.2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
-        }
-
-        .cart-icon {
-            background: rgba(255,255,255,0.2);
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .cart-icon:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-
-        .cart-count {
-            background: #ffd700;
-            color: #8b0000;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-            margin-left: 8px;
-        }
-
-        /* Carousel */
-        .carousel-container {
-            position: relative;
-            max-width: 100%;
-            height: 500px;
-            overflow: hidden;
-            margin-bottom: 3rem;
-        }
-
-        .carousel {
-            display: flex;
-            transition: transform 0.6s ease-in-out;
-            height: 100%;
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.8);
-        }
-
-        .carousel-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
-        }
-
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(196, 30, 58, 0.8);
-            color: white;
-            border: none;
-            padding: 15px 20px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-            z-index: 10;
-        }
-
-        .carousel-btn:hover {
-            background: rgba(196, 30, 58, 1);
-        }
-
-        .carousel-btn.prev {
-            left: 20px;
-        }
-
-        .carousel-btn.next {
-            right: 20px;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 20px;
-        }
-
-        /* Menu Categories */
-        .category-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .category-btn {
-            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(196, 30, 58, 0.3);
-        }
-
-        .category-btn:hover, .category-btn.active {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.5);
-            background: linear-gradient(135deg, #d4243d 0%, #a00000 100%);
-        }
-
-        /* Menu Items */
-        .menu-section {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-
-        .menu-section.active {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .menu-item {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transition: all 0.3s;
-        }
-
-        .menu-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(196, 30, 58, 0.25);
-        }
-
-        .item-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .item-content {
-            padding: 20px;
-        }
-
-        .item-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #8b0000;
-            margin-bottom: 10px;
-        }
-
-        .item-description {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-        }
-
-        .item-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .item-price {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #c41e3a;
-        }
-
-        .add-btn {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            color: #8b0000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .add-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-        }
-
-        /* Cart Modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            animation: fadeIn 0.3s;
-        }
-
-        .cart-modal.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .cart-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #8b0000;
-            background: none;
-            border: none;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            gap: 15px;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-name {
-            font-weight: bold;
-            color: #8b0000;
+            font-size: 1.8rem;
             margin-bottom: 5px;
         }
 
-        .cart-item-price {
-            color: #c41e3a;
-            font-weight: bold;
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
 
-        .remove-btn {
-            background: #ff4444;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .remove-btn:hover {
-            background: #cc0000;
-        }
-
-        .cart-total {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #c41e3a;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #8b0000;
-            text-align: right;
-        }
-
-        .cart-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .cart-actions button {
-            flex: 1;
+        .section {
+            background-color: var(--light-color);
+            border-radius: 10px;
             padding: 15px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        .clear-cart {
-            background: #666;
-            color: white;
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.2rem;
         }
 
-        .clear-cart:hover {
-            background: #444;
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.4rem;
         }
 
-        .send-order {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
+        /* Vista de mesas */
+        .mesas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
         }
 
-        .send-order:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-        }
-
-        .empty-cart {
+        .mesa {
+            background-color: var(--light-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 15px 10px;
             text-align: center;
-            padding: 40px;
-            color: #999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .mesa:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .mesa-pendiente {
+            border-color: var(--danger-color);
+        }
+
+        .mesa-pagada {
+            border-color: var(--success-color);
+        }
+
+        .mesa-numero {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .mesa-estado {
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            padding: 3px 8px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .estado-pendiente {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .estado-pagado {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #388E3C;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #C19B2A;
+        }
+
+        /* Vista de pedido */
+        .pedido-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .pedido-mesa {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .productos-lista {
+            margin-top: 20px;
+        }
+
+        .producto-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .producto-info {
+            flex: 1;
+        }
+
+        .producto-nombre {
+            font-weight: 500;
+        }
+
+        .producto-detalles {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .producto-total {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .btn-eliminar {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        .totales {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .total-mesa, .total-general {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .total-general {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* Navegación inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--secondary-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--light-color);
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-color);
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 3px;
+        }
+
+        /* Modo oscuro */
+        body.dark-mode {
+            --background-color: #121212;
+            --light-color: #1E1E1E;
+            --text-color: #E0E0E0;
+        }
+
+        .dark-mode .section {
+            background-color: var(--light-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .form-control {
+            background-color: #2D2D2D;
+            color: var(--text-color);
+            border-color: #444;
+        }
+
+        .dark-mode .totales {
+            background-color: #2D2D2D;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5rem;
+        @media (min-width: 768px) {
+            .container {
+                max-width: 750px;
+                margin: 0 auto;
             }
-
-            .carousel-container {
-                height: 300px;
-            }
-
-            .carousel-overlay {
-                font-size: 2rem;
-            }
-
-            .menu-section.active {
-                grid-template-columns: 1fr;
-            }
-
-            .cart-content {
-                width: 95%;
-                padding: 20px;
+            
+            .mesas-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <h1>🥢  Kung Fu China</h1>
-            <div class="cart-icon" onclick="toggleCart()">
-                🛒 Carrito <span class="cart-count" id="cartCount">0</span>
-            </div>
-        </div>
+        <h1>🍽️ Control Restaurante Pro</h1>
+        <p class="subtitle">Gestión de mesas, pedidos y contabilidad diaria</p>
     </header>
 
-    <!-- Carousel -->
-    <div class="carousel-container">
-        <div class="carousel" id="carousel">
-            <div class="carousel-slide">
-                <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=1200&h=500&fit=crop" alt="Restaurante">
-                <div class="carousel-overlay">Bienvenidos a Kung Fu China</div>
-            </div>
-            <div class="carousel-slide">
-                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1200&h=500&fit=crop" alt="Comida China">
-                <div class="carousel-overlay">Auténtica Comida China</div>
-            </div>
-            <div class="carousel-slide">
-                <img src="https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=1200&h=500&fit=crop" alt="Platos Especiales">
-                <div class="carousel-overlay">Platos Exquisitos</div>
-            </div>
-            <div class="carousel-slide">
-                <img src="https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=1200&h=500&fit=crop" alt="Ambiente">
-                <div class="carousel-overlay">Ambiente Acogedor</div>
-            </div>
-        </div>
-        <button class="carousel-btn prev" onclick="moveCarousel(-1)">❮</button>
-        <button class="carousel-btn next" onclick="moveCarousel(1)">❯</button>
-    </div>
-
     <div class="container">
-        <!-- Category Navigation -->
-        <div class="category-nav">
-            <button class="category-btn active" onclick="showCategory('entradas')">Entradas</button>
-            <button class="category-btn" onclick="showCategory('platos')">Platos Fuertes</button>
-            <button class="category-btn" onclick="showCategory('bebidas')">Bebidas</button>
-            <button class="category-btn" onclick="showCategory('postres')">Postres</button>
-        </div>
-
-        <!-- Entradas -->
-        <div class="menu-section active" id="entradas">
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&h=300&fit=crop" alt="Rollitos Primavera" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Rollitos Primavera</div>
-                    <div class="item-description">Crujientes rollitos rellenos de vegetales frescos</div>
-                    <div class="item-footer">
-                        <div class="item-price">$12.000</div>
-                        <button class="add-btn" onclick="addToCart('Rollitos Primavera', 12000)">Agregar</button>
-                    </div>
-                </div>
+        <!-- Vista de Mesas -->
+        <div id="vista-mesas" class="section">
+            <div class="section-title">
+                <i>📋</i> Control de Mesas
             </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&h=300&fit=crop" alt="Wonton Frito" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Wonton Frito</div>
-                    <div class="item-description">Deliciosos wontons crujientes con salsa agridulce</div>
-                    <div class="item-footer">
-                        <div class="item-price">$15.000</div>
-                        <button class="add-btn" onclick="addToCart('Wonton Frito', 15000)">Agregar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=400&h=300&fit=crop" alt="Sopa Wonton" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Sopa Wonton</div>
-                    <div class="item-description">Caldo aromático con wontons de cerdo y camarón</div>
-                    <div class="item-footer">
-                        <div class="item-price">$18.000</div>
-                        <button class="add-btn" onclick="addToCart('Sopa Wonton', 18000)">Agregar</button>
-                        </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=400&h=300&fit=crop" alt="Sopa Wonton" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Sopa Wonton</div>
-                    <div class="item-description">Caldo aromático con wontons de cerdo y camarón</div>
-                    <div class="item-footer">
-                        <div class="item-price">$18.000</div>
-                        <button class="add-btn" onclick="addToCart('Sopa Wonton', 18000)">Agregar</button>
-                    </div>
-                </div>
+            <div class="mesas-grid" id="mesas-container">
+                <!-- Las mesas se generarán dinámicamente aquí -->
             </div>
         </div>
 
-        <!-- Platos Fuertes -->
-        <div class="menu-section" id="platos">
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=300&fit=crop" alt="Arroz Chino" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Arroz Chino Especial</div>
-                    <div class="item-description">Arroz frito con camarones, pollo y vegetales</div>
-                    <div class="item-footer">
-                        <div class="item-price">$25.000</div>
-                        <button class="add-btn" onclick="addToCart('Arroz Chino Especial', 25000)">Agregar</button>
-                    </div>
+        <!-- Vista de Pedido -->
+        <div id="vista-pedido" class="section" style="display: none;">
+            <div class="pedido-header">
+                <div class="pedido-mesa" id="pedido-mesa-titulo">Mesa 1</div>
+                <button class="btn btn-accent" id="btn-volver-mesas">← Volver</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="producto-nombre">Producto</label>
+                <input type="text" id="producto-nombre" class="form-control" placeholder="Nombre del producto">
+            </div>
+            
+            <div class="form-group">
+                <label for="producto-cantidad">Cantidad</label>
+                <input type="number" id="producto-cantidad" class="form-control" value="1" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label for="producto-precio">Precio unitario</label>
+                <input type="number" id="producto-precio" class="form-control" step="0.01" placeholder="0.00">
+            </div>
+            
+            <button class="btn" id="btn-agregar-producto">➕ Agregar producto</button>
+            
+            <div class="productos-lista" id="productos-lista">
+                <!-- Los productos se agregarán dinámicamente aquí -->
+            </div>
+            
+            <div class="totales">
+                <div class="total-mesa">
+                    <span>Total de la mesa:</span>
+                    <span id="total-mesa">$0.00</span>
                 </div>
             </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=300&fit=crop" alt="Chow Mein" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Chow Mein Mixto</div>
-                    <div class="item-description">Fideos salteados con carne, pollo y vegetales</div>
-                    <div class="item-footer">
-                        <div class="item-price">$28.000</div>
-                        <button class="add-btn" onclick="addToCart('Chow Mein Mixto', 28000)">Agregar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=400&h=300&fit=crop" alt="Pollo Agridulce" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Pollo Agridulce</div>
-                    <div class="item-description">Pollo crujiente bañado en salsa agridulce</div>
-                    <div class="item-footer">
-                        <div class="item-price">$30.000</div>
-                        <button class="add-btn" onclick="addToCart('Pollo Agridulce', 30000)">Agregar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop" alt="Cerdo Agridulce" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Cerdo Agridulce</div>
-                    <div class="item-description">Cerdo crujiente con piña y pimientos en salsa especial</div>
-                    <div class="item-footer">
-                        <div class="item-price">$32.000</div>
-                        <button class="add-btn" onclick="addToCart('Cerdo Agridulce', 32000)">Agregar</button>
-                    </div>
-                </div>
+            
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn" id="btn-guardar-pedido">💾 Guardar pedido</button>
+                <button class="btn btn-success" id="btn-marcar-pagado">💰 Marcar como pagado</button>
             </div>
         </div>
 
-        <!-- Bebidas -->
-        <div class="menu-section" id="bebidas">
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop" alt="Té Verde" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Té Verde</div>
-                    <div class="item-description">Refrescante té verde tradicional chino</div>
-                    <div class="item-footer">
-                        <div class="item-price">$5.000</div>
-                        <button class="add-btn" onclick="addToCart('Té Verde', 5000)">Agregar</button>
-                    </div>
+        <!-- Vista de Reportes -->
+        <div id="vista-reportes" class="section" style="display: none;">
+            <div class="section-title">
+                <i>📊</i> Reportes y Contabilidad
+            </div>
+            
+            <div class="totales">
+                <div class="total-general">
+                    <span>Total general del día:</span>
+                    <span id="total-general">$0.00</span>
                 </div>
             </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&h=300&fit=crop" alt="Limonada China" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Limonada China</div>
-                    <div class="item-description">Limonada con jengibre y miel</div>
-                    <div class="item-footer">
-                        <div class="item-price">$7.000</div>
-                        <button class="add-btn" onclick="addToCart('Limonada China', 7000)">Agregar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=300&fit=crop" alt="Jugo Natural" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Jugo Natural</div>
-                    <div class="item-description">Jugos frescos de frutas tropicales</div>
-                    <div class="item-footer">
-                        <div class="item-price">$8.000</div>
-                        <button class="add-btn" onclick="addToCart('Jugo Natural', 8000)">Agregar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Postres -->
-        <div class="menu-section" id="postres">
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop" alt="Helado Frito" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Helado Frito</div>
-                    <div class="item-description">Crujiente por fuera, cremoso por dentro</div>
-                    <div class="item-footer">
-                        <div class="item-price">$10.000</div>
-                        <button class="add-btn" onclick="addToCart('Helado Frito', 10000)">Agregar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?w=400&h=300&fit=crop" alt="Galletas Fortuna" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Galletas de la Fortuna</div>
-                    <div class="item-description">Tradicionales galletas con mensaje de suerte</div>
-                    <div class="item-footer">
-                        <div class="item-price">$6.000</div>
-                        <button class="add-btn" onclick="addToCart('Galletas de la Fortuna', 6000)">Agregar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop" alt="Pastel Mochi" class="item-image">
-                <div class="item-content">
-                    <div class="item-name">Pastel Mochi</div>
-                    <div class="item-description">Delicioso pastel suave de arroz relleno</div>
-                    <div class="item-footer">
-                        <div class="item-price">$12.000</div>
-                        <button class="add-btn" onclick="addToCart('Pastel Mochi', 12000)">Agregar</button>
-                    </div>
+            
+            <button class="btn btn-accent" id="btn-generar-excel">📦 Generar reporte Excel</button>
+            <button class="btn" id="btn-subir-drive" style="margin-top: 10px;">☁️ Subir a Google Drive</button>
+            
+            <div style="margin-top: 20px;">
+                <h3 style="margin-bottom: 10px;">Resumen por mesas</h3>
+                <div id="resumen-mesas">
+                    <!-- El resumen se generará dinámicamente aquí -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
-            <button class="close-btn" onclick="toggleCart()">×</button>
-            <h2 style="color: #8b0000; margin-bottom: 20px;">🛒 Tu Pedido</h2>
-            <div id="cartItems"></div>
-            <div class="cart-total" id="cartTotal">Total: $0</div>
-            <div class="cart-actions">
-                <button class="clear-cart" onclick="clearCart()">Vaciar Carrito</button>
-                <button class="send-order" onclick="sendOrder()">Enviar Pedido 📱</button>
-            </div>
-        </div>
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Navegación inferior -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active" data-view="mesas">
+            <i>📋</i>
+            <span>Mesas</span>
+        </a>
+        <a href="#" class="nav-item" data-view="reportes">
+            <i>📊</i>
+            <span>Reportes</span>
+        </a>
+        <a href="#" class="nav-item" id="toggle-dark-mode">
+            <i>🌙</i>
+            <span>Modo Oscuro</span>
+        </a>
     </div>
 
     <script>
-        // Cart functionality
-        let cart = [];
-        let currentSlide = 0;
+        // Datos de ejemplo
+        let mesas = [];
+        const NUM_MESAS = 8;
+        let mesaActual = null;
 
-        // Carousel
-        function moveCarousel(direction) {
-            const carousel = document.getElementById('carousel');
-            const slides = carousel.children.length;
-            currentSlide = (currentSlide + direction + slides) % slides;
-            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-        }
-
-        // Auto slide carousel
-        setInterval(() => moveCarousel(1), 4000);
-
-        // Category navigation (robusta: no depende de "event")
-        function showCategory(category) {
-            document.querySelectorAll('.menu-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const section = document.getElementById(category);
-            if (section) section.classList.add('active');
-
-            // marcar boton activo buscando por atributo onclick que contenga la categoría
-            const btn = Array.from(document.querySelectorAll('.category-btn')).find(b => {
-                const on = b.getAttribute('onclick') || '';
-                return on.includes(`'${category}'`) || on.includes(`"${category}"`);
-            });
-            if (btn) btn.classList.add('active');
-        }
-
-        // Add to cart
-        function addToCart(name, price) {
-            const existing = cart.find(item => item.name === name);
-            if (existing) {
-                existing.quantity++;
+        // Inicializar la aplicación
+        function inicializarApp() {
+            // Cargar datos del localStorage
+            const datosGuardados = localStorage.getItem('restauranteData');
+            if (datosGuardados) {
+                mesas = JSON.parse(datosGuardados);
             } else {
-                cart.push({ name, price, quantity: 1 });
+                // Crear mesas por defecto
+                for (let i = 1; i <= NUM_MESAS; i++) {
+                    mesas.push({
+                        numero: i,
+                        estado: 'pagada', // 'pendiente' o 'pagada'
+                        productos: [],
+                        total: 0
+                    });
+                }
+                guardarDatos();
             }
-            updateCart();
+            
+            // Renderizar mesas
+            renderizarMesas();
+            
+            // Configurar eventos
+            configurarEventos();
+            
+            // Actualizar totales
+            actualizarTotales();
         }
 
-        // Update cart display
-        function updateCart() {
-            const cartItems = document.getElementById('cartItems');
-            const cartCount = document.getElementById('cartCount');
-            const cartTotal = document.getElementById('cartTotal');
+        // Guardar datos en localStorage
+        function guardarDatos() {
+            localStorage.setItem('restauranteData', JSON.stringify(mesas));
+        }
 
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="empty-cart">Tu carrito está vacío<br>¡Agrega algunos platos deliciosos!</div>';
-                cartTotal.textContent = 'Total: $0';
-                cartCount.textContent = '0';
-                return;
-            }
-
-            let total = 0;
-            let itemCount = 0;
-            cartItems.innerHTML = cart.map((item, index) => {
-                total += item.price * item.quantity;
-                itemCount += item.quantity;
-                return `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name} x${item.quantity}</div>
-                            <div class="cart-item-price">$${(item.price * item.quantity).toLocaleString()}</div>
-                        </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <button class="remove-btn" onclick="decreaseQty(${index})">-</button>
-                            <button class="remove-btn" onclick="increaseQty(${index})">+</button>
-                            <button class="remove-btn" onclick="removeFromCart(${index})">Eliminar</button>
-                        </div>
+        // Renderizar la vista de mesas
+        function renderizarMesas() {
+            const container = document.getElementById('mesas-container');
+            container.innerHTML = '';
+            
+            mesas.forEach(mesa => {
+                const mesaElement = document.createElement('div');
+                mesaElement.className = `mesa ${mesa.estado === 'pendiente' ? 'mesa-pendiente' : 'mesa-pagada'}`;
+                mesaElement.innerHTML = `
+                    <div class="mesa-numero">Mesa ${mesa.numero}</div>
+                    <div class="mesa-estado ${mesa.estado === 'pendiente' ? 'estado-pendiente' : 'estado-pagado'}">
+                        ${mesa.estado === 'pendiente' ? 'Pendiente' : 'Pagada'}
                     </div>
+                    <button class="btn abrir-pedido" data-mesa="${mesa.numero}">📋 Abrir pedido</button>
                 `;
-            }).join('');
-
-            cartTotal.textContent = `Total: $${total.toLocaleString()}`;
-            cartCount.textContent = itemCount;
+                container.appendChild(mesaElement);
+            });
         }
 
-        function increaseQty(index) {
-            cart[index].quantity++;
-            updateCart();
-        }
-        function decreaseQty(index) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity--;
-            } else {
-                cart.splice(index, 1);
-            }
-            updateCart();
-        }
-
-        // Remove from cart
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        // Clear cart
-        function clearCart() {
-            if (confirm('¿Estás seguro de vaciar el carrito?')) {
-                cart = [];
-                updateCart();
-            }
-        }
-
-        // Toggle cart modal
-        function toggleCart() {
-            document.getElementById('cartModal').classList.toggle('active');
-        }
-
-        // Send order
-        function sendOrder() {
-            if (cart.length === 0) {
-                alert('Tu carrito está vacío. Agrega productos antes de enviar el pedido.');
+        // Renderizar productos de una mesa
+        function renderizarProductos(mesa) {
+            const container = document.getElementById('productos-lista');
+            container.innerHTML = '';
+            
+            if (mesa.productos.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">No hay productos agregados</p>';
                 return;
             }
-
-            // Datos de fecha y hora
-            const date = new Date();
-            const dateStr = date.toLocaleDateString('es-CO');
-            const timeStr = date.toLocaleTimeString('es-CO');
-
-            // Preparar matriz para Excel
-            const data = [
-                ['PEDIDO - RESTAURANTE KUNG FU CHINA'],
-                ['Fecha: ' + dateStr, 'Hora: ' + timeStr],
-                [],
-                ['Producto', 'Cantidad', 'Precio Unitario', 'Total']
-            ];
-
-            let total = 0;
-            cart.forEach(item => {
-                const subtotal = item.price * item.quantity;
-                total += subtotal;
-                data.push([
-                    item.name,
-                    item.quantity,
-                    item.price,
-                    subtotal
-                ]);
+            
+            mesa.productos.forEach((producto, index) => {
+                const productoElement = document.createElement('div');
+                productoElement.className = 'producto-item';
+                productoElement.innerHTML = `
+                    <div class="producto-info">
+                        <div class="producto-nombre">${producto.nombre}</div>
+                        <div class="producto-detalles">${producto.cantidad} x $${producto.precio.toFixed(2)}</div>
+                    </div>
+                    <div class="producto-total">$${(producto.cantidad * producto.precio).toFixed(2)}</div>
+                    <button class="btn-eliminar" data-index="${index}">🗑️</button>
+                `;
+                container.appendChild(productoElement);
             });
-
-            data.push([]);
-            data.push(['', '', 'TOTAL:', total]);
-
-            // Crear hoja de cálculo con SheetJS
-            const ws = XLSX.utils.aoa_to_sheet(data);
-
-            // Ajuste columnas para mejor lectura
-            ws['!cols'] = [
-                { wch: 30 }, // Producto
-                { wch: 10 }, // Cantidad
-                { wch: 15 }, // Precio Unitario
-                { wch: 15 }  // Total
-            ];
-
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Pedido');
-
-            // Generar archivo .xlsx como ArrayBuffer
-            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-            const blob = new Blob([wbout], { type: "application/octet-stream" });
-
-            // Nombre del archivo con fecha/hora
-            const fileNameDate = date.toISOString().slice(0,19).replace(/[:T]/g,'-');
-            const filename = `pedido_kung_fu_china_${fileNameDate}.xlsx`;
-
-            // Descargar automáticamente (el usuario lo recibirá localmente)
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
-
-            // Preparar mensaje para WhatsApp (texto)
-            // Número de restaurante (modifica aquí si quieres otro): +57 3001234567
-            const phone = '573118842454';
-
-            // Construir texto con resumen legible
-            let message = `Hola, acabo de realizar un pedido desde la web.%0A`;
-            message += `Fecha: ${dateStr} Hora: ${timeStr}%0A%0A`;
-            message += `Detalles:%0A`;
-
-            cart.forEach(item => {
-                const subtotal = item.price * item.quantity;
-                message += `- ${item.name} x${item.quantity} = $${subtotal.toLocaleString()}%0A`;
-            });
-
-            message += `%0ATOTAL: $${total.toLocaleString()}%0A%0A`;
-            message += `He descargado el archivo Excel con el pedido llamado "${filename}". Por favor, revisen el archivo adjunto (descarguen y adjunten en WhatsApp Web si es necesario). Gracias.`;
-
-            // Abrir WhatsApp Web o app (según dispositivo)
-            const whatsappUrlWeb = `https://wa.me/${phone}?text=${encodeURIComponent(decodeURIComponent(message))}`;
-            // Intentar abrir en nueva ventana/pestaña
-            window.open(whatsappUrlWeb, '_blank');
-
-            // Limpiar carrito después de enviar (opcional)
-            cart = [];
-            updateCart();
-            toggleCart();
-            alert('Pedido generado y descarga iniciada. Se abrió WhatsApp para completar el envío (adjunta el archivo descargado si lo deseas).');
+            
+            // Actualizar total de la mesa
+            document.getElementById('total-mesa').textContent = `$${mesa.total.toFixed(2)}`;
         }
 
-        // Inicializar estado
-        updateCart();
+        // Configurar eventos
+        function configurarEventos() {
+            // Navegación
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const view = this.getAttribute('data-view');
+                    
+                    // Actualizar navegación activa
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mostrar vista correspondiente
+                    document.getElementById('vista-mesas').style.display = 'none';
+                    document.getElementById('vista-pedido').style.display = 'none';
+                    document.getElementById('vista-reportes').style.display = 'none';
+                    
+                    if (view === 'mesas') {
+                        document.getElementById('vista-mesas').style.display = 'block';
+                    } else if (view === 'reportes') {
+                        document.getElementById('vista-reportes').style.display = 'block';
+                        actualizarReportes();
+                    }
+                });
+            });
+            
+            // Abrir pedido de mesa
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('abrir-pedido')) {
+                    const mesaNum = parseInt(e.target.getAttribute('data-mesa'));
+                    abrirPedidoMesa(mesaNum);
+                }
+            });
+            
+            // Volver a mesas desde pedido
+            document.getElementById('btn-volver-mesas').addEventListener('click', function() {
+                document.getElementById('vista-pedido').style.display = 'none';
+                document.getElementById('vista-mesas').style.display = 'block';
+                document.querySelector('.nav-item[data-view="mesas"]').classList.add('active');
+                document.querySelector('.nav-item[data-view="reportes"]').classList.remove('active');
+            });
+            
+            // Agregar producto
+            document.getElementById('btn-agregar-producto').addEventListener('click', agregarProducto);
+            
+            // Eliminar producto
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn-eliminar')) {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    eliminarProducto(index);
+                }
+            });
+            
+            // Guardar pedido
+            document.getElementById('btn-guardar-pedido').addEventListener('click', guardarPedido);
+            
+            // Marcar como pagado
+            document.getElementById('btn-marcar-pagado').addEventListener('click', marcarComoPagado);
+            
+            // Generar Excel
+            document.getElementById('btn-generar-excel').addEventListener('click', generarExcel);
+            
+            // Subir a Google Drive
+            document.getElementById('btn-subir-drive').addEventListener('click', subirADrive);
+            
+            // Modo oscuro
+            document.getElementById('toggle-dark-mode').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.body.classList.toggle('dark-mode');
+                this.querySelector('span').textContent = document.body.classList.contains('dark-mode') ? 'Modo Claro' : 'Modo Oscuro';
+            });
+        }
+
+        // Abrir pedido de una mesa
+        function abrirPedidoMesa(numero) {
+            mesaActual = mesas.find(m => m.numero === numero);
+            document.getElementById('pedido-mesa-titulo').textContent = `Mesa ${mesaActual.numero}`;
+            renderizarProductos(mesaActual);
+            
+            // Cambiar a vista de pedido
+            document.getElementById('vista-mesas').style.display = 'none';
+            document.getElementById('vista-pedido').style.display = 'block';
+            
+            // Actualizar navegación
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        }
+
+        // Agregar producto a la mesa actual
+        function agregarProducto() {
+            const nombre = document.getElementById('producto-nombre').value.trim();
+            const cantidad = parseInt(document.getElementById('producto-cantidad').value);
+            const precio = parseFloat(document.getElementById('producto-precio').value);
+            
+            if (!nombre || isNaN(cantidad) || cantidad <= 0 || isNaN(precio) || precio <= 0) {
+                mostrarToast('Por favor, complete todos los campos correctamente', 'error');
+                return;
+            }
+            
+            mesaActual.productos.push({
+                nombre,
+                cantidad,
+                precio
+            });
+            
+            // Calcular total de la mesa
+            calcularTotalMesa(mesaActual);
+            
+            // Limpiar formulario
+            document.getElementById('producto-nombre').value = '';
+            document.getElementById('producto-cantidad').value = '1';
+            document.getElementById('producto-precio').value = '';
+            
+            // Renderizar productos actualizados
+            renderizarProductos(mesaActual);
+            
+            mostrarToast('Producto agregado correctamente');
+        }
+
+        // Eliminar producto
+        function eliminarProducto(index) {
+            mesaActual.productos.splice(index, 1);
+            calcularTotalMesa(mesaActual);
+            renderizarProductos(mesaActual);
+            mostrarToast('Producto eliminado');
+        }
+
+        // Calcular total de una mesa
+        function calcularTotalMesa(mesa) {
+            mesa.total = mesa.productos.reduce((total, producto) => {
+                return total + (producto.cantidad * producto.precio);
+            }, 0);
+        }
+
+        // Guardar pedido
+        function guardarPedido() {
+            if (mesaActual.productos.length === 0) {
+                mostrarToast('No hay productos para guardar', 'error');
+                return;
+            }
+            
+            mesaActual.estado = 'pendiente';
+            guardarDatos();
+            renderizarMesas();
+            mostrarToast('Pedido guardado correctamente');
+        }
+
+        // Marcar como pagado
+        function marcarComoPagado() {
+            if (mesaActual.productos.length === 0) {
+                mostrarToast('No hay productos para marcar como pagado', 'error');
+                return;
+            }
+            
+            mesaActual.estado = 'pagada';
+            guardarDatos();
+            renderizarMesas();
+            mostrarToast('Mesa marcada como pagada');
+            
+            // Volver a la vista de mesas
+            document.getElementById('vista-pedido').style.display = 'none';
+            document.getElementById('vista-mesas').style.display = 'block';
+            document.querySelector('.nav-item[data-view="mesas"]').classList.add('active');
+        }
+
+        // Actualizar totales generales
+        function actualizarTotales() {
+            const totalGeneral = mesas.reduce((total, mesa) => {
+                return total + mesa.total;
+            }, 0);
+            
+            document.getElementById('total-general').textContent = `$${totalGeneral.toFixed(2)}`;
+        }
+
+        // Actualizar reportes
+        function actualizarReportes() {
+            actualizarTotales();
+            
+            // Actualizar resumen por mesas
+            const resumenContainer = document.getElementById('resumen-mesas');
+            resumenContainer.innerHTML = '';
+            
+            mesas.forEach(mesa => {
+                const mesaElement = document.createElement('div');
+                mesaElement.className = 'total-mesa';
+                mesaElement.innerHTML = `
+                    <span>Mesa ${mesa.numero}:</span>
+                    <span>$${mesa.total.toFixed(2)}</span>
+                `;
+                resumenContainer.appendChild(mesaElement);
+            });
+        }
+
+        // Generar Excel
+        function generarExcel() {
+            // Crear datos para el Excel
+            const datos = [];
+            const fecha = new Date().toLocaleDateString();
+            
+            mesas.forEach(mesa => {
+                if (mesa.productos.length > 0) {
+                    mesa.productos.forEach(producto => {
+                        datos.push({
+                            'Mesa': mesa.numero,
+                            'Producto': producto.nombre,
+                            'Cantidad': producto.cantidad,
+                            'Precio Unitario': producto.precio,
+                            'Total': producto.cantidad * producto.precio,
+                            'Fecha': fecha
+                        });
+                    });
+                }
+            });
+            
+            if (datos.length === 0) {
+                mostrarToast('No hay datos para exportar', 'error');
+                return;
+            }
+            
+            // Crear libro de trabajo
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(datos);
+            
+            // Agregar hoja al libro
+            XLSX.utils.book_append_sheet(wb, ws, 'Reporte Restaurante');
+            
+            // Generar archivo y descargar
+            XLSX.writeFile(wb, `Reporte_Restaurante_${fecha.replace(/\//g, '-')}.xlsx`);
+            
+            mostrarToast('Reporte Excel generado y descargado');
+        }
+
+        // Subir a Google Drive (simulación)
+        function subirADrive() {
+            // En una implementación real, aquí se integraría con la API de Google Drive
+            mostrarToast('Funcionalidad de Google Drive en desarrollo');
+        }
+
+        // Mostrar notificación toast
+        function mostrarToast(mensaje, tipo = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensaje;
+            toast.className = 'toast';
+            
+            if (tipo === 'error') {
+                toast.style.backgroundColor = 'var(--danger-color)';
+            } else {
+                toast.style.backgroundColor = 'var(--primary-color)';
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Inicializar la aplicación cuando se carga la página
+        document.addEventListener('DOMContentLoaded', inicializarApp);
     </script>
 </body>
 </html>
