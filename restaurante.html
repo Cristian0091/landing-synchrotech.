@@ -2,9 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Mejor control de zoom en móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Control Restaurante Pro</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- XLSX desde CDN (sin integrity aquí; añade integrity si tienes el hash) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         :root {
             --primary-color: #8B0000; /* Rojo vino */
@@ -315,11 +317,16 @@
             margin-bottom: 3px;
         }
 
-        /* Modo oscuro */
+        /* Modo oscuro: redefinir variables para consistencia */
         body.dark-mode {
-            --background-color: #121212;
+            --primary-color: #bb86fc;
+            --secondary-color: #121212;
+            --accent-color: #03dac6;
             --light-color: #1E1E1E;
             --text-color: #E0E0E0;
+            --background-color: #121212;
+            --success-color: #2e7d32;
+            --danger-color: #cf6679;
         }
 
         .dark-mode .section {
@@ -434,7 +441,7 @@
     </div>
 
     <!-- Toast notification -->
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
 
     <!-- Navegación inferior -->
     <div class="bottom-nav">
@@ -453,23 +460,34 @@
     </div>
 
     <script>
-        // Datos de ejemplo
+        // Datos de ejemplo y estado
         let mesas = [];
         const NUM_MESAS = 8;
         let mesaActual = null;
 
         // Inicializar la aplicación
         function inicializarApp() {
-            // Cargar datos del localStorage
+            // Cargar datos del localStorage de forma segura
             const datosGuardados = localStorage.getItem('restauranteData');
             if (datosGuardados) {
-                mesas = JSON.parse(datosGuardados);
-            } else {
-                // Crear mesas por defecto
+                try {
+                    const parsed = JSON.parse(datosGuardados);
+                    if (Array.isArray(parsed)) {
+                        mesas = parsed;
+                    } else {
+                        mesas = [];
+                    }
+                } catch (e) {
+                    mesas = [];
+                }
+            }
+
+            // Si no hay mesas, crear por defecto (estado 'pendiente' para indicar disponible)
+            if (!mesas || mesas.length === 0) {
                 for (let i = 1; i <= NUM_MESAS; i++) {
                     mesas.push({
                         numero: i,
-                        estado: 'pagada', // 'pendiente' o 'pagada'
+                        estado: 'pendiente', // 'pendiente' o 'pagada'
                         productos: [],
                         total: 0
                     });
@@ -477,19 +495,21 @@
                 guardarDatos();
             }
             
-            // Renderizar mesas
+            // Renderizar mesas y totales
             renderizarMesas();
+            actualizarTotales();
             
             // Configurar eventos
             configurarEventos();
-            
-            // Actualizar totales
-            actualizarTotales();
         }
 
         // Guardar datos en localStorage
         function guardarDatos() {
-            localStorage.setItem('restauranteData', JSON.stringify(mesas));
+            try {
+                localStorage.setItem('restauranteData', JSON.stringify(mesas));
+            } catch (e) {
+                console.error('Error al guardar en localStorage', e);
+            }
         }
 
         // Renderizar la vista de mesas
@@ -516,8 +536,9 @@
             const container = document.getElementById('productos-lista');
             container.innerHTML = '';
             
-            if (mesa.productos.length === 0) {
+            if (!mesa || mesa.productos.length === 0) {
                 container.innerHTML = '<p style="text-align: center; color: #666;">No hay productos agregados</p>';
+                document.getElementById('total-mesa').textContent = `$${(mesa && mesa.total ? mesa.total.toFixed(2) : '0.00')}`;
                 return;
             }
             
@@ -526,17 +547,29 @@
                 productoElement.className = 'producto-item';
                 productoElement.innerHTML = `
                     <div class="producto-info">
-                        <div class="producto-nombre">${producto.nombre}</div>
+                        <div class="producto-nombre">${escapeHtml(producto.nombre)}</div>
                         <div class="producto-detalles">${producto.cantidad} x $${producto.precio.toFixed(2)}</div>
                     </div>
                     <div class="producto-total">$${(producto.cantidad * producto.precio).toFixed(2)}</div>
-                    <button class="btn-eliminar" data-index="${index}">🗑️</button>
+                    <button class="btn-eliminar" data-index="${index}" title="Eliminar producto">🗑️</button>
                 `;
                 container.appendChild(productoElement);
             });
             
             // Actualizar total de la mesa
             document.getElementById('total-mesa').textContent = `$${mesa.total.toFixed(2)}`;
+        }
+
+        // Escapar HTML para evitar inyección simple en nombres
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
         // Configurar eventos
@@ -549,7 +582,8 @@
                     
                     // Actualizar navegación activa
                     document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
+                    // Si el item tiene data-view, activarlo
+                    if (view) this.classList.add('active');
                     
                     // Mostrar vista correspondiente
                     document.getElementById('vista-mesas').style.display = 'none';
@@ -565,7 +599,7 @@
                 });
             });
             
-            // Abrir pedido de mesa
+            // Abrir pedido de mesa (delegación)
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('abrir-pedido')) {
                     const mesaNum = parseInt(e.target.getAttribute('data-mesa'));
@@ -575,16 +609,18 @@
             
             // Volver a mesas desde pedido
             document.getElementById('btn-volver-mesas').addEventListener('click', function() {
+                // Mostrar vista mesas
                 document.getElementById('vista-pedido').style.display = 'none';
                 document.getElementById('vista-mesas').style.display = 'block';
+                // Actualizar navegación
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
                 document.querySelector('.nav-item[data-view="mesas"]').classList.add('active');
-                document.querySelector('.nav-item[data-view="reportes"]').classList.remove('active');
             });
             
             // Agregar producto
             document.getElementById('btn-agregar-producto').addEventListener('click', agregarProducto);
             
-            // Eliminar producto
+            // Eliminar producto (delegación)
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('btn-eliminar')) {
                     const index = parseInt(e.target.getAttribute('data-index'));
@@ -615,6 +651,10 @@
         // Abrir pedido de una mesa
         function abrirPedidoMesa(numero) {
             mesaActual = mesas.find(m => m.numero === numero);
+            if (!mesaActual) {
+                mostrarToast('Mesa no encontrada', 'error');
+                return;
+            }
             document.getElementById('pedido-mesa-titulo').textContent = `Mesa ${mesaActual.numero}`;
             renderizarProductos(mesaActual);
             
@@ -622,16 +662,22 @@
             document.getElementById('vista-mesas').style.display = 'none';
             document.getElementById('vista-pedido').style.display = 'block';
             
-            // Actualizar navegación
+            // Actualizar navegación activa
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
         }
 
         // Agregar producto a la mesa actual
         function agregarProducto() {
+            if (!mesaActual) {
+                mostrarToast('Abra una mesa antes de agregar productos', 'error');
+                return;
+            }
+
             const nombre = document.getElementById('producto-nombre').value.trim();
-            const cantidad = parseInt(document.getElementById('producto-cantidad').value);
+            const cantidad = parseInt(document.getElementById('producto-cantidad').value, 10) || 0;
             const precio = parseFloat(document.getElementById('producto-precio').value);
-            
+
+            // Validaciones robustas
             if (!nombre || isNaN(cantidad) || cantidad <= 0 || isNaN(precio) || precio <= 0) {
                 mostrarToast('Por favor, complete todos los campos correctamente', 'error');
                 return;
@@ -643,8 +689,9 @@
                 precio
             });
             
-            // Calcular total de la mesa
+            // Calcular total de la mesa y persistir
             calcularTotalMesa(mesaActual);
+            guardarDatos();
             
             // Limpiar formulario
             document.getElementById('producto-nombre').value = '';
@@ -654,66 +701,99 @@
             // Renderizar productos actualizados
             renderizarProductos(mesaActual);
             
+            // Actualizar listas y totales
+            renderizarMesas();
+            actualizarTotales();
+            
             mostrarToast('Producto agregado correctamente');
         }
 
         // Eliminar producto
         function eliminarProducto(index) {
+            if (!mesaActual) {
+                mostrarToast('Abra una mesa antes de eliminar productos', 'error');
+                return;
+            }
+            if (!Number.isInteger(index) || index < 0 || index >= mesaActual.productos.length) {
+                mostrarToast('Índice de producto inválido', 'error');
+                return;
+            }
             mesaActual.productos.splice(index, 1);
             calcularTotalMesa(mesaActual);
+            guardarDatos();
             renderizarProductos(mesaActual);
+            renderizarMesas();
+            actualizarTotales();
             mostrarToast('Producto eliminado');
         }
 
         // Calcular total de una mesa
         function calcularTotalMesa(mesa) {
             mesa.total = mesa.productos.reduce((total, producto) => {
-                return total + (producto.cantidad * producto.precio);
+                const cantidad = Number.isFinite(producto.cantidad) ? producto.cantidad : 0;
+                const precio = Number.isFinite(producto.precio) ? producto.precio : 0;
+                return total + (cantidad * precio);
             }, 0);
         }
 
         // Guardar pedido
         function guardarPedido() {
-            if (mesaActual.productos.length === 0) {
+            if (!mesaActual) {
+                mostrarToast('Abra una mesa antes de guardar', 'error');
+                return;
+            }
+            if (!mesaActual.productos || mesaActual.productos.length === 0) {
                 mostrarToast('No hay productos para guardar', 'error');
                 return;
             }
             
             mesaActual.estado = 'pendiente';
+            calcularTotalMesa(mesaActual);
             guardarDatos();
             renderizarMesas();
+            actualizarTotales();
             mostrarToast('Pedido guardado correctamente');
         }
 
         // Marcar como pagado
         function marcarComoPagado() {
-            if (mesaActual.productos.length === 0) {
+            if (!mesaActual) {
+                mostrarToast('Abra una mesa antes de marcar como pagado', 'error');
+                return;
+            }
+            if (!mesaActual.productos || mesaActual.productos.length === 0) {
                 mostrarToast('No hay productos para marcar como pagado', 'error');
                 return;
             }
             
             mesaActual.estado = 'pagada';
+            calcularTotalMesa(mesaActual);
             guardarDatos();
             renderizarMesas();
+            actualizarTotales();
             mostrarToast('Mesa marcada como pagada');
             
             // Volver a la vista de mesas
             document.getElementById('vista-pedido').style.display = 'none';
             document.getElementById('vista-mesas').style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             document.querySelector('.nav-item[data-view="mesas"]').classList.add('active');
         }
 
         // Actualizar totales generales
         function actualizarTotales() {
             const totalGeneral = mesas.reduce((total, mesa) => {
-                return total + mesa.total;
+                return total + (mesa.total || 0);
             }, 0);
             
-            document.getElementById('total-general').textContent = `$${totalGeneral.toFixed(2)}`;
+            const el = document.getElementById('total-general');
+            if (el) el.textContent = `$${totalGeneral.toFixed(2)}`;
         }
 
         // Actualizar reportes
         function actualizarReportes() {
+            // Asegurarse de que los totales estén actualizados
+            mesas.forEach(m => calcularTotalMesa(m));
             actualizarTotales();
             
             // Actualizar resumen por mesas
@@ -724,8 +804,8 @@
                 const mesaElement = document.createElement('div');
                 mesaElement.className = 'total-mesa';
                 mesaElement.innerHTML = `
-                    <span>Mesa ${mesa.numero}:</span>
-                    <span>$${mesa.total.toFixed(2)}</span>
+                    <span>Mesa ${mesa.numero} (${mesa.estado}):</span>
+                    <span>$${(mesa.total || 0).toFixed(2)}</span>
                 `;
                 resumenContainer.appendChild(mesaElement);
             });
@@ -733,20 +813,28 @@
 
         // Generar Excel
         function generarExcel() {
+            // Comprobar que XLSX esté cargado
+            if (typeof XLSX === 'undefined') {
+                mostrarToast('La librería XLSX no está disponible. Verifica la conexión al CDN.', 'error');
+                return;
+            }
+
             // Crear datos para el Excel
             const datos = [];
-            const fecha = new Date().toLocaleDateString();
+            const ahora = new Date();
+            const fechaIso = ahora.toISOString().split('T')[0]; // YYYY-MM-DD
             
             mesas.forEach(mesa => {
-                if (mesa.productos.length > 0) {
+                if (mesa.productos && mesa.productos.length > 0) {
                     mesa.productos.forEach(producto => {
                         datos.push({
                             'Mesa': mesa.numero,
+                            'EstadoMesa': mesa.estado,
                             'Producto': producto.nombre,
                             'Cantidad': producto.cantidad,
                             'Precio Unitario': producto.precio,
                             'Total': producto.cantidad * producto.precio,
-                            'Fecha': fecha
+                            'Fecha': fechaIso
                         });
                     });
                 }
@@ -757,17 +845,17 @@
                 return;
             }
             
-            // Crear libro de trabajo
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet(datos);
-            
-            // Agregar hoja al libro
-            XLSX.utils.book_append_sheet(wb, ws, 'Reporte Restaurante');
-            
-            // Generar archivo y descargar
-            XLSX.writeFile(wb, `Reporte_Restaurante_${fecha.replace(/\//g, '-')}.xlsx`);
-            
-            mostrarToast('Reporte Excel generado y descargado');
+            // Crear libro de trabajo y descargar
+            try {
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(datos);
+                XLSX.utils.book_append_sheet(wb, ws, 'Reporte Restaurante');
+                XLSX.writeFile(wb, `Reporte_Restaurante_${fechaIso}.xlsx`);
+                mostrarToast('Reporte Excel generado y descargado');
+            } catch (e) {
+                console.error('Error generando Excel', e);
+                mostrarToast('Error al generar el Excel', 'error');
+            }
         }
 
         // Subir a Google Drive (simulación)
@@ -776,21 +864,22 @@
             mostrarToast('Funcionalidad de Google Drive en desarrollo');
         }
 
-        // Mostrar notificación toast
+        // Mostrar notificación toast (mejor manejo para evitar solapamiento)
+        let toastTimeout = null;
         function mostrarToast(mensaje, tipo = 'success') {
             const toast = document.getElementById('toast');
-            toast.textContent = mensaje;
-            toast.className = 'toast';
-            
-            if (tipo === 'error') {
-                toast.style.backgroundColor = 'var(--danger-color)';
-            } else {
-                toast.style.backgroundColor = 'var(--primary-color)';
+            // Reset visual y timeout anterior
+            toast.classList.remove('show');
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+                toastTimeout = null;
             }
-            
+
+            toast.textContent = mensaje;
+            toast.style.backgroundColor = (tipo === 'error') ? getComputedStyle(document.documentElement).getPropertyValue('--danger-color') || '#F44336' : getComputedStyle(document.documentElement).getPropertyValue('--primary-color') || '#8B0000';
             toast.classList.add('show');
-            
-            setTimeout(() => {
+
+            toastTimeout = setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
         }
