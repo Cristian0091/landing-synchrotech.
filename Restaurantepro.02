@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Restaurante Pro</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <style>
+        :root {
+            --primary: #8B4513; /* Café */
+            --secondary: #F5F5DC; /* Beige */
+            --accent: #800000; /* Vino tinto */
+            --highlight: #FFD700; /* Dorado */
+            --text: #333;
+            --bg: #fff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        body.dark {
+            --primary: #D2691E;
+            --secondary: #333;
+            --accent: #B22222;
+            --highlight: #EEE8AA;
+            --text: #eee;
+            --bg: #222;
+            --success: #20c997;
+            --warning: #fd7e14;
+            --danger: #e83e8c;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 1em;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav a {
+            color: var(--secondary);
+            padding: 1em;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        nav a:hover {
+            background: var(--highlight);
+            color: var(--primary);
+        }
+        section {
+            padding: 2em;
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #home {
+            text-align: center;
+            padding: 3em 2em;
+        }
+        #tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1em;
+            margin-top: 1em;
+        }
+        .table {
+            padding: 1.5em 0.5em;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+        .table:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .free { 
+            background: var(--success); 
+            color: white; 
+        }
+        .in-progress { 
+            background: var(--warning); 
+            color: black; 
+        }
+        .pending-pay { 
+            background: var(--danger); 
+            color: white; 
+        }
+        .table-status {
+            font-size: 0.8em;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+        #modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1000;
+        }
+        #modal-overlay.active { 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+        }
+        #modal {
+            background: var(--bg);
+            padding: 2em;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #order-items { 
+            margin: 1em 0;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .item-row { 
+            display: flex; 
+            gap: 1em; 
+            margin-bottom: 0.5em; 
+            align-items: center;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .item-row:last-child {
+            border-bottom: none;
+        }
+        .item-row select, .item-row input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .item-row button {
+            background: var(--danger);
+            padding: 5px 10px;
+        }
+        #accounting-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 1em;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #accounting-table th, td { 
+            border: 1px solid var(--primary); 
+            padding: 0.8em; 
+            text-align: left;
+        }
+        #accounting-table th {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+        #accounting-table tr:nth-child(even) {
+            background: rgba(0,0,0,0.05);
+        }
+        #summary {
+            margin-top: 2em;
+            padding: 1em;
+            background: var(--secondary);
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+        }
+        .summary-item {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 1em;
+            background: var(--bg);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button { 
+            background: var(--accent); 
+            color: var(--secondary); 
+            border: none; 
+            padding: 0.7em 1.5em; 
+            cursor: pointer; 
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        button:hover { 
+            background: var(--highlight); 
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 1em;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .close-modal {
+            background: transparent;
+            color: var(--text);
+            font-size: 1.5em;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1100;
+            animation: slideIn 0.5s, slideOut 0.5s 2.5s forwards;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        .notification.success { background: var(--success); }
+        .notification.error { background: var(--danger); }
+        .notification.warning { background: var(--warning); color: #000; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        .settings-section {
+            margin-bottom: 2em;
+            padding: 1em;
+            background: var(--secondary);
+            border-radius: 5px;
+        }
+        .settings-section h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 1em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: var(--bg);
+            color: var(--text);
+        }
+        @media (max-width: 768px) {
+            #tables-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            nav { flex-wrap: wrap; }
+            nav a { flex: 1; min-width: 120px; justify-content: center; }
+            .item-row { flex-wrap: wrap; }
+            .button-group { flex-direction: column; }
+            .button-group button { width: 100%; }
+        }
+        @media (max-width: 480px) {
+            section { padding: 1em; }
+            #tables-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+            .table { padding: 1em 0.5em; min-height: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Control Restaurante Pro</h1>
+        <!-- Logo placeholder: <img src="logo.png" alt="Logo"> -->
+    </header>
+    <nav>
+        <a href="#home">🏠 Inicio</a>
+        <a href="#tables">🍽️ Mesas</a>
+        <a href="#accounting">💰 Contabilidad</a>
+        <a href="#settings">⚙️ Configuración</a>
+    </nav>
+    
+    <section id="home" class="active">
+        <h2>Control total de tu restaurante en una sola página</h2>
+        <p>Optimiza tu tiempo, elimina los errores y lleva tu control financiero al día.</p>
+        <div style="margin: 2em 0;">
+            <button onclick="showSection('tables')" style="font-size: 1.2em; padding: 1em 2em;">
+                🧾 Comenzar a gestionar ahora
+            </button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center; margin-top: 2em;">
+            <div style="flex: 1; min-width: 200px; text-align: center; padding: 1em; background: var(--secondary); border-radius: 10px;">
+                <h3>📊 Gestión de Mesas</h3>
+                <p>Controla el estado de cada mesa y sus pedidos en tiempo real</p>
+            </div>
+            <div style="flex: 1; min-width: 200px; text-align: center; padding: 1em; background: var(--secondary); border-radius: 10px;">
+                <h3>💰 Contabilidad</h3>
+                <p>Registra ventas, genera reportes y exporta datos</p>
+            </div>
+            <div style="flex: 1; min-width: 200px; text-align: center; padding: 1em; background: var(--secondary); border-radius: 10px;">
+                <h3>⚙️ Personalización</h3>
+                <p>Adapta el sistema a las necesidades de tu restaurante</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="tables">
+        <h2>Gestión de Mesas</h2>
+        <div id="tables-grid"></div>
+        
+        <div id="modal-overlay">
+            <div id="modal">
+                <div class="modal-header">
+                    <h3>Pedido de Mesa <span id="modal-table-id"></span></h3>
+                    <button class="close-modal" onclick="closeModal()">×</button>
+                </div>
+                <div id="order-items"></div>
+                <button onclick="addItemRow()">➕ Agregar Item</button>
+                <div style="margin: 1em 0; font-size: 1.2em; font-weight: bold;">
+                    Total: $<span id="order-total">0</span>
+                </div>
+                <div class="form-group">
+                    <label for="payment-method">Método de Pago:</label>
+                    <select id="payment-method">
+                        <option value="efectivo">Efectivo</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="transferencia">Transferencia</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button onclick="saveOrder()">💾 Guardar Pedido</button>
+                    <button onclick="markPaid()">✅ Marcar como Pagado</button>
+                    <button onclick="deleteOrder()" style="background: var(--danger);">🗑️ Eliminar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="accounting">
+        <h2>Contabilidad Diaria</h2>
+        <div class="button-group">
+            <button onclick="exportToExcel()">📊 Descargar Excel del día</button>
+            <button onclick="saveToDrive()" id="drive-btn">☁️ Guardar en Drive</button>
+            <button onclick="clearAccounting()" style="background: var(--danger);">🗑️ Limpiar Registros</button>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table id="accounting-table">
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Mesa</th>
+                        <th>Total</th>
+                        <th>Método de Pago</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="accounting-body"></tbody>
+            </table>
+        </div>
+        
+        <div id="summary">
+            <div class="summary-item">
+                <h3>Total Ventas</h3>
+                <p style="font-size: 1.5em; font-weight: bold;">$<span id="total-sales">0</span></p>
+            </div>
+            <div class="summary-item">
+                <h3>Número de Pedidos</h3>
+                <p style="font-size: 1.5em; font-weight: bold;"><span id="num-orders">0</span></p>
+            </div>
+            <div class="summary-item">
+                <h3>Promedio por Cliente</h3>
+                <p style="font-size: 1.5em; font-weight: bold;">$<span id="avg-order">0</span></p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="settings">
+        <h2>Configuración</h2>
+        
+        <div class="settings-section">
+            <h3>Apariencia</h3>
+            <button onclick="toggleDarkMode()">🌙 Cambiar Modo Oscuro/Claro</button>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Menú del Restaurante</h3>
+            <div id="menu-items-list"></div>
+            <div class="form-group">
+                <label for="new-item-name">Nombre del Item:</label>
+                <input type="text" id="new-item-name" placeholder="Ej: Café Americano">
+            </div>
+            <div class="form-group">
+                <label for="new-item-price">Precio:</label>
+                <input type="number" id="new-item-price" placeholder="Ej: 2.50" step="0.01" min="0">
+            </div>
+            <button onclick="addMenuItem()">➕ Agregar al Menú</button>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Seguridad</h3>
+            <div class="form-group">
+                <label for="admin-pass">Contraseña de Administrador:</label>
+                <input type="password" id="admin-pass" placeholder="Contraseña actual: admin123">
+            </div>
+            <button onclick="login()">🔐 Iniciar Sesión</button>
+            <p id="login-status">No logueado</p>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Configuración de Mesas</h3>
+            <div class="form-group">
+                <label for="table-count">Número de Mesas:</label>
+                <input type="number" id="table-count" min="1" max="50" value="10">
+            </div>
+            <button onclick="updateTableCount()">🔄 Actualizar Mesas</button>
+        </div>
+    </section>
+
+    <script>
+        // Datos
+        let menuItems = JSON.parse(localStorage.getItem('menuItems')) || [
+            {name: 'Café', price: 2.5},
+            {name: 'Pasta', price: 10},
+            {name: 'Ensalada', price: 8},
+            {name: 'Vino', price: 15}
+        ];
+        
+        let tables = JSON.parse(localStorage.getItem('tables')) || 
+                    Array.from({length: 10}, (_, i) => ({id: i+1, status: 'free', order: []}));
+        
+        let accounting = JSON.parse(localStorage.getItem('accounting')) || [];
+        
+        // Configuración de Google API (debes reemplazar con tus credenciales)
+        const CLIENT_ID = 'TU_CLIENT_ID_AQUI';
+        const API_KEY = 'TU_API_KEY_AQUI';
+        const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+        const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+        
+        let tokenClient;
+        let gapiInited = false;
+        let gisInited = false;
+        let isLoggedIn = false;
+
+        // Inicializar Google API
+        function gapiLoaded() {
+            gapi.load('client', initializeGapiClient);
+        }
+        
+        async function initializeGapiClient() {
+            try {
+                await gapi.client.init({
+                    apiKey: API_KEY,
+                    discoveryDocs: [DISCOVERY_DOC],
+                });
+                gapiInited = true;
+                maybeEnableButtons();
+            } catch (error) {
+                console.error('Error inicializando Google API:', error);
+                showNotification('Error al inicializar Google API', 'error');
+            }
+        }
+        
+        function gisLoaded() {
+            try {
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: SCOPES,
+                    callback: (response) => {
+                        if (response.error) {
+                            console.error('Error de autenticación:', response);
+                            showNotification('Error de autenticación con Google', 'error');
+                            return;
+                        }
+                        // Token obtenido correctamente
+                        document.getElementById('drive-btn').disabled = false;
+                    },
+                });
+                gisInited = true;
+                maybeEnableButtons();
+            } catch (error) {
+                console.error('Error inicializando Google Identity Services:', error);
+                showNotification('Error al inicializar Google Identity Services', 'error');
+            }
+        }
+        
+        function maybeEnableButtons() {
+            if (gapiInited && gisInited) {
+                document.getElementById('drive-btn').disabled = false;
+            }
+        }
+
+        // Navegación
+        document.querySelectorAll('nav a').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                showSection(e.target.getAttribute('href').substring(1));
+            });
+        });
+        
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            if (id === 'tables') renderTables();
+            if (id === 'accounting') renderAccounting();
+            if (id === 'settings') renderSettings();
+        }
+
+        // Mesas
+        function renderTables() {
+            const grid = document.getElementById('tables-grid');
+            grid.innerHTML = '';
+            
+            tables.forEach(t => {
+                const div = document.createElement('div');
+                div.classList.add('table', t.status);
+                div.innerHTML = `
+                    <div>Mesa ${t.id}</div>
+                    <div class="table-status">${getStatusText(t.status)}</div>
+                    ${t.order.length > 0 ? `<div class="table-status">${t.order.length} items</div>` : ''}
+                `;
+                div.onclick = () => openModal(t.id);
+                grid.appendChild(div);
+            });
+            
+            // Guardar estado actual de las mesas
+            localStorage.setItem('tables', JSON.stringify(tables));
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'free': 'Libre',
+                'in-progress': 'En Progreso',
+                'pending-pay': 'Pendiente Pago'
+            };
+            return statusMap[status] || status;
+        }
+        
+        function openModal(tableId) {
+            const table = tables.find(t => t.id === tableId);
+            document.getElementById('modal-table-id').textContent = tableId;
+            renderOrderItems(table.order);
+            document.getElementById('modal-overlay').classList.add('active');
+            calculateTotal();
+        }
+        
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+        
+        function addItemRow(item = {item: menuItems[0]?.name || '', qty: 1}) {
+            if (menuItems.length === 0) {
+                showNotification('Primero agrega items al menú en Configuración', 'warning');
+                return;
+            }
+            
+            const row = document.createElement('div');
+            row.classList.add('item-row');
+            
+            const select = document.createElement('select');
+            menuItems.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.name;
+                opt.textContent = `${m.name} - $${m.price.toFixed(2)}`;
+                if (m.name === item.item) opt.selected = true;
+                select.appendChild(opt);
+            });
+            select.onchange = () => calculateSubtotal(row);
+            
+            const qty = document.createElement('input');
+            qty.type = 'number';
+            qty.value = item.qty;
+            qty.min = 1;
+            qty.oninput = () => calculateSubtotal(row);
+            
+            const subtotal = document.createElement('span');
+            subtotal.textContent = '0';
+            subtotal.style.minWidth = '60px';
+            subtotal.style.textAlign = 'right';
+            
+            const remove = document.createElement('button');
+            remove.textContent = 'X';
+            remove.onclick = () => { 
+                row.remove(); 
+                calculateTotal(); 
+                // Si no quedan items, agregar uno vacío
+                if (document.querySelectorAll('.item-row').length === 0) {
+                    addItemRow();
+                }
+            };
+            
+            row.append(select, 'Cantidad:', qty, 'Subtotal: $', subtotal, remove);
+            document.getElementById('order-items').appendChild(row);
+            calculateSubtotal(row);
+        }
+        
+        function renderOrderItems(order) {
+            const itemsDiv = document.getElementById('order-items');
+            itemsDiv.innerHTML = '';
+            
+            if (order.length === 0) {
+                addItemRow();
+            } else {
+                order.forEach(addItemRow);
+            }
+        }
+        
+        function calculateSubtotal(row) {
+            const select = row.querySelector('select');
+            const qty = row.querySelector('input');
+            const sub = row.querySelector('span');
+            
+            const selectedItem = menuItems.find(m => m.name === select.value);
+            if (!selectedItem) {
+                sub.textContent = '0.00';
+                return;
+            }
+            
+            const price = selectedItem.price;
+            sub.textContent = (price * qty.value).toFixed(2);
+            calculateTotal();
+        }
+        
+        function calculateTotal() {
+            let total = 0;
+            document.querySelectorAll('.item-row').forEach(row => {
+                total += parseFloat(row.querySelector('span').textContent) || 0;
+            });
+            document.getElementById('order-total').textContent = total.toFixed(2);
+        }
+        
+        function getOrderFromModal() {
+            return Array.from(document.querySelectorAll('.item-row')).map(row => {
+                return {
+                    item: row.querySelector('select').value,
+                    qty: parseInt(row.querySelector('input').value) || 1
+                };
+            });
+        }
+        
+        function saveOrder() {
+            const tableId = parseInt(document.getElementById('modal-table-id').textContent);
+            const table = tables.find(t => t.id === tableId);
+            table.order = getOrderFromModal();
+            table.status = table.order.length > 0 ? 'in-progress' : 'free';
+            
+            localStorage.setItem('tables', JSON.stringify(tables));
+            closeModal();
+            renderTables();
+            showNotification('Pedido guardado correctamente', 'success');
+        }
+        
+        function markPaid() {
+            const tableId = parseInt(document.getElementById('modal-table-id').textContent);
+            const table = tables.find(t => t.id === tableId);
+            const total = parseFloat(document.getElementById('order-total').textContent);
+            const method = document.getElementById('payment-method').value;
+            
+            if (total <= 0) {
+                showNotification('El pedido debe tener un total mayor a 0', 'warning');
+                return;
+            }
+            
+            if (table.order.length === 0) {
+                showNotification('No hay items en el pedido', 'warning');
+                return;
+            }
+            
+            accounting.push({
+                date: new Date().toLocaleString(),
+                table: tableId,
+                total,
+                method
+            });
+            
+            localStorage.setItem('accounting', JSON.stringify(accounting));
+            table.order = [];
+            table.status = 'free';
+            
+            localStorage.setItem('tables', JSON.stringify(tables));
+            closeModal();
+            renderTables();
+            
+            if (document.getElementById('accounting').classList.contains('active')) {
+                renderAccounting();
+            }
+            
+            showNotification(`Pedido de $${total.toFixed(2)} marcado como pagado`, 'success');
+        }
+        
+        function deleteOrder() {
+            if (!confirm('¿Estás seguro de que quieres eliminar este pedido?')) {
+                return;
+            }
+            
+            const tableId = parseInt(document.getElementById('modal-table-id').textContent);
+            const table = tables.find(t => t.id === tableId);
+            table.order = [];
+            table.status = 'free';
+            
+            localStorage.setItem('tables', JSON.stringify(tables));
+            closeModal();
+            renderTables();
+            showNotification('Pedido eliminado', 'success');
+        }
+
+        // Contabilidad
+        function renderAccounting() {
+            const tbody = document.getElementById('accounting-body');
+            tbody.innerHTML = '';
+            
+            if (accounting.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No hay registros de ventas</td></tr>';
+            } else {
+                accounting.forEach((entry, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${entry.date}</td>
+                        <td>${entry.table}</td>
+                        <td>$${entry.total.toFixed(2)}</td>
+                        <td>${entry.method}</td>
+                        <td>
+                            <button onclick="deleteAccountingEntry(${index})" style="padding: 5px 10px; background: var(--danger);">Eliminar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+            
+            updateAccountingSummary();
+        }
+        
+        function updateAccountingSummary() {
+            const totalSales = accounting.reduce((sum, e) => sum + e.total, 0);
+            const numOrders = accounting.length;
+            const avg = numOrders > 0 ? (totalSales / numOrders).toFixed(2) : 0;
+            
+            document.getElementById('total-sales').textContent = totalSales.toFixed(2);
+            document.getElementById('num-orders').textContent = numOrders;
+            document.getElementById('avg-order').textContent = avg;
+        }
+        
+        function deleteAccountingEntry(index) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este registro?')) {
+                return;
+            }
+            
+            accounting.splice(index, 1);
+            localStorage.setItem('accounting', JSON.stringify(accounting));
+            renderAccounting();
+            showNotification('Registro eliminado', 'success');
+        }
+        
+        function clearAccounting() {
+            if (!confirm('¿Estás seguro de que quieres eliminar todos los registros de contabilidad? Esta acción no se puede deshacer.')) {
+                return;
+            }
+            
+            accounting = [];
+            localStorage.setItem('accounting', JSON.stringify(accounting));
+            renderAccounting();
+            showNotification('Todos los registros han sido eliminados', 'success');
+        }
+
+        // Exportar Excel
+        function exportToExcel() {
+            if (accounting.length === 0) {
+                showNotification('No hay datos para exportar', 'warning');
+                return;
+            }
+            
+            try {
+                const wb = XLSX.utils.book_new();
+                const ws_data = [["Fecha y Hora", "Mesa", "Total", "Método de Pago"]];
+                accounting.forEach(e => ws_data.push([e.date, e.table, e.total, e.method]));
+                const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                XLSX.utils.book_append_sheet(wb, ws, "Contabilidad");
+                XLSX.writeFile(wb, `contabilidad_${new Date().toISOString().split('T')[0]}.xlsx`);
+                showNotification('Archivo Excel descargado correctamente', 'success');
+            } catch (error) {
+                console.error('Error exportando a Excel:', error);
+                showNotification('Error al exportar a Excel', 'error');
+            }
+        }
+
+        // Google Drive
+        async function saveToDrive() {
+            if (accounting.length === 0) {
+                showNotification('No hay datos para guardar', 'warning');
+                return;
+            }
+            
+            if (!gapiInited || !gisInited) {
+                showNotification('Google API no inicializada correctamente', 'error');
+                return;
+            }
+            
+            try {
+                tokenClient.callback = async (resp) => {
+                    if (resp.error) {
+                        console.error('Error de token:', resp);
+                        showNotification('Error de autenticación con Google', 'error');
+                        return;
+                    }
+                    
+                    try {
+                        const wb = XLSX.utils.book_new();
+                        const ws_data = [["Fecha y Hora", "Mesa", "Total", "Método de Pago"]];
+                        accounting.forEach(e => ws_data.push([e.date, e.table, e.total, e.method]));
+                        const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                        XLSX.utils.book_append_sheet(wb, ws, "Contabilidad");
+                        const xlsx = XLSX.write(wb, {type: 'array', bookType: 'xlsx'});
+                        
+                        const fileMetadata = {
+                            name: `contabilidad_${new Date().toISOString().split('T')[0]}.xlsx`,
+                            mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        };
+                        
+                        const media = {
+                            mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                            body: new Blob([xlsx])
+                        };
+                        
+                        const file = await gapi.client.drive.files.create({
+                            resource: fileMetadata,
+                            media: media,
+                            fields: 'id, name, webViewLink'
+                        });
+                        
+                        showNotification(`Archivo guardado en Drive: ${file.result.name}`, 'success');
+                    } catch (err) {
+                        console.error('Error subiendo a Drive:', err);
+                        showNotification('Error al subir a Google Drive: ' + err.message, 'error');
+                    }
+                };
+                
+                if (gapi.client.getToken() === null) {
+                    tokenClient.requestAccessToken({prompt: 'consent'});
+                } else {
+                    tokenClient.requestAccessToken({prompt: ''});
+                }
+            } catch (error) {
+                console.error('Error en saveToDrive:', error);
+                showNotification('Error inesperado al guardar en Drive', 'error');
+            }
+        }
+
+        // Configuración
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+            showNotification(`Modo ${document.body.classList.contains('dark') ? 'oscuro' : 'claro'} activado`, 'success');
+        }
+        
+        function login() {
+            const pass = document.getElementById('admin-pass').value;
+            // En un caso real, esto debería ser más seguro
+            if (pass === 'admin123') {
+                isLoggedIn = true;
+                document.getElementById('login-status').textContent = 'Logueado como Admin';
+                document.getElementById('login-status').style.color = 'var(--success)';
+                showNotification('Sesión iniciada como administrador', 'success');
+            } else {
+                document.getElementById('login-status').textContent = 'Contraseña incorrecta';
+                document.getElementById('login-status').style.color = 'var(--danger)';
+                showNotification('Contraseña incorrecta', 'error');
+            }
+        }
+        
+        function renderSettings() {
+            renderMenuItems();
+            document.getElementById('table-count').value = tables.length;
+            
+            // Cargar preferencia de modo oscuro
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+            }
+        }
+        
+        function renderMenuItems() {
+            const list = document.getElementById('menu-items-list');
+            list.innerHTML = '';
+            
+            if (menuItems.length === 0) {
+                list.innerHTML = '<p>No hay items en el menú. Agrega algunos abajo.</p>';
+                return;
+            }
+            
+            menuItems.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.style.alignItems = 'center';
+                div.style.padding = '10px';
+                div.style.borderBottom = '1px solid #ddd';
+                
+                div.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong> - $${item.price.toFixed(2)}
+                    </div>
+                    <button onclick="removeMenuItem(${index})" style="background: var(--danger); padding: 5px 10px;">Eliminar</button>
+                `;
+                
+                list.appendChild(div);
+            });
+        }
+        
+        function addMenuItem() {
+            const name = document.getElementById('new-item-name').value.trim();
+            const price = parseFloat(document.getElementById('new-item-price').value);
+            
+            if (!name) {
+                showNotification('El nombre del item no puede estar vacío', 'warning');
+                return;
+            }
+            
+            if (isNaN(price) || price <= 0) {
+                showNotification('El precio debe ser un número mayor a 0', 'warning');
+                return;
+            }
+            
+            // Verificar si ya existe
+            if (menuItems.some(item => item.name.toLowerCase() === name.toLowerCase())) {
+                showNotification('Ya existe un item con ese nombre', 'warning');
+                return;
+            }
+            
+            menuItems.push({name, price});
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            
+            document.getElementById('new-item-name').value = '';
+            document.getElementById('new-item-price').value = '';
+            
+            renderMenuItems();
+            showNotification(`"${name}" agregado al menú por $${price.toFixed(2)}`, 'success');
+        }
+        
+        function removeMenuItem(index) {
+            if (!confirm(`¿Estás seguro de que quieres eliminar "${menuItems[index].name}" del menú?`)) {
+                return;
+            }
+            
+            const removed = menuItems.splice(index, 1)[0];
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            renderMenuItems();
+            showNotification(`"${removed.name}" eliminado del menú`, 'success');
+        }
+        
+        function updateTableCount() {
+            const newCount = parseInt(document.getElementById('table-count').value);
+            
+            if (isNaN(newCount) || newCount < 1 || newCount > 50) {
+                showNotification('El número de mesas debe estar entre 1 y 50', 'warning');
+                return;
+            }
+            
+            const currentCount = tables.length;
+            
+            if (newCount > currentCount) {
+                // Agregar mesas
+                for (let i = currentCount + 1; i <= newCount; i++) {
+                    tables.push({id: i, status: 'free', order: []});
+                }
+            } else if (newCount < currentCount) {
+                // Eliminar mesas (solo si están libres)
+                const tablesInUse = tables.filter(t => t.status !== 'free').length;
+                if (tablesInUse > newCount) {
+                    showNotification(`No puedes reducir a ${newCount} mesas porque hay ${tablesInUse} en uso`, 'error');
+                    return;
+                }
+                
+                tables = tables.slice(0, newCount);
+            }
+            
+            localStorage.setItem('tables', JSON.stringify(tables));
+            renderTables();
+            showNotification(`Número de mesas actualizado a ${newCount}`, 'success');
+        }
+        
+        // Utilidades
+        function showNotification(message, type = 'success') {
+            // Eliminar notificaciones existentes
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Eliminar después de la animación
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // Inicializar
+        function init() {
+            renderTables();
+            renderAccounting();
+            renderSettings();
+            
+            // Cargar Google APIs
+            if (!document.querySelector('script[src="https://apis.google.com/js/api.js"]')) {
+                const gapiScript = document.createElement('script');
+                gapiScript.src = 'https://apis.google.com/js/api.js';
+                gapiScript.onload = gapiLoaded;
+                document.body.appendChild(gapiScript);
+            }
+            
+            if (!document.querySelector('script[src="https://accounts.google.com/gsi/client"]')) {
+                const gisScript = document.createElement('script');
+                gisScript.src = 'https://accounts.google.com/gsi/client';
+                gisScript.onload = gisLoaded;
+                document.body.appendChild(gisScript);
+            }
+            
+            // Deshabilitar botón de Drive hasta que esté listo
+            document.getElementById('drive-btn').disabled = true;
+        }
+        
+        // Iniciar cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
