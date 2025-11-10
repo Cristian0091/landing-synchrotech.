@@ -1,0 +1,1074 @@
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Línea de tiempo de la evolución de las motherboards, procesadores, memorias RAM y discos duros</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 20px;
+background-color: #f4f4f4;
+position: relative;
+min-height: 100vh;
+}
+h1 {
+text-align: center;
+color: #333;
+margin-bottom: 30px;
+}
+h2 {
+text-align: center;
+color: #007bff;
+margin-top: 50px;
+margin-bottom: 20px;
+font-size: 1.8em;
+}
+.timeline-table {
+width: 100%;
+border-collapse: collapse;
+margin: 20px 0;
+background-color: white;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.timeline-table th, .timeline-table td {
+padding: 15px;
+border: 1px solid #ddd;
+text-align: left;
+vertical-align: top;
+}
+.timeline-table th {
+background-color: #007bff;
+color: white;
+}
+.year {
+width: 8%;
+font-weight: bold;
+color: #007bff;
+}
+.type {
+width: 12%;
+font-weight: bold;
+color: #28a745;
+}
+.peripheral {
+width: 15%;
+font-weight: bold;
+color: #dc3545;
+}
+.image-container {
+width: 20%;
+}
+.large-image {
+width: 100%;
+height: auto;
+border-radius: 5px;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.fullscreen-btn {
+display: block;
+margin-top: 10px;
+padding: 10px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+text-align: center;
+font-size: 14px;
+}
+.fullscreen-btn:hover {
+background-color: #0056b3;
+}
+.description {
+width: 45%;
+}
+/* Modal styles */
+.modal {
+display: none;
+position: fixed;
+z-index: 1000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0, 0, 0, 0.9);
+justify-content: center;
+align-items: center;
+}
+.modal-content {
+max-width: 90%;
+max-height: 90%;
+}
+.close {
+position: absolute;
+top: 20px;
+right: 35px;
+color: white;
+font-size: 40px;
+font-weight: bold;
+cursor: pointer;
+}
+.close:hover {
+color: #bbb;
+}
+/* Cinta transportadora de marca de agua */
+.watermark-ticker {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background-color: rgba(0, 0, 0, 0.7);
+overflow: hidden;
+z-index: 998;
+padding: 8px 0;
+}
+.ticker-content {
+display: inline-block;
+white-space: nowrap;
+font-size: 16px;
+font-weight: bold;
+color: rgba(255, 255, 255, 0.8);
+animation: ticker 25s linear infinite;
+}
+.ticker-content span {
+margin: 0 60px;
+}
+@keyframes ticker {
+0% {
+transform: translateX(100%);
+}
+100% {
+transform: translateX(-100%);
+}
+}
+/* Ajuste para que el contenido no sea tapado por la cinta */
+.content-wrapper {
+padding-bottom: 60px;
+}
+</style>
+</head>
+<body>
+<div class="content-wrapper">
+<h1>🕰️ Línea de tiempo completa de la evolución de las motherboards (placas base)</h1>
+<table class="timeline-table">
+<thead>
+<tr>
+<th>Año</th>
+<th>Nombre (Ejemplos)</th>
+<th>Imagen</th>
+<th>Desarrollo Clave y Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="year">1971</td>
+<td>Intel 4004 Board (prototipos)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Intel_4004.jpg" alt="Intel 4004 Board 1971" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1971')">Ver en pantalla completa</button>
+</td>
+<td class="description">Microprocesador Intel 4004: Primer microprocesador, base para computación modular. Sistemas tempranos usaban tableros personalizados sin layout estandarizado.</td>
+</tr>
+<tr>
+<td class="year">1975</td>
+<td>Altair 8800 (IMSAI 8080); Apple I Board</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Altair_8800_Computer.jpg" alt="Altair 8800 1975" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1975')">Ver en pantalla completa</button>
+</td>
+<td class="description">Altair 8800 y Apple I: El Altair usó bus S-100 como precursor de la placa base (backplane con slots de expansión). Apple I incluyó una placa base con teclado y pantalla integrados.</td>
+</tr>
+<tr>
+<td class="year">1981</td>
+<td>IBM 5150 Planar</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/57/IBM_PC_Motherboard_%281981%29.jpg" alt="IBM PC 5150 Planar 1981" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1981')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera placa base "Planar" en IBM PC: Introducida en el IBM PC 5150 con Intel 8088 (4.77 MHz), bus ISA de 16 bits, BIOS y sockets para CPU/RAM (hasta 256 KB). No integraba almacenamiento o gráficos; dependía de tarjetas de expansión.</td>
+</tr>
+<tr>
+<td class="year">1983</td>
+<td>IBM PC/XT Motherboard</td>
+<td class="image-container">
+<img src="https://minuszerodegrees.net/motherboard/ibm_pc_xt/ibm_pc_xt_motherboard.jpg" alt="IBM PC/XT 1983" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1983')">Ver en pantalla completa</button>
+</td>
+<td class="description">IBM PC/XT: Actualización con controlador de disco duro integrado y 8 slots ISA. Diseño más modular para fabricantes terceros.</td>
+</tr>
+<tr>
+<td class="year">1984</td>
+<td>IBM PC/AT (Full AT)</td>
+<td class="image-container">
+<img src="https://minuszerodegrees.net/misc/5170_motherboard_type_1.jpg" alt="IBM PC/AT 1984" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1984')">Ver en pantalla completa</button>
+</td>
+<td class="description">IBM PC/AT y form factor AT (Full AT): Procesador Intel 80286 (6-8 MHz), bus AT de 16 bits (estandarizado como ISA). Controladores de floppy y HDD integrados. Tamaño: 12 x 13.8 pulgadas. Estándar dominante por años.</td>
+</tr>
+<tr>
+<td class="year">1985</td>
+<td>Baby AT (ej. AMI Baby AT)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Baby_AT_motherboard.jpg" alt="Baby AT 1985" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1985')">Ver en pantalla completa</button>
+</td>
+<td class="description">Form factor Baby AT: Versión reducida (8.5 x 13 pulgadas) del AT. Dominó hasta los 90, pero con limitaciones como obstrucción de slots de expansión por CPU/RAM.</td>
+</tr>
+<tr>
+<td class="year">1987</td>
+<td>Western Digital LPX; Compaq EISA</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/LPX_motherboard.jpg" alt="LPX y EISA 1987" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1987')">Ver en pantalla completa</button>
+</td>
+<td class="description">Form factor LPX y bus EISA: LPX (Low Profile eXtension) por Western Digital para perfiles bajos. EISA (32 bits, compatible con ISA) como alternativa al MCA de IBM, usado en PCs de alto rendimiento.</td>
+</tr>
+<tr>
+<td class="year">1988</td>
+<td>ASUS 386SX; Intel 80386 Boards</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Intel_80386_motherboard.jpg" alt="80386 Boards 1988" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1988')">Ver en pantalla completa</button>
+</td>
+<td class="description">Soporte para procesadores 32 bits: Placas para Intel 80386/80486 (12-50 MHz), sockets para upgrades sin soldadura. Memoria SIMM (1-16 MB).</td>
+</tr>
+<tr>
+<td class="year">1990s</td>
+<td>Intel 430FX (Triton); VIA Apollo</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_430FX_chipset.jpg" alt="Chipsets 1990s" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1990s')">Ver en pantalla completa</button>
+</td>
+<td class="description">Introducción de chipsets: Intel, VIA y SiS lanzan chipsets (ej. Intel 430) que integran controladores de memoria, bus e I/O, compactando diseños.</td>
+</tr>
+<tr>
+<td class="year">1995</td>
+<td>Intel ATX (Seattle); ASUS P/I-P55T2P4</td>
+<td class="image-container">
+<img src="https://thg.ru/wp-content/uploads/2024/04/9ef0be05315a6dbf29c698abcdde5f56.jpg" alt="ATX 1995" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1995')">Ver en pantalla completa</button>
+</td>
+<td class="description">Form factor ATX: Por Intel (12 x 9.6 pulgadas). Conectores de poder estandarizados (20-pin), panel I/O trasero (PS/2, serial, USB), mejor flujo de aire. Estándar actual para consumidores.</td>
+</tr>
+<tr>
+<td class="year">1996</td>
+<td>ASUS P55TVP4 (USB integrado)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/ASUS_P55TVP4.jpg" alt="USB integrado 1996" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1996')">Ver en pantalla completa</button>
+</td>
+<td class="description">Puertos USB 1.0 integrados: Simplifican conexiones de periféricos (ratones, teclados).</td>
+</tr>
+<tr>
+<td class="year">1997</td>
+<td>ASUS AGP Boards; microATX (MSI MS-5169); NLX (Dell OptiPlex)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/PCI-E_%26_PCI_slots_on_DFI_LanParty_nF4_SLI-DR_20050531.jpg" alt="AGP y microATX 1997" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1997')">Ver en pantalla completa</button>
+</td>
+<td class="description">AGP, microATX y NLX: AGP para tarjetas gráficas (mayor ancho de banda que ISA). microATX (versión compacta de ATX). NLX para perfiles bajos (por Intel, DEC, IBM).</td>
+</tr>
+<tr>
+<td class="year">1998</td>
+<td>ASUS P2B (Slot 1); EVGA WTX</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/ASUS_P2B.jpg" alt="Slot 1 y WTX 1998" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1998')">Ver en pantalla completa</button>
+</td>
+<td class="description">Form factor WTX y Slot 1 para Pentium II: WTX para workstations. Slot 1 (cartucho CPU), FSB 66-133 MHz, SDRAM hasta 512 MB.</td>
+</tr>
+<tr>
+<td class="year">1999</td>
+<td>FlexATX (ej. Intel CA810E)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/FlexATX_motherboard.jpg" alt="FlexATX 1999" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-1999')">Ver en pantalla completa</button>
+</td>
+<td class="description">Form factor FlexATX: Versión flexible y compacta de ATX para sistemas delgados.</td>
+</tr>
+<tr>
+<td class="year">2000</td>
+<td>ASUS A7V (DDR); ETX Modules (Kontron)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/ASUS_A7V.jpg" alt="DDR y ETX 2000" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2000')">Ver en pantalla completa</button>
+</td>
+<td class="description">DDR SDRAM y ETX; integración de audio/LAN: DDR para mayor ancho de banda. ETX para sistemas embebidos. Audio, red y gráficos integrados comunes en PCs consumidores.</td>
+</tr>
+<tr>
+<td class="year">2001</td>
+<td>VIA EPIA (Mini-ITX); UTX Boards</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/VIA_EPIA.jpg" alt="Mini-ITX 2001" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2001')">Ver en pantalla completa</button>
+</td>
+<td class="description">Mini-ITX y UTX: Mini-ITX por VIA para builds compactos. UTX por TQ-Components para industriales.</td>
+</tr>
+<tr>
+<td class="year">2003</td>
+<td>ASUS A7N8X (PCIe); Nano-ITX (VIA)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/PCI-E_%26_PCI_slots_on_DFI_LanParty_nF4_SLI-DR_20050531.jpg" alt="PCIe 2003" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2003')">Ver en pantalla completa</button>
+</td>
+<td class="description">PCI Express y Nano-ITX: PCIe reemplaza PCI/AGP (escalable x1-x16). Nano-ITX para dispositivos ultra-compactos.</td>
+</tr>
+<tr>
+<td class="year">2004</td>
+<td>ASUS A8N-SLI (SLI); Intel BTX; AMD Socket 939 Boards</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/ASUS_A8N-SLI.jpg" alt="SLI y BTX 2004" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2004')">Ver en pantalla completa</button>
+</td>
+<td class="description">SLI, BTX y Athlon 64; Mobile-ITX: SLI de NVIDIA para GPUs duales. BTX (y micro/PicoBTX) por Intel para mejor enfriamiento. Athlon 64 introduce 64 bits (Socket 754/939). Mobile-ITX para portátiles.</td>
+</tr>
+<tr>
+<td class="year">2005</td>
+<td>PICMG COM Express; XTX (Axiomtek)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/COM_Express_module.jpg" alt="COM Express 2005" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2005')">Ver en pantalla completa</button>
+</td>
+<td class="description">COM Express y XTX: COM Express por PICMG para módulos embebidos. XTX para workstations de alto rendimiento.</td>
+</tr>
+<tr>
+<td class="year">2006</td>
+<td>ASUS Striker Extreme (dual GPU); Supermicro SWTX</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/ASUS_Striker_Extreme.jpg" alt="Dual GPU 2006" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2006')">Ver en pantalla completa</button>
+</td>
+<td class="description">Dual GPUs en microATX; SWTX; Core Duo: Soporte para dos tarjetas de video en microATX. SWTX por Supermicro para servidores. Core Duo trae multi-núcleo (LGA 775).</td>
+</tr>
+<tr>
+<td class="year">2007</td>
+<td>VIA Pico-ITX; AMD DTX (ASUS M2N-MX)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Pico-ITX.jpg" alt="Pico-ITX 2007" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2007')">Ver en pantalla completa</button>
+</td>
+<td class="description">Pico-ITX, DTX y Mini-DTX: Pico-ITX para ultra-portátiles. DTX/Mini-DTX por AMD para compactos.</td>
+</tr>
+<tr>
+<td class="year">2008</td>
+<td>Gigabyte GA-EX58-UD5 (SATA)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Gigabyte_GA-EX58-UD5.jpg" alt="SATA 2008" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2008')">Ver en pantalla completa</button>
+</td>
+<td class="description">SATA reemplaza IDE: Transferencias 1.5-6 Gbps, cables delgados. Soporte inicial para SSDs.</td>
+</tr>
+<tr>
+<td class="year">2010</td>
+<td>EVGA SR-2 HPTX</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/EVGA_SR-2.jpg" alt="HPTX 2010" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2010')">Ver en pantalla completa</button>
+</td>
+<td class="description">Form factor HPTX: Por EVGA para supercomputadoras y builds extremos.</td>
+</tr>
+<tr>
+<td class="year">2011</td>
+<td>ASUS P8Z68-V PRO (UEFI)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/ASUS_P8Z68-V_PRO.jpg" alt="UEFI 2011" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2011')">Ver en pantalla completa</button>
+</td>
+<td class="description">UEFI reemplaza BIOS: Arranque más rápido, soporte para discos >2 TB, interfaz gráfica.</td>
+</tr>
+<tr>
+<td class="year">2013</td>
+<td>ASUS Z87-Deluxe (M.2 NVMe)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/ASUS_Z87-Deluxe.jpg" alt="M.2 NVMe 2013" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2013')">Ver en pantalla completa</button>
+</td>
+<td class="description">NVMe y conectores M.2: SSDs ultra-rápidos (hasta 32 Gbps con PCIe 3.0 x4). Slots M.2 para almacenamiento y Wi-Fi.</td>
+</tr>
+<tr>
+<td class="year">2015</td>
+<td>MSI Z170A Gaming Pro (DDR4)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/MSI_Z170A_Gaming_Pro.jpg" alt="DDR4 2015" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2015')">Ver en pantalla completa</button>
+</td>
+<td class="description">DDR4 y USB 3.1 Gen 2: DDR4 (2133-3200 MHz, bajo consumo). USB-C a 10 Gbps.</td>
+</tr>
+<tr>
+<td class="year">2017</td>
+<td>ASUS ROG Crosshair VI Hero (AM4); Gigabyte Z390 Aorus</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/ASUS_ROG_Crosshair_VI_Hero.jpg" alt="Ryzen 2017" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2017')">Ver en pantalla completa</button>
+</td>
+<td class="description">Ryzen e Intel Core i7/i9 (6-16 núcleos): Sockets AM4/LGA 1151/2066. Chipsets como B450/X570/Z390. RGB, overclocking y VRMs robustos para gaming.</td>
+</tr>
+<tr>
+<td class="year">2020</td>
+<td>MSI MEG X570 Godlike (PCIe 4.0)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/MSI_MEG_X570_Godlike.jpg" alt="PCIe 4.0 2020" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2020')">Ver en pantalla completa</button>
+</td>
+<td class="description">PCIe 4.0: Dobla ancho de banda (16 GT/s por lane) para GPUs y SSDs NVMe.</td>
+</tr>
+<tr>
+<td class="year">2022</td>
+<td>ASUS ROG Strix Z690-E (DDR5); Gigabyte X670 Aorus</td>
+<td class="image-container">
+<img src="https://m.media-amazon.com/images/I/81P4+9k1QmL._AC_SL1500_.jpg" alt="DDR5 y PCIe 5.0 2022" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2022')">Ver en pantalla completa</button>
+</td>
+<td class="description">">PCIe 5.0 y DDR5: PCIe 5.0 (32 GT/s). DDR5 (4800-7200 MHz) con Alder Lake (Intel) y Ryzen 7000 (AMD). Soporte para arquitecturas híbridas (P-cores/E-cores). Chipsets Z690/X670.</td>
+</tr>
+<tr>
+<td class="year">2025</td>
+<td>ASUS ROG Maximus Z890 Hero; MSI MEG X870 Godlike; Gigabyte Aorus X870 Extreme</td>
+<td class="image-container">
+<img src="https://m.media-amazon.com/images/I/81P4+9k1QmL._AC_SL1500_.jpg" alt="Motherboard 2025" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-2025')">Ver en pantalla completa</button>
+</td>
+<td class="description">Wi-Fi 7, PCIe 5.0 SSDs, AI y VRMs avanzados: Soporte para LAN 2.5/10 GbE, Wi-Fi 7. VRMs de 20+ fases para CPUs de 200-300W (Ryzen 9000, Core Ultra). AI para overclocking (ej. ASUS AI Suite). Form factors compactos como Mini-ITX con enfriamiento integrado. Enfoque en sostenibilidad y eficiencia energética. Chipsets Z790/Z890/X870.</td>
+</tr>
+</tbody>
+</table>
+<h2>🖥️ Línea de tiempo de las generaciones de procesadores Intel y AMD</h2>
+<table class="timeline-table">
+<thead>
+<tr>
+<th>Año</th>
+<th>Procesador</th>
+<th>Imagen</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="year">1971</td>
+<td>Intel 4004</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Intel_C4004.jpg/1200px-Intel_C4004.jpg" alt="Intel 4004 1971" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel1971')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer micro  microprocesador comercial del mundo, de 4 bits, usado en calculadoras. Marca el inicio de la era de los procesadores integrados.</td>
+</tr>
+<tr>
+<td class="year">1974</td>
+<td>Intel 8080</td>
+<td class="image-container">
+<img src="https://www.x86-guide.net/Photos/Collection/Grandes/93/Intel_C8080_top.jpg" alt="Intel 8080 1974" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel1974')">Ver en pantalla completa</button>
+</td>
+<td class="description">Procesador de 8 bits, clave para el Altair 8800, el primer PC personal. Mejora en rendimiento y eficiencia.</td>
+</tr>
+<tr>
+<td class="year">1978</td>
+<td>Intel 8086</td>
+<td class="image-container">
+<img src="https://www.reormadrid.com/wp-content/uploads/2024/10/intel-8086.jpg" alt="Intel 8086 1978" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel1978')">Ver en pantalla completa</button>
+</td>
+<td class="description">Inicio de la arquitectura x86 de 16 bits, base de la mayoría de PCs modernos. Usado en IBM PC XT.</td>
+</tr>
+<tr>
+<td class="year">1982</td>
+<td>Intel 80286</td>
+<td class="image-container">
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhyasHbhEn2r3V0-2ekKXelOuGOWD6361D4qT9mrH3arRCSxbPFMcQmIG3G5NuefdkoBsPRq8jM8x-ZE4ZUDY5bUWyuvHlqjBV0q8ds_VnnVAR9XubHWd5fqJM6mVosdKOVHktQXTuDxxc/s1600/02-01+Efemerides+de+Tecnologia+intel+80286.jpg" alt="Intel 80286 1982" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel1982')">Ver en pantalla completa</button>
+</td>
+<td class="description">Mejora la arquitectura x86 con modo protegido y hasta 16 MB de memoria. Usado en IBM PC AT.</td>
+</tr>
+<tr>
+<td class="year">1985</td>
+<td>Intel 80386</td>
+<td class="image-container">
+<img src="https://encyclopedia.pub/media/common/202210/mceclip3-6354fd09e393d.png" alt="Intel 80386 1985" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel1985')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer procesador x86 de 32 bits, soporta multitarea y hasta 4 GB de memoria. Revolucionario para software avanzado.</td>
+</tr>
+<tr>
+<td class="year">1989</td>
+<td>Intel 80486</td>
+<td class="image-container">
+<img src="https://www.profesionalreview.com/wp-content/uploads/2017/06/intel-i486.jpg" alt="Intel 80486 1989" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel1989')">Ver en pantalla completa</button>
+</td>
+<td class="description">Integra caché y FPU, velocidades hasta 50 MHz. Mejora significativa en rendimiento gráfico y matemático.</td>
+</tr>
+<tr>
+<td class="year">1993</td>
+<td>Intel Pentium</td>
+<td class="image-container">
+<img src="https://www.cpushack.com/wp-content/uploads/2013/03/IntelA80501-60-SX753-L320.jpg" alt="Intel Pentium 1993" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel1993')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera generación Pentium, superscalar de 32/64 bits, hasta 66 MHz. Establece el estándar para PCs multimedia.</td>
+</tr>
+<tr>
+<td class="year">2000</td>
+<td>Intel Pentium 4</td>
+<td class="image-container">
+<img src="https://i.ebayimg.com/images/g/iwsAAOSwIS9i2WwP/s-l1200.jpg" alt="Intel Pentium 4 2000" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2000')">Ver en pantalla completa</button>
+</td>
+<td class="description">Arquitectura NetBurst, frecuencias hasta 3.8 GHz. Enfocado en alto rendimiento por reloj para multimedia.</td>
+</tr>
+<tr>
+<td class="year">2006</td>
+<td>Intel Core 2 Duo</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_Core_2_Duo_E6750.jpg" alt="Intel Core 2 Duo 2006" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2006')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera generación Core, dual-core eficiente. Mejora en consumo y rendimiento multi-hilo.</td>
+</tr>
+<tr>
+<td class="year">2008</td>
+<td>Intel Core i7 (Nehalem)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Intel_Core_i7-920.jpg" alt="Intel Core i7 Nehalem 2008" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2008')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera gen Core i7, quad-core con Hyper-Threading. Introducción de QuickPath Interconnect.</td>
+</tr>
+<tr>
+<td class="year">2011</td>
+<td>Intel Core i7 Sandy Bridge</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Intel_Core_i7-2600K.jpg" alt="Intel Core i7 Sandy Bridge 2011" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2011')">Ver en pantalla completa</button>
+</td>
+<td class="description">Segunda gen Core, mejoras en gráficos integrados y AVX. Hasta 8 núcleos en desktop.</td>
+</tr>
+<tr>
+<td class="year">2017</td>
+<td>Intel Core 8th Gen Coffee Lake</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Intel_Core_i7-8700K.jpg" alt="Intel Core 8th Gen Coffee Lake 2017" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2017')">Ver en pantalla completa</button>
+</td>
+<td class="description">Octava gen Core, hasta 6 núcleos en mainstream. Mejoras en rendimiento por vatio.</td>
+</tr>
+<tr>
+<td class="year">2022</td>
+<td>Intel Core 12th Gen Alder Lake</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Intel_Core_i9-12900K.jpg" alt="Intel Core 12th Gen Alder Lake 2022" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2022')">Ver en pantalla completa</button>
+</td>
+<td class="description">Duodécima gen Core, arquitectura híbrida P+E cores, soporte DDR5 y PCIe 5.0.</td>
+</tr>
+<tr>
+<td class="year">2023</td>
+<td>Intel Core 14th Gen Raptor Lake Refresh</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Intel_Core_i9-14900K.jpg" alt="Intel Core 14th Gen Raptor Lake 2023" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2023')">Ver en pantalla completa</button>
+</td>
+<td class="description">Refrescado de Raptor Lake, hasta 24 núcleos, frecuencias más altas. Optimizado para gaming y productividad.</td>
+</tr>
+<tr>
+<td class="year">2024</td>
+<td>Intel Core Ultra (Meteor Lake)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Intel_Core_Ultra_7_165H.jpg" alt="Intel Core Ultra Meteor Lake 2024" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-intel2024')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera gen Core Ultra para laptops, con NPU para IA, gráficos Arc mejorados y eficiencia energética.</td>
+</tr>
+<tr>
+<td class="year">1996</td>
+<td>AMD K5</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/AMD_K5.jpg" alt="AMD K5 1996" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd1996')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer diseño propio de AMD, compatible con Socket 5, hasta 133 MHz. Competidor directo del Pentium.</td>
+</tr>
+<tr>
+<td class="year">1999</td>
+<td>AMD Athlon</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/AMD_Athlon_Thunderbird.jpg" alt="AMD Athlon 1999" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd1999')">Ver en pantalla completa</button>
+</td>
+<td class="description">Línea Athlon, Slot A, hasta 1 GHz. Primer procesador en superar a Intel en rendimiento.</td>
+</tr>
+<tr>
+<td class="year">2003</td>
+<td>AMD Athlon 64</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/AMD_Athlon_64_3000.jpg" alt="AMD Athlon 64 2003" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2003')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer x86-64 bits, Socket 754/939. Soporte nativo para 64 bits, gran avance en compatibilidad.</td>
+</tr>
+<tr>
+<td class="year">2009</td>
+<td>AMD Phenom II</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/AMD_Phenom_II_X4_965.jpg" alt="AMD Phenom II 2009" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2009')">Ver en pantalla completa</button>
+</td>
+<td class="description">Segunda gen Phenom, quad-core, Socket AM3. Mejoras en caché y eficiencia para multi-tarea.</td>
+</tr>
+<tr>
+<td class="year">2011</td>
+<td>AMD FX (Bulldozer)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/AMD_FX-8150.jpg" alt="AMD FX Bulldozer 2011" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2011')">Ver en pantalla completa</button>
+</td>
+<td class="description">Serie FX, hasta 8 núcleos, Socket AM3+. Enfoque en rendimiento multi-hilo para gaming.</td>
+</tr>
+<tr>
+<td class="year">2017</td>
+<td>AMD Ryzen 1000 (Zen)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/AMD_Ryzen_7_1800X.jpg" alt="AMD Ryzen 1000 Zen 2017" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2017')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera gen Ryzen, arquitectura Zen, hasta 8 núcleos, Socket AM4. Revolución en rendimiento y precio.</td>
+</tr>
+<tr>
+<td class="year">2019</td>
+<td>AMD Ryzen 3000 (Zen 2)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/AMD_Ryzen_7_3700X.jpg" alt="AMD Ryzen 3000 Zen 2 2019" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2019')">Ver en pantalla completa</button>
+</td>
+<td class="description">Tercera gen Ryzen, proceso 7nm, hasta 16 núcleos. Líder en multi-hilo y gaming.</td>
+</tr>
+<tr>
+<td class="year">2020</td>
+<td>AMD Ryzen 5000 (Zen 3)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/AMD_Ryzen_9_5950X.jpg" alt="AMD Ryzen 5000 Zen 3 2020" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2020')">Ver en pantalla completa</button>
+</td>
+<td class="description">Quinta gen Ryzen, IPC +19%, hasta 16 núcleos. Excelente en single y multi-thread.</td>
+</tr>
+<tr>
+<td class="year">2022</td>
+<td>AMD Ryzen 7000 (Zen 4)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/AMD_Ryzen_9_7950X.jpg" alt="AMD Ryzen 7000 Zen 4 2022" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2022')">Ver en pantalla completa</button>
+</td>
+<td class="description">Sexta gen Ryzen, Socket AM5, DDR5, PCIe 5.0, hasta 16 núcleos. Integración 3D V-Cache en algunos.</td>
+</tr>
+<tr>
+<td class="year">2023</td>
+<td>AMD Ryzen 8000 (Zen 4 APU)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/AMD_Ryzen_7_8700G.jpg" alt="AMD Ryzen 8000 Zen 4 2023" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2023')">Ver en pantalla completa</button>
+</td>
+<td class="description">APUs Ryzen 8000, gráficos RDNA3 integrados, IA mejorada. Para sistemas compactos sin GPU discreta.</td>
+</tr>
+<tr>
+<td class="year">2024</td>
+<td>AMD Ryzen AI 300 (Zen 5)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/AMD_Ryzen_AI_9_HX_370.jpg" alt="AMD Ryzen AI 300 Zen 5 2024" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-amd2024')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera gen Zen 5, NPU para IA con 50 TOPS, hasta 12 núcleos. Enfoque en laptops con eficiencia y rendimiento IA.</td>
+</tr>
+</tbody>
+</table>
+<h2>💾 Línea de tiempo de la evolución de las memorias RAM</h2>
+<table class="timeline-table">
+<thead>
+<tr>
+<th>Año</th>
+<th>Tipo</th>
+<th>Imagen</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="year">1946</td>
+<td>Williams-Kilburn Tube</td>
+<td class="image-container">
+<img src="https://www.reormadrid.com/wp-content/uploads/2025/02/tubo-williams-interior.jpg" alt="Williams-Kilburn Tube 1946" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1946')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primera memoria RAM práctica, usando tubos de rayos catódicos para almacenar 128 palabras de 40 bits. Volátil y sensible a campos eléctricos.</td>
+</tr>
+<tr>
+<td class="year">1951</td>
+<td>Magnetic Core Memory</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Ferrite_core_memory.jpg/250px-Ferrite_core_memory.jpg" alt="Magnetic Core Memory 1951" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1951')">Ver en pantalla completa</button>
+</td>
+<td class="description">Patente de Jay Forrester, usa núcleos magnéticos en una cuadrícula de alambres. No volátil, estándar en computadoras hasta los 70s.</td>
+</tr>
+<tr>
+<td class="year">1968</td>
+<td>SRAM (Bipolar)</td>
+<td class="image-container">
+<img src="https://i.ebayimg.com/images/g/VzwAAOSwolhj4ss2/s-l400.jpg" alt="SRAM 1968" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1968')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer chip SRAM de Intel (3101), 64 bits. Usa transistores bipolares, rápida pero cara, usada en caché.</td>
+</tr>
+<tr>
+<td class="year">1969</td>
+<td>DRAM (MOS)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Intel_1103.jpg" alt="DRAM 1969" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1969')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer chip DRAM comercial, inventado por Robert Dennard. Usa un transistor y capacitor por bit, más densa y barata.</td>
+</tr>
+<tr>
+<td class="year">1970</td>
+<td>DRAM Comercial (Intel 1103)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Intel_1103.jpg" alt="Intel 1103 DRAM 1970" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1970')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer DRAM de 1Kbit disponible comercialmente por Intel. Revolucionó la memoria de computadoras personales.</td>
+</tr>
+<tr>
+<td class="year">1983</td>
+<td>SIMM</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/SIMM.jpg" alt="SIMM 1983" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1983')">Ver en pantalla completa</button>
+</td>
+<td class="description">Single Inline Memory Module, módulos de 30 pines para FPM DRAM. Estándar para PCs de los 80s y 90s.</td>
+</tr>
+<tr>
+<td class="year">1993</td>
+<td>SDRAM</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/SDRAM_module.jpg" alt="SDRAM 1993" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1993')">Ver en pantalla completa</button>
+</td>
+<td class="description">Synchronous DRAM, sincronizada con el reloj del sistema. Introducida por Samsung, hasta 100 MHz.</td>
+</tr>
+<tr>
+<td class="year">1998</td>
+<td>DDR SDRAM</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/DDR_SDRAM.jpg" alt="DDR SDRAM 1998" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram1998')">Ver en pantalla completa</button>
+</td>
+<td class="description">Doble tasa de datos, transfiere en flancos de subida y bajada del reloj. Primera generación DDR, 64 Mbit por Samsung.</td>
+</tr>
+<tr>
+<td class="year">2003</td>
+<td>DDR2 SDRAM</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/DDR2_SDRAM.jpg" alt="DDR2 SDRAM 2003" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram2003')">Ver en pantalla completa</button>
+</td>
+<td class="description">Segunda generación DDR, voltaje 1.8V, prefetch 4-bit. Velocidades hasta 800 MHz, más eficiente.</td>
+</tr>
+<tr>
+<td class="year">2007</td>
+<td>DDR3 SDRAM</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/DDR3_SDRAM.jpg" alt="DDR3 SDRAM 2007" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram2007')">Ver en pantalla completa</button>
+</td>
+<td class="description">Tercera generación, voltaje 1.5V, prefetch 8-bit. Velocidades hasta 2133 MHz, bajo consumo para laptops.</td>
+</tr>
+<tr>
+<td class="year">2014</td>
+<td>DDR4 SDRAM</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/DDR4_SDRAM.jpg" alt="DDR4 SDRAM 2014" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram2014')">Ver en pantalla completa</button>
+</td>
+<td class="description">Cuarta generación, voltaje 1.2V, canales independientes. Velocidades hasta 3200 MHz, soporta hasta 128 GB por DIMM.</td>
+</tr>
+<tr>
+<td class="year">2020</td>
+<td>DDR5 SDRAM</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/DDR5_module.jpg" alt="DDR5 SDRAM 2020" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram2020')">Ver en pantalla completa</button>
+</td>
+<td class="description">Quinta generación, voltaje 1.1V, dos canales independientes por módulo. Velocidades hasta 8400 MHz, hasta 128 GB por DIMM, PMIC integrado.</td>
+</tr>
+<tr>
+<td class="year">2025</td>
+<td>DDR6 SDRAM (Emergente)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/DDR5_module.jpg" alt="DDR6 SDRAM 2025" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-ram2025')">Ver en pantalla completa</button>
+</td>
+<td class="description">Sexta generación en desarrollo por JEDEC, enfocado en IA y alto rendimiento. Velocidades esperadas >10,000 MHz, mayor densidad.</td>
+</tr>
+</tbody>
+</table>
+<h2>💽 Línea de tiempo de la evolución de los discos duros</h2>
+<table class="timeline-table">
+<thead>
+<tr>
+<th>Año</th>
+<th>Tipo</th>
+<th>Imagen</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="year">1956</td>
+<td>IBM 305 RAMAC</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/IBM_RAMAC.jpg" alt="IBM 305 RAMAC 1956" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1956')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro comercial, con 50 platos de 24 pulgadas, capacidad de 5 MB. Tamaño de dos refrigeradores, peso de una tonelada, usado en el sistema IBM 305 RAMAC.</td>
+</tr>
+<tr>
+<td class="year">1962</td>
+<td>IBM 1311</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/IBM_1311.jpg" alt="IBM 1311 1962" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1962')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro con medios removibles, capacidad de 2.6 MB por pack de 6 discos. Rotación a 1,500 rpm, peso de 10 libras por pack.</td>
+</tr>
+<tr>
+<td class="year">1973</td>
+<td>IBM 3340 Winchester</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/IBM_3340_Winchester.jpg" alt="IBM 3340 Winchester 1973" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1973')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro sellado con cabezales de baja masa y platos lubricados, capacidad de 35 MB por spindle. Estableció el diseño moderno de HDD.</td>
+</tr>
+<tr>
+<td class="year">1980</td>
+<td>Seagate ST-506</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Seagate_ST-506.jpg" alt="Seagate ST-506 1980" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1980')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro para microcomputadoras, formato 5.25 pulgadas, capacidad de 5 MB. Estándar para PCs tempranos como el IBM PC.</td>
+</tr>
+<tr>
+<td class="year">1983</td>
+<td>3.5-inch HDD (Rodime RO3000)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/3.5-inch_HDD.jpg" alt="3.5-inch HDD 1983" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1983')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro de 3.5 pulgadas, capacidad de 10 MB. Diseñado para computadoras personales y portátiles tempranos.</td>
+</tr>
+<tr>
+<td class="year">1988</td>
+<td>2.5-inch HDD</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/2.5-inch_HDD.jpg" alt="2.5-inch HDD 1988" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1988')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro de 2.5 pulgadas para notebooks, capacidad de 20 MB con dos platos. Avance en portabilidad.</td>
+</tr>
+<tr>
+<td class="year">1991</td>
+<td>MR Head Technology</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Magnetoresistive_head.jpg" alt="MR Head 1991" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1991')">Ver en pantalla completa</button>
+</td>
+<td class="description">Introducción de cabezales magnetorresistivos, capacidad de 1 GB en discos de 3.5 pulgadas. Mejora significativa en densidad de datos.</td>
+</tr>
+<tr>
+<td class="year">1997</td>
+<td>GMR Head Technology</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/GMR_Head.jpg" alt="GMR Head 1997" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd1997')">Ver en pantalla completa</button>
+</td>
+<td class="description">Cabezales de magnetorresistencia gigante en IBM Deskstar 16GP, capacidad de 16.8 GB. Revolución en lectura de datos de alta densidad.</td>
+</tr>
+<tr>
+<td class="year">2003</td>
+<td>SATA Interface</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/SATA_HDD.jpg" alt="SATA HDD 2003" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd2003')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro con interfaz Serial ATA (Seagate), velocidades hasta 1.5 Gb/s. Reemplazó a PATA para mayor eficiencia.</td>
+</tr>
+<tr>
+<td class="year">2005</td>
+<td>Perpendicular Magnetic Recording (PMR)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/PMR_HDD.jpg" alt="PMR HDD 2005" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd2005')">Ver en pantalla completa</button>
+</td>
+<td class="description">Grabación magnética perpendicular en Toshiba MK4007GAL, 40 GB en un plato de 1.8 pulgadas. Duplicó la densidad de datos.</td>
+</tr>
+<tr>
+<td class="year">2007</td>
+<td>1 TB HDD</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Hitachi_1TB_HDD.jpg" alt="1 TB HDD 2007" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd2007')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro de 1 TB (Hitachi Deskstar 7K1000), cuatro platos de 250 GB cada uno. Hito en capacidad de almacenamiento.</td>
+</tr>
+<tr>
+<td class="year">2013</td>
+<td>Helium-Filled HDD</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Helium_HDD.jpg" alt="Helium HDD 2013" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd2013')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primer disco duro lleno de helio (HGST Ultrastar He6), siete platos, menor fricción y mayor capacidad hasta 6 TB.</td>
+</tr>
+<tr>
+<td class="year">2020</td>
+<td>HAMR Technology</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/HAMR_HDD.jpg" alt="HAMR HDD 2020" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd2020')">Ver en pantalla completa</button>
+</td>
+<td class="description">Heat-Assisted Magnetic Recording en Seagate, capacidades hasta 16 TB+. Usa láser para mayor densidad en medios.</td>
+</tr>
+<tr>
+<td class="year">2025</td>
+<td>MAMR y Beyond (30+ TB)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/MAMR_HDD.jpg" alt="MAMR HDD 2025" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-hdd2025')">Ver en pantalla completa</button>
+</td>
+<td class="description">Microwave-Assisted Magnetic Recording y tecnologías emergentes, capacidades superiores a 30 TB. Enfoque en centros de datos y IA.</td>
+</tr>
+</tbody>
+</table>
+<h2>🖱️ Línea de tiempo de la evolución de los periféricos</h2>
+<table class="timeline-table">
+<thead>
+<tr>
+<th>Año</th>
+<th>Tipo</th>
+<th>Periférico</th>
+<th>Imagen</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="year">1947</td>
+<td class="type">Salida</td>
+<td>Monitor CRT</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Cathode-ray_tube.jpg" alt="Monitor CRT 1947" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1947')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primeros monitores de tubo de rayos catódicos (CRT) usados en computadoras tempranas como el ENIAC, con resoluciones bajas y tamaños grandes para mostrar datos visuales.</td>
+</tr>
+<tr>
+<td class="year">1953</td>
+<td class="type">Salida</td>
+<td>Impresora de línea</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/IBM_1403_printer.jpg" alt="Impresora de línea 1953" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1953')">Ver en pantalla completa</button>
+</td>
+<td class="description">IBM 1403, primera impresora de alta velocidad para mainframes, imprimía hasta 600 líneas por minuto usando martillos mecánicos.</td>
+</tr>
+<tr>
+<td class="year">1964</td>
+<td class="type">Entrada</td>
+<td>Ratón (Mouse)</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Xerox_610_mouse.jpg" alt="Ratón 1964" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1964')">Ver en pantalla completa</button>
+</td>
+<td class="description">Inventado por Douglas Engelbart, primer dispositivo pointing para interacción gráfica en computadoras, demostrado en 1968 con interfaz innovadora.</td>
+</tr>
+<tr>
+<td class="year">1969</td>
+<td class="type">Entrada</td>
+<td>Joystick</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Atari_2600_Joystick.jpg" alt="Joystick 1969" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1969')">Ver en pantalla completa</button>
+</td>
+<td class="description">Desarrollado para el juego Spacewar!, precursor de controles para videojuegos y simuladores de vuelo.</td>
+</tr>
+<tr>
+<td class="year">1976</td>
+<td class="type">Salida</td>
+<td>Impresora de inyección de tinta</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Inkjet_printer.jpg" alt="Impresora de inyección de tinta 1976" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1976')">Ver en pantalla completa</button>
+</td>
+<td class="description">Prototipo IBM 4640, usa gotas de tinta expulsadas electrónicamente para impresión a color de alta calidad y bajo costo.</td>
+</tr>
+<tr>
+<td class="year">1981</td>
+<td class="type">Entrada</td>
+<td>Teclado IBM PC</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/IBM_Model_M_keyboard.jpg" alt="Teclado IBM PC 1981" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1981')">Ver en pantalla completa</button>
+</td>
+<td class="description">Teclado estándar de 84 teclas para el IBM PC 5150, con layout QWERTY y conexión PS/2, base para teclados modernos.</td>
+</tr>
+<tr>
+<td class="year">1984</td>
+<td class="type">Salida</td>
+<td>Impresora láser</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/HP_LaserJet.jpg" alt="Impresora láser 1984" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1984')">Ver en pantalla completa</button>
+</td>
+<td class="description">HP LaserJet, usa toner y láser para impresión rápida y precisa, revolucionando oficinas con 8 páginas por minuto.</td>
+</tr>
+<tr>
+<td class="year">1986</td>
+<td class="type">Salida</td>
+<td>Monitor LCD</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/LCD_monitor.jpg" alt="Monitor LCD 1986" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1986')">Ver en pantalla completa</button>
+</td>
+<td class="description">Primeros monitores LCD comerciales para laptops (como Epson), más delgados y eficientes que CRT, con pantallas monocromáticas.</td>
+</tr>
+<tr>
+<td class="year">1992</td>
+<td class="type">Entrada</td>
+<td>Trackpad</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Trackpad.jpg" alt="Trackpad 1992" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri1992')">Ver en pantalla completa</button>
+</td>
+<td class="description">Introducido en Apple PowerBook, superficie sensible al tacto para control del cursor, reemplazando trackballs en portátiles.</td>
+</tr>
+<tr>
+<td class="year">2000</td>
+<td class="type">Entrada</td>
+<td>Ratón óptico</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Logitech_optical_mouse.jpg" alt="Ratón óptico 2000" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri2000')">Ver en pantalla completa</button>
+</td>
+<td class="description">Logitech y Microsoft lanzan ratones ópticos usando LED y sensores CMOS, eliminando bolas mecánicas para mayor precisión.</td>
+</tr>
+<tr>
+<td class="year">2007</td>
+<td class="type">Entrada</td>
+<td>Pantalla táctil multi-touch</td>
+<td class="image-container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/IPhone_touchscreen.jpg" alt="Pantalla táctil multi-touch 2007" class="large-image">
+<button class="fullscreen-btn" onclick="openModal('modal-peri2007')">Ver en pantalla completa</button>
+</td>
+<td class="description">iPhone de Apple introduce gestos multi-dedo capacitivos, transformando interacción móvil y extendiéndose a tablets.</td>
+</tr>
