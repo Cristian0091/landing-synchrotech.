@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Línea de tiempo de la evolución de las motherboards, procesadores, memorias RAM y discos duros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            position: relative;
+            min-height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .timeline-table th, .timeline-table td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            vertical-align: top;
+        }
+        .timeline-table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .year {
+            width: 8%;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .type {
+            width: 12%;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .peripheral {
+            width: 15%;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        .image-container {
+            width: 20%;
+        }
+        .large-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        .fullscreen-btn {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+        }
+        .fullscreen-btn:hover {
+            background-color: #0056b3;
+        }
+        .description {
+            width: 45%;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #bbb;
+        }
+
+        /* Cinta transportadora de marca de agua */
+        .watermark-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            z-index: 998;
+            padding: 8px 0;
+        }
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            font-size: 16px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+            animation: ticker 25s linear infinite;
+        }
+        .ticker-content span {
+            margin: 0 60px;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Ajuste para que el contenido no sea tapado por la cinta */
+        .content-wrapper {
+            padding-bottom: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <h1>🕰️ Línea de tiempo de la evolución de las motherboards</h1>
+        <table class="timeline-table">
+            <thead>
+                <tr>
+                    <th>Año</th>
+                    <th>Nombre Motherboard</th>
+                    <th>Imagen</th>
+                    <th>Hito y Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="year">1981</td>
+                    <td class="mb-name">IBM PC 5150 Planar</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/IBM_PC_Motherboard_%281981%29.jpg" alt="Motherboard IBM PC 5150 1981" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-1981')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera «motherboard» reconocible: El equipo IBM PC 5150 (1981) incluyó lo que se considera la primera motherboard moderna (llamada “planar” por IBM) — integraba CPU, memoria, ranuras de expansión.</td>
+                </tr>
+                <tr>
+                    <td class="year">1984</td>
+                    <td class="mb-name">IBM PC/AT Motherboard</td>
+                    <td class="image-container">
+                        <img src="https://minuszerodegrees.net/misc/5170_motherboard_type_1.jpg" alt="Motherboard IBM PC AT 1984" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-1984')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Formato Full AT: IBM introduce el formato “AT” (Advanced Technology) de motherboard para la línea PC/AT, diseño que marcaría mucho de lo que vendría.</td>
+                </tr>
+                <tr>
+                    <td class="year">1995</td>
+                    <td class="mb-name">Intel Advanced/ATX</td>
+                    <td class="image-container">
+                        <img src="https://thg.ru/wp-content/uploads/2024/04/9ef0be05315a6dbf29c698abcdde5f56.jpg" alt="Motherboard Intel ATX 1995" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-1995')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Formato ATX: Intel lanza la especificación ATX (Advanced Technology eXtended) que sería el estándar dominante en desktop.</td>
+                </tr>
+                <tr>
+                    <td class="year">2003</td>
+                    <td class="mb-name">DFI LanParty nF4 SLI-DR</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/PCI-E_%26_PCI_slots_on_DFI_LanParty_nF4_SLI-DR_20050531.jpg" alt="Motherboard con PCI Express 2003" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-2003')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Aparición de PCI Express: La especificación de bus de expansión PCI Express se introduce, lo cual permite mayores velocidades de comunicación en la motherboard.</td>
+                </tr>
+                <tr>
+                    <td class="year">2020-2025</td>
+                    <td class="mb-name">ASUS ROG Maximus Z890 Extreme</td>
+                    <td class="image-container">
+                        <img src="https://m.media-amazon.com/images/I/81P4+9k1QmL._AC_SL1500_.jpg" alt="Motherboard moderna 2020-2025 con PCIe 5.0 y DDR5" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-2020')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Integración y estándar de conectividad avanzada: Las motherboards modernas ya integran múltiples funciones (red, sonido, WiFi), formatos compactos, soporte para nuevas generaciones (como PCIe 5.0, DDR5) y preparaciones para lo que viene.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🖥️ Línea de tiempo de las generaciones de procesadores Intel y AMD</h2>
+        <table class="timeline-table">
+            <thead>
+                <tr>
+                    <th>Año</th>
+                    <th>Procesador</th>
+                    <th>Imagen</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="year">1971</td>
+                    <td>Intel 4004</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Intel_C4004.jpg/1200px-Intel_C4004.jpg" alt="Intel 4004 1971" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel1971')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer microprocesador comercial del mundo, de 4 bits, usado en calculadoras. Marca el inicio de la era de los procesadores integrados.</td>
+                </tr>
+                <tr>
+                    <td class="year">1974</td>
+                    <td>Intel 8080</td>
+                    <td class="image-container">
+                        <img src="https://www.x86-guide.net/Photos/Collection/Grandes/93/Intel_C8080_top.jpg" alt="Intel 8080 1974" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel1974')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Procesador de 8 bits, clave para el Altair 8800, el primer PC personal. Mejora en rendimiento y eficiencia.</td>
+                </tr>
+                <tr>
+                    <td class="year">1978</td>
+                    <td>Intel 8086</td>
+                    <td class="image-container">
+                        <img src="https://www.reormadrid.com/wp-content/uploads/2024/10/intel-8086.jpg" alt="Intel 8086 1978" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel1978')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Inicio de la arquitectura x86 de 16 bits, base de la mayoría de PCs modernos. Usado en IBM PC XT.</td>
+                </tr>
+                <tr>
+                    <td class="year">1982</td>
+                    <td>Intel 80286</td>
+                    <td class="image-container">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhyasHbhEn2r3V0-2ekKXelOuGOWD6361D4qT9mrH3arRCSxbPFMcQmIG3G5NuefdkoBsPRq8jM8x-ZE4ZUDY5bUWyuvHlqjBV0q8ds_VnnVAR9XubHWd5fqJM6mVosdKOVHktQXTuDxxc/s1600/02-01+Efemerides+de+Tecnologia+intel+80286.jpg" alt="Intel 80286 1982" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel1982')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Mejora la arquitectura x86 con modo protegido y hasta 16 MB de memoria. Usado en IBM PC AT.</td>
+                </tr>
+                <tr>
+                    <td class="year">1985</td>
+                    <td>Intel 80386</td>
+                    <td class="image-container">
+                        <img src="https://encyclopedia.pub/media/common/202210/mceclip3-6354fd09e393d.png" alt="Intel 80386 1985" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel1985')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer procesador x86 de 32 bits, soporta multitarea y hasta 4 GB de memoria. Revolucionario para software avanzado.</td>
+                </tr>
+                <tr>
+                    <td class="year">1989</td>
+                    <td>Intel 80486</td>
+                    <td class="image-container">
+                        <img src="https://www.profesionalreview.com/wp-content/uploads/2017/06/intel-i486.jpg" alt="Intel 80486 1989" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel1989')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Integra caché y FPU, velocidades hasta 50 MHz. Mejora significativa en rendimiento gráfico y matemático.</td>
+                </tr>
+                <tr>
+                    <td class="year">1993</td>
+                    <td>Intel Pentium</td>
+                    <td class="image-container">
+                        <img src="https://www.cpushack.com/wp-content/uploads/2013/03/IntelA80501-60-SX753-L320.jpg" alt="Intel Pentium 1993" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel1993')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera generación Pentium, superscalar de 32/64 bits, hasta 66 MHz. Establece el estándar para PCs multimedia.</td>
+                </tr>
+                <tr>
+                    <td class="year">2000</td>
+                    <td>Intel Pentium 4</td>
+                    <td class="image-container">
+                        <img src="https://i.ebayimg.com/images/g/iwsAAOSwIS9i2WwP/s-l1200.jpg" alt="Intel Pentium 4 2000" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2000')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Arquitectura NetBurst, frecuencias hasta 3.8 GHz. Enfocado en alto rendimiento por reloj para multimedia.</td>
+                </tr>
+                <tr>
+                    <td class="year">2006</td>
+                    <td>Intel Core 2 Duo</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_Core_2_Duo_E6750.jpg" alt="Intel Core 2 Duo 2006" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2006')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera generación Core, dual-core eficiente. Mejora en consumo y rendimiento multi-hilo.</td>
+                </tr>
+                <tr>
+                    <td class="year">2008</td>
+                    <td>Intel Core i7 (Nehalem)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Intel_Core_i7-920.jpg" alt="Intel Core i7 Nehalem 2008" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2008')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera gen Core i7, quad-core con Hyper-Threading. Introducción de QuickPath Interconnect.</td>
+                </tr>
+                <tr>
+                    <td class="year">2011</td>
+                    <td>Intel Core i7 Sandy Bridge</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Intel_Core_i7-2600K.jpg" alt="Intel Core i7 Sandy Bridge 2011" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2011')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Segunda gen Core, mejoras en gráficos integrados y AVX. Hasta 8 núcleos en desktop.</td>
+                </tr>
+                <tr>
+                    <td class="year">2017</td>
+                    <td>Intel Core 8th Gen Coffee Lake</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Intel_Core_i7-8700K.jpg" alt="Intel Core 8th Gen Coffee Lake 2017" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2017')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Octava gen Core, hasta 6 núcleos en mainstream. Mejoras en rendimiento por vatio.</td>
+                </tr>
+                <tr>
+                    <td class="year">2022</td>
+                    <td>Intel Core 12th Gen Alder Lake</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Intel_Core_i9-12900K.jpg" alt="Intel Core 12th Gen Alder Lake 2022" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2022')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Duodécima gen Core, arquitectura híbrida P+E cores, soporte DDR5 y PCIe 5.0.</td>
+                </tr>
+                <tr>
+                    <td class="year">2023</td>
+                    <td>Intel Core 14th Gen Raptor Lake Refresh</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Intel_Core_i9-14900K.jpg" alt="Intel Core 14th Gen Raptor Lake 2023" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2023')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Refrescado de Raptor Lake, hasta 24 núcleos, frecuencias más altas. Optimizado para gaming y productividad.</td>
+                </tr>
+                <tr>
+                    <td class="year">2024</td>
+                    <td>Intel Core Ultra (Meteor Lake)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Intel_Core_Ultra_7_165H.jpg" alt="Intel Core Ultra Meteor Lake 2024" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-intel2024')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera gen Core Ultra para laptops, con NPU para IA, gráficos Arc mejorados y eficiencia energética.</td>
+                </tr>
+                <tr>
+                    <td class="year">1996</td>
+                    <td>AMD K5</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/AMD_K5.jpg" alt="AMD K5 1996" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd1996')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer diseño propio de AMD, compatible con Socket 5, hasta 133 MHz. Competidor directo del Pentium.</td>
+                </tr>
+                <tr>
+                    <td class="year">1999</td>
+                    <td>AMD Athlon</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/AMD_Athlon_Thunderbird.jpg" alt="AMD Athlon 1999" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd1999')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Línea Athlon, Slot A, hasta 1 GHz. Primer procesador en superar a Intel en rendimiento.</td>
+                </tr>
+                <tr>
+                    <td class="year">2003</td>
+                    <td>AMD Athlon 64</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/AMD_Athlon_64_3000.jpg" alt="AMD Athlon 64 2003" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2003')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer x86-64 bits, Socket 754/939. Soporte nativo para 64 bits, gran avance en compatibilidad.</td>
+                </tr>
+                <tr>
+                    <td class="year">2009</td>
+                    <td>AMD Phenom II</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/AMD_Phenom_II_X4_965.jpg" alt="AMD Phenom II 2009" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2009')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Segunda gen Phenom, quad-core, Socket AM3. Mejoras en caché y eficiencia para multi-tarea.</td>
+                </tr>
+                <tr>
+                    <td class="year">2011</td>
+                    <td>AMD FX (Bulldozer)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/AMD_FX-8150.jpg" alt="AMD FX Bulldozer 2011" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2011')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Serie FX, hasta 8 núcleos, Socket AM3+. Enfoque en rendimiento multi-hilo para gaming.</td>
+                </tr>
+                <tr>
+                    <td class="year">2017</td>
+                    <td>AMD Ryzen 1000 (Zen)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/AMD_Ryzen_7_1800X.jpg" alt="AMD Ryzen 1000 Zen 2017" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2017')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera gen Ryzen, arquitectura Zen, hasta 8 núcleos, Socket AM4. Revolución en rendimiento y precio.</td>
+                </tr>
+                <tr>
+                    <td class="year">2019</td>
+                    <td>AMD Ryzen 3000 (Zen 2)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/AMD_Ryzen_7_3700X.jpg" alt="AMD Ryzen 3000 Zen 2 2019" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2019')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Tercera gen Ryzen, proceso 7nm, hasta 16 núcleos. Líder en multi-hilo y gaming.</td>
+                </tr>
+                <tr>
+                    <td class="year">2020</td>
+                    <td>AMD Ryzen 5000 (Zen 3)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/AMD_Ryzen_9_5950X.jpg" alt="AMD Ryzen 5000 Zen 3 2020" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2020')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Quinta gen Ryzen, IPC +19%, hasta 16 núcleos. Excelente en single y multi-thread.</td>
+                </tr>
+                <tr>
+                    <td class="year">2022</td>
+                    <td>AMD Ryzen 7000 (Zen 4)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/AMD_Ryzen_9_7950X.jpg" alt="AMD Ryzen 7000 Zen 4 2022" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2022')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Sexta gen Ryzen, Socket AM5, DDR5, PCIe 5.0, hasta 16 núcleos. Integración 3D V-Cache en algunos.</td>
+                </tr>
+                <tr>
+                    <td class="year">2023</td>
+                    <td>AMD Ryzen 8000 (Zen 4 APU)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/AMD_Ryzen_7_8700G.jpg" alt="AMD Ryzen 8000 Zen 4 2023" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2023')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">APUs Ryzen 8000, gráficos RDNA3 integrados, IA mejorada. Para sistemas compactos sin GPU discreta.</td>
+                </tr>
+                <tr>
+                    <td class="year">2024</td>
+                    <td>AMD Ryzen AI 300 (Zen 5)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/AMD_Ryzen_AI_9_HX_370.jpg" alt="AMD Ryzen AI 300 Zen 5 2024" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-amd2024')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera gen Zen 5, NPU para IA con 50 TOPS, hasta 12 núcleos. Enfoque en laptops con eficiencia y rendimiento IA.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>💾 Línea de tiempo de la evolución de las memorias RAM</h2>
+        <table class="timeline-table">
+            <thead>
+                <tr>
+                    <th>Año</th>
+                    <th>Tipo</th>
+                    <th>Imagen</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+    
+                <tr>
+                    <td class="year">1946</td>
+                    <td>Williams-Kilburn Tube</td>
+                    <td class="image-container">
+                        <img src="https://www.reormadrid.com/wp-content/uploads/2025/02/tubo-williams-interior.jpg" alt="Williams-Kilburn Tube 1946" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1946')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primera memoria RAM práctica, usando tubos de rayos catódicos para almacenar 128 palabras de 40 bits. Volátil y sensible a campos eléctricos.</td>
+                </tr>
+                <tr>
+                    <td class="year">1951</td>
+                    <td>Magnetic Core Memory</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Ferrite_core_memory.jpg/250px-Ferrite_core_memory.jpg" alt="Magnetic Core Memory 1951" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1951')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Patente de Jay Forrester, usa núcleos magnéticos en una cuadrícula de alambres. No volátil, estándar en computadoras hasta los 70s.</td>
+                </tr>
+                <tr>
+                    <td class="year">1968</td>
+                    <td>SRAM (Bipolar)</td>
+                    <td class="image-container">
+                        <img src="https://i.ebayimg.com/images/g/VzwAAOSwolhj4ss2/s-l400.jpgs" alt="SRAM 1968" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1968')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer chip SRAM de Intel (3101), 64 bits. Usa transistores bipolares, rápida pero cara, usada en caché.</td>
+                </tr>
+                <tr>
+                    <td class="year">1969</td>
+                    <td>DRAM (MOS)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Intel_1103.jpg" alt="DRAM 1969" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1969')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer chip DRAM comercial, inventado por Robert Dennard. Usa un transistor y capacitor por bit, más densa y barata.</td>
+                </tr>
+                <tr>
+                    <td class="year">1970</td>
+                    <td>DRAM Comercial (Intel 1103)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Intel_1103.jpg" alt="Intel 1103 DRAM 1970" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1970')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer DRAM de 1Kbit disponible comercialmente por Intel. Revolucionó la memoria de computadoras personales.</td>
+                </tr>
+                <tr>
+                    <td class="year">1983</td>
+                    <td>SIMM</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/SIMM.jpg" alt="SIMM 1983" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1983')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Single Inline Memory Module, módulos de 30 pines para FPM DRAM. Estándar para PCs de los 80s y 90s.</td>
+                </tr>
+                <tr>
+                    <td class="year">1993</td>
+                    <td>SDRAM</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/SDRAM_module.jpg" alt="SDRAM 1993" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1993')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Synchronous DRAM, sincronizada con el reloj del sistema. Introducida por Samsung, hasta 100 MHz.</td>
+                </tr>
+                <tr>
+                    <td class="year">1998</td>
+                    <td>DDR SDRAM</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/DDR_SDRAM.jpg" alt="DDR SDRAM 1998" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram1998')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Doble tasa de datos, transfiere en flancos de subida y bajada del reloj. Primera generación DDR, 64 Mbit por Samsung.</td>
+                </tr>
+                <tr>
+                    <td class="year">2003</td>
+                    <td>DDR2 SDRAM</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/DDR2_SDRAM.jpg" alt="DDR2 SDRAM 2003" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram2003')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Segunda generación DDR, voltaje 1.8V, prefetch 4-bit. Velocidades hasta 800 MHz, más eficiente.</td>
+                </tr>
+                <tr>
+                    <td class="year">2007</td>
+                    <td>DDR3 SDRAM</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/DDR3_SDRAM.jpg" alt="DDR3 SDRAM 2007" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram2007')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Tercera generación, voltaje 1.5V, prefetch 8-bit. Velocidades hasta 2133 MHz, bajo consumo para laptops.</td>
+                </tr>
+                <tr>
+                    <td class="year">2014</td>
+                    <td>DDR4 SDRAM</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/DDR4_SDRAM.jpg" alt="DDR4 SDRAM 2014" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram2014')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Cuarta generación, voltaje 1.2V, canales independientes. Velocidades hasta 3200 MHz, soporta hasta 128 GB por DIMM.</td>
+                </tr>
+                <tr>
+                    <td class="year">2020</td>
+                    <td>DDR5 SDRAM</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/DDR5_module.jpg" alt="DDR5 SDRAM 2020" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram2020')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Quinta generación, voltaje 1.1V, dos canales independientes por módulo. Velocidades hasta 8400 MHz, hasta 128 GB por DIMM, PMIC integrado.</td>
+                </tr>
+                <tr>
+                    <td class="year">2025</td>
+                    <td>DDR6 SDRAM (Emergente)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6d/DDR5_module.jpg" alt="DDR6 SDRAM 2025" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-ram2025')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Sexta generación en desarrollo por JEDEC, enfocado en IA y alto rendimiento. Velocidades esperadas >10,000 MHz, mayor densidad.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>💽 Línea de tiempo de la evolución de los discos duros</h2>
+        <table class="timeline-table">
+            <thead>
+                <tr>
+                    <th>Año</th>
+                    <th>Tipo</th>
+                    <th>Imagen</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="year">1956</td>
+                    <td>IBM 305 RAMAC</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/IBM_RAMAC.jpg" alt="IBM 305 RAMAC 1956" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1956')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro comercial, con 50 platos de 24 pulgadas, capacidad de 5 MB. Tamaño de dos refrigeradores, peso de una tonelada, usado en el sistema IBM 305 RAMAC.</td>
+                </tr>
+                <tr>
+                    <td class="year">1962</td>
+                    <td>IBM 1311</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/IBM_1311.jpg" alt="IBM 1311 1962" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1962')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro con medios removibles, capacidad de 2.6 MB por pack de 6 discos. Rotación a 1,500 rpm, peso de 10 libras por pack.</td>
+                </tr>
+                <tr>
+                    <td class="year">1973</td>
+                    <td>IBM 3340 Winchester</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/IBM_3340_Winchester.jpg" alt="IBM 3340 Winchester 1973" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1973')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro sellado con cabezales de baja masa y platos lubricados, capacidad de 35 MB por spindle. Estableció el diseño moderno de HDD.</td>
+                </tr>
+                <tr>
+                    <td class="year">1980</td>
+                    <td>Seagate ST-506</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Seagate_ST-506.jpg" alt="Seagate ST-506 1980" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1980')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro para microcomputadoras, formato 5.25 pulgadas, capacidad de 5 MB. Estándar para PCs tempranos como el IBM PC.</td>
+                </tr>
+                <tr>
+                    <td class="year">1983</td>
+                    <td>3.5-inch HDD (Rodime RO3000)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/3.5-inch_HDD.jpg" alt="3.5-inch HDD 1983" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1983')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro de 3.5 pulgadas, capacidad de 10 MB. Diseñado para computadoras personales y portátiles tempranos.</td>
+                </tr>
+                <tr>
+                    <td class="year">1988</td>
+                    <td>2.5-inch HDD</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/2.5-inch_HDD.jpg" alt="2.5-inch HDD 1988" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1988')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro de 2.5 pulgadas para notebooks, capacidad de 20 MB con dos platos. Avance en portabilidad.</td>
+                </tr>
+                <tr>
+                    <td class="year">1991</td>
+                    <td>MR Head Technology</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Magnetoresistive_head.jpg" alt="MR Head 1991" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1991')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Introducción de cabezales magnetorresistivos, capacidad de 1 GB en discos de 3.5 pulgadas. Mejora significativa en densidad de datos.</td>
+                </tr>
+                <tr>
+                    <td class="year">1997</td>
+                    <td>GMR Head Technology</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/GMR_Head.jpg" alt="GMR Head 1997" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd1997')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Cabezales de magnetorresistencia gigante en IBM Deskstar 16GP, capacidad de 16.8 GB. Revolución en lectura de datos de alta densidad.</td>
+                </tr>
+                <tr>
+                    <td class="year">2003</td>
+                    <td>SATA Interface</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/SATA_HDD.jpg" alt="SATA HDD 2003" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd2003')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro con interfaz Serial ATA (Seagate), velocidades hasta 1.5 Gb/s. Reemplazó a PATA para mayor eficiencia.</td>
+                </tr>
+                <tr>
+                    <td class="year">2005</td>
+                    <td>Perpendicular Magnetic Recording (PMR)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/PMR_HDD.jpg" alt="PMR HDD 2005" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd2005')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Grabación magnética perpendicular en Toshiba MK4007GAL, 40 GB en un plato de 1.8 pulgadas. Duplicó la densidad de datos.</td>
+                </tr>
+                <tr>
+                    <td class="year">2007</td>
+                    <td>1 TB HDD</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Hitachi_1TB_HDD.jpg" alt="1 TB HDD 2007" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd2007')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro de 1 TB (Hitachi Deskstar 7K1000), cuatro platos de 250 GB cada uno. Hito en capacidad de almacenamiento.</td>
+                </tr>
+                <tr>
+                    <td class="year">2013</td>
+                    <td>Helium-Filled HDD</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Helium_HDD.jpg" alt="Helium HDD 2013" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd2013')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primer disco duro lleno de helio (HGST Ultrastar He6), siete platos, menor fricción y mayor capacidad hasta 6 TB.</td>
+                </tr>
+                <tr>
+                    <td class="year">2020</td>
+                    <td>HAMR Technology</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/HAMR_HDD.jpg" alt="HAMR HDD 2020" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd2020')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Heat-Assisted Magnetic Recording en Seagate, capacidades hasta 16 TB+. Usa láser para mayor densidad en medios.</td>
+                </tr>
+                <tr>
+                    <td class="year">2025</td>
+                    <td>MAMR y Beyond (30+ TB)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/MAMR_HDD.jpg" alt="MAMR HDD 2025" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-hdd2025')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Microwave-Assisted Magnetic Recording y tecnologías emergentes, capacidades superiores a 30 TB. Enfoque en centros de datos y IA.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🖱️ Línea de tiempo de la evolución de los periféricos</h2>
+        <table class="timeline-table">
+            <thead>
+                <tr>
+                    <th>Año</th>
+                    <th>Tipo</th>
+                    <th>Periférico</th>
+                    <th>Imagen</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="year">1947</td>
+                    <td class="type">Salida</td>
+                    <td>Monitor CRT</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Cathode-ray_tube.jpg" alt="Monitor CRT 1947" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1947')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primeros monitores de tubo de rayos catódicos (CRT) usados en computadoras tempranas como el ENIAC, con resoluciones bajas y tamaños grandes para mostrar datos visuales.</td>
+                </tr>
+                <tr>
+                    <td class="year">1953</td>
+                    <td class="type">Salida</td>
+                    <td>Impresora de línea</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/IBM_1403_printer.jpg" alt="Impresora de línea 1953" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1953')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">IBM 1403, primera impresora de alta velocidad para mainframes, imprimía hasta 600 líneas por minuto usando martillos mecánicos.</td>
+                </tr>
+                <tr>
+                    <td class="year">1964</td>
+                    <td class="type">Entrada</td>
+                    <td>Ratón (Mouse)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Xerox_610_mouse.jpg" alt="Ratón 1964" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1964')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Inventado por Douglas Engelbart, primer dispositivo pointing para interacción gráfica en computadoras, demostrado en 1968 con interfaz innovadora.</td>
+                </tr>
+                <tr>
+                    <td class="year">1969</td>
+                    <td class="type">Entrada</td>
+                    <td>Joystick</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Atari_2600_Joystick.jpg" alt="Joystick 1969" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1969')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Desarrollado para el juego Spacewar!, precursor de controles para videojuegos y simuladores de vuelo.</td>
+                </tr>
+                <tr>
+                    <td class="year">1976</td>
+                    <td class="type">Salida</td>
+                    <td>Impresora de inyección de tinta</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Inkjet_printer.jpg" alt="Impresora de inyección de tinta 1976" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1976')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Prototipo IBM 4640, usa gotas de tinta expulsadas electrónicamente para impresión a color de alta calidad y bajo costo.</td>
+                </tr>
+                <tr>
+                    <td class="year">1981</td>
+                    <td class="type">Entrada</td>
+                    <td>Teclado IBM PC</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/IBM_Model_M_keyboard.jpg" alt="Teclado IBM PC 1981" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1981')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Teclado estándar de 84 teclas para el IBM PC 5150, con layout QWERTY y conexión PS/2, base para teclados modernos.</td>
+                </tr>
+                <tr>
+                    <td class="year">1984</td>
+                    <td class="type">Salida</td>
+                    <td>Impresora láser</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/HP_LaserJet.jpg" alt="Impresora láser 1984" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1984')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">HP LaserJet, usa toner y láser para impresión rápida y precisa, revolucionando oficinas con 8 páginas por minuto.</td>
+                </tr>
+                <tr>
+                    <td class="year">1986</td>
+                    <td class="type">Salida</td>
+                    <td>Monitor LCD</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/LCD_monitor.jpg" alt="Monitor LCD 1986" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1986')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Primeros monitores LCD comerciales para laptops (como Epson), más delgados y eficientes que CRT, con pantallas monocromáticas.</td>
+                </tr>
+                <tr>
+                    <td class="year">1992</td>
+                    <td class="type">Entrada</td>
+                    <td>Trackpad</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Trackpad.jpg" alt="Trackpad 1992" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri1992')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Introducido en Apple PowerBook, superficie sensible al tacto para control del cursor, reemplazando trackballs en portátiles.</td>
+                </tr>
+                <tr>
+                    <td class="year">2000</td>
+                    <td class="type">Entrada</td>
+                    <td>Ratón óptico</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Logitech_optical_mouse.jpg" alt="Ratón óptico 2000" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri2000')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Logitech y Microsoft lanzan ratones ópticos usando LED y sensores CMOS, eliminando bolas mecánicas para mayor precisión.</td>
+                </tr>
+                <tr>
+                    <td class="year">2007</td>
+                    <td class="type">Entrada</td>
+                    <td>Pantalla táctil multi-touch</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/IPhone_touchscreen.jpg" alt="Pantalla táctil multi-touch 2007" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri2007')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">iPhone de Apple introduce gestos multi-dedo capacitivos, transformando interacción móvil y extendiéndose a tablets.</td>
+                </tr>
+                <tr>
+                    <td class="year">2007</td>
+                    <td class="type">Salida</td>
+                    <td>Monitor LED-backlit</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/LED_monitor.jpg" alt="Monitor LED-backlit 2007" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri2007s')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Transición de CCFL a LED en LCD, mejorando contraste, eficiencia energética y delgadez en monitores y TVs.</td>
+                </tr>
+                <tr>
+                    <td class="year">2010</td>
+                    <td class="type">Entrada</td>
+                    <td>Kinect (gestos y voz)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Kinect_sensor.jpg" alt="Kinect 2010" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri2010')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Microsoft Kinect para Xbox 360, usa cámara 3D y micrófonos para control sin manos, pionero en realidad aumentada.</td>
+                </tr>
+                <tr>
+                    <td class="year">2016</td>
+                    <td class="type">Salida</td>
+                    <td>Pantalla OLED</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/OLED_display.jpg" alt="Pantalla OLED 2016" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri2016')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">LG y Samsung popularizan TVs OLED con negros perfectos y alto contraste, extendiéndose a smartphones y wearables.</td>
+                </tr>
+                <tr>
+                    <td class="year">2020</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>Cascos VR/AR (Oculus Quest 2)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Oculus_Quest_2.jpg" alt="Cascos VR/AR 2020" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri2020')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Meta Quest 2 integra entrada (sensores de movimiento, eye-tracking) y salida (pantallas de alta resolución) para inmersión virtual.</td>
+                </tr>
+                <tr>
+                    <td class="year">2025</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>Interfaces neurales (Neuralink)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Neuralink_implant.jpg" alt="Interfaces neurales 2025" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-peri2025')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Implantes cerebrales emergentes para control directo por pensamiento y feedback háptico, enfocados en accesibilidad y gaming avanzado.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Cinta transportadora de marca de agua -->
+    <div class="watermark-ticker">
+        <div class="ticker-content">
+            <span>CRISTIAN_VIDALES</span>
+            <span>SENA_CAQUETA</span>
+            <span>CRISTIAN_VIDALES</span>
+            <span>SENA_CAQUETA</span>
+            <span>CRISTIAN_VIDALES</span>
+            <span>SENA_CAQUETA</span>
+            <span>CRISTIAN_VIDALES</span>
+            <span>SENA_CAQUETA</span>
+        </div>
+    </div>
+
+    <!-- Modals for Motherboards -->
+    <div id="modal-1981" class="modal">
+        <span class="close" onclick="closeModal('modal-1981')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/57/IBM_PC_Motherboard_%281981%29.jpg">
+    </div>
+    <div id="modal-1984" class="modal">
+        <span class="close" onclick="closeModal('modal-1984')">&times;</span>
+        <img class="modal-content" src="https://minuszerodegrees.net/misc/5170_motherboard_type_1.jpg">
+    </div>
+    <div id="modal-1995" class="modal">
+        <span class="close" onclick="closeModal('modal-1995')">&times;</span>
+        <img class="modal-content" src="https://thg.ru/wp-content/uploads/2024/04/9ef0be05315a6dbf29c698abcdde5f56.jpg">
+    </div>
+    <div id="modal-2003" class="modal">
+        <span class="close" onclick="closeModal('modal-2003')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/9/9c/PCI-E_%26_PCI_slots_on_DFI_LanParty_nF4_SLI-DR_20050531.jpg">
+    </div>
+    <div id="modal-2020" class="modal">
+        <span class="close" onclick="closeModal('modal-2020')">&times;</span>
+        <img class="modal-content" src="https://m.media-amazon.com/images/I/81P4+9k1QmL._AC_SL1500_.jpg">
+    </div>
+
+    <!-- Modals for Processors -->
+    <div id="modal-intel1971" class="modal">
+        <span class="close" onclick="closeModal('modal-intel1971')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Intel_4004.jpg">
+    </div>
+    <div id="modal-intel1974" class="modal">
+        <span class="close" onclick="closeModal('modal-intel1974')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Intel_8080.jpg">
+    </div>
+    <div id="modal-intel1978" class="modal">
+        <span class="close" onclick="closeModal('modal-intel1978')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Intel_8086.jpg">
+    </div>
+    <div id="modal-intel1982" class="modal">
+        <span class="close" onclick="closeModal('modal-intel1982')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Intel_80286.jpg">
+    </div>
+    <div id="modal-intel1985" class="modal">
+        <span class="close" onclick="closeModal('modal-intel1985')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Intel_80386.jpg">
+    </div>
+    <div id="modal-intel1989" class="modal">
+        <span class="close" onclick="closeModal('modal-intel1989')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Intel_80486.jpg">
+    </div>
+    <div id="modal-intel1993" class="modal">
+        <span class="close" onclick="closeModal('modal-intel1993')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Intel_Pentium_P5_top.jpg">
+    </div>
+    <div id="modal-intel2000" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2000')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Intel_Pentium_4_Willamette.jpg">
+    </div>
+    <div id="modal-intel2006" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2006')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_Core_2_Duo_E6750.jpg">
+    </div>
+    <div id="modal-intel2008" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2008')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Intel_Core_i7-920.jpg">
+    </div>
+    <div id="modal-intel2011" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2011')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Intel_Core_i7-2600K.jpg">
+    </div>
+    <div id="modal-intel2017" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2017')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Intel_Core_i7-8700K.jpg">
+    </div>
+    <div id="modal-intel2022" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2022')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Intel_Core_i9-12900K.jpg">
+    </div>
+    <div id="modal-intel2023" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2023')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Intel_Core_i9-14900K.jpg">
+    </div>
+    <div id="modal-intel2024" class="modal">
+        <span class="close" onclick="closeModal('modal-intel2024')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Intel_Core_Ultra_7_165H.jpg">
+    </div>
+    <div id="modal-amd1996" class="modal">
+        <span class="close" onclick="closeModal('modal-amd1996')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/AMD_K5.jpg">
+    </div>
+    <div id="modal-amd1999" class="modal">
+        <span class="close" onclick="closeModal('modal-amd1999')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7e/AMD_Athlon_Thunderbird.jpg">
+    </div>
+    <div id="modal-amd2003" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2003')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5a/AMD_Athlon_64_3000.jpg">
+    </div>
+    <div id="modal-amd2009" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2009')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5d/AMD_Phenom_II_X4_965.jpg">
+    </div>
+    <div id="modal-amd2011" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2011')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/AMD_FX-8150.jpg">
+    </div>
+    <div id="modal-amd2017" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2017')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/AMD_Ryzen_7_1800X.jpg">
+    </div>
+    <div id="modal-amd2019" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2019')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/AMD_Ryzen_7_3700X.jpg">
+    </div>
+    <div id="modal-amd2020" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2020')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/AMD_Ryzen_9_5950X.jpg">
+    </div>
+    <div id="modal-amd2022" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2022')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4b/AMD_Ryzen_9_7950X.jpg">
+    </div>
+    <div id="modal-amd2023" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2023')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5f/AMD_Ryzen_7_8700G.jpg">
+    </div>
+    <div id="modal-amd2024" class="modal">
+        <span class="close" onclick="closeModal('modal-amd2024')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/9/9e/AMD_Ryzen_AI_9_HX_370.jpg">
+    </div>
+
+    <!-- Modals for RAM -->
+    <div id="modal-ram1932" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1932')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Atanasoff%E2%80%93Berry_Computer.jpg">
+    </div>
+    <div id="modal-ram1946" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1946')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Williams_tube.jpg">
+    </div>
+    <div id="modal-ram1951" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1951')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Magnetic_core_memory.jpg">
+    </div>
+    <div id="modal-ram1968" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1968')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Intel_3101.jpg">
+    </div>
+    <div id="modal-ram1969" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1969')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Intel_1103.jpg">
+    </div>
+    <div id="modal-ram1970" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1970')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Intel_1103.jpg">
+    </div>
+    <div id="modal-ram1983" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1983')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3d/SIMM.jpg">
+    </div>
+    <div id="modal-ram1993" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1993')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/9/9e/SDRAM_module.jpg">
+    </div>
+    <div id="modal-ram1998" class="modal">
+        <span class="close" onclick="closeModal('modal-ram1998')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5d/DDR_SDRAM.jpg">
+    </div>
+    <div id="modal-ram2003" class="modal">
+        <span class="close" onclick="closeModal('modal-ram2003')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/DDR2_SDRAM.jpg">
+    </div>
+    <div id="modal-ram2007" class="modal">
+        <span class="close" onclick="closeModal('modal-ram2007')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3a/DDR3_SDRAM.jpg">
+    </div>
+    <div id="modal-ram2014" class="modal">
+        <span class="close" onclick="closeModal('modal-ram2014')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/DDR4_SDRAM.jpg">
+    </div>
+    <div id="modal-ram2020" class="modal">
+        <span class="close" onclick="closeModal('modal-ram2020')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/6/6d/DDR5_module.jpg">
+    </div>
+    <div id="modal-ram2025" class="modal">
+        <span class="close" onclick="closeModal('modal-ram2025')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/6/6d/DDR5_module.jpg">
+    </div>
+
+    <!-- Modals for HDD -->
+    <div id="modal-hdd1956" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1956')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/IBM_RAMAC.jpg">
+    </div>
+    <div id="modal-hdd1962" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1962')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5a/IBM_1311.jpg">
+    </div>
+    <div id="modal-hdd1973" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1973')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/0/0d/IBM_3340_Winchester.jpg">
+    </div>
+    <div id="modal-hdd1980" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1980')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Seagate_ST-506.jpg">
+    </div>
+    <div id="modal-hdd1983" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1983')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4b/3.5-inch_HDD.jpg">
+    </div>
+    <div id="modal-hdd1988" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1988')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/2/2a/2.5-inch_HDD.jpg">
+    </div>
+    <div id="modal-hdd1991" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1991')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Magnetoresistive_head.jpg">
+    </div>
+    <div id="modal-hdd1997" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd1997')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5b/GMR_Head.jpg">
+    </div>
+    <div id="modal-hdd2003" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd2003')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/SATA_HDD.jpg">
+    </div>
+    <div id="modal-hdd2005" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd2005')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/8/8d/PMR_HDD.jpg">
+    </div>
+    <div id="modal-hdd2007" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd2007')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Hitachi_1TB_HDD.jpg">
+    </div>
+    <div id="modal-hdd2013" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd2013')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Helium_HDD.jpg">
+    </div>
+    <div id="modal-hdd2020" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd2020')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/2/2e/HAMR_HDD.jpg">
+    </div>
+    <div id="modal-hdd2025" class="modal">
+        <span class="close" onclick="closeModal('modal-hdd2025')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/MAMR_HDD.jpg">
+    </div>
+
+    <!-- Modals for Peripherals -->
+    <div id="modal-peri1947" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1947')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Cathode-ray_tube.jpg">
+    </div>
+    <div id="modal-peri1953" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1953')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/IBM_1403_printer.jpg">
+    </div>
+    <div id="modal-peri1964" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1964')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Xerox_610_mouse.jpg">
+    </div>
+    <div id="modal-peri1969" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1969')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Atari_2600_Joystick.jpg">
+    </div>
+    <div id="modal-peri1976" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1976')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Inkjet_printer.jpg">
+    </div>
+    <div id="modal-peri1981" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1981')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/9/9b/IBM_Model_M_keyboard.jpg">
+    </div>
+    <div id="modal-peri1984" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1984')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3d/HP_LaserJet.jpg">
+    </div>
+    <div id="modal-peri1986" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1986')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5f/LCD_monitor.jpg">
+    </div>
+    <div id="modal-peri1992" class="modal">
+        <span class="close" onclick="closeModal('modal-peri1992')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Trackpad.jpg">
+    </div>
+    <div id="modal-peri2000" class="modal">
+        <span class="close" onclick="closeModal('modal-peri2000')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Logitech_optical_mouse.jpg">
+    </div>
+    <div id="modal-peri2007" class="modal">
+        <span class="close" onclick="closeModal('modal-peri2007')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/0/0a/IPhone_touchscreen.jpg">
+    </div>
+    <div id="modal-peri2007s" class="modal">
+        <span class="close" onclick="closeModal('modal-peri2007s')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4e/LED_monitor.jpg">
+    </div>
+    <div id="modal-peri2010" class="modal">
+        <span class="close" onclick="closeModal('modal-peri2010')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Kinect_sensor.jpg">
+    </div>
+    <div id="modal-peri2016" class="modal">
+        <span class="close" onclick="closeModal('modal-peri2016')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/3/3a/OLED_display.jpg">
+    </div>
+    <div id="modal-peri2020" class="modal">
+        <span class="close" onclick="closeModal('modal-peri2020')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Oculus_Quest_2.jpg">
+    </div>
+    <div id="modal-peri2025" class="modal">
+        <span class="close" onclick="closeModal('modal-peri2025')">&times;</span>
+        <img class="modal-content" src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Neuralink_implant.jpg">
+    </div>
+    <h2>🔌 Línea de tiempo de la evolución de los puertos y conectores</h2>
+        <table class="timeline-table">
+            <thead>
+                <tr>
+                    <th>Año</th>
+                    <th>Tipo</th>
+                    <th>Puerto</th>
+                    <th>Imagen</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="year">1981</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>RS-232 (Serial DB-9/DB-25)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/RS-232_port.jpg" alt="Puerto Serial RS-232" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port1981')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Puerto serie estándar en los primeros IBM PC para conexión de ratón, módem y periféricos. Velocidad máxima 115 Kbps, 9 o 25 pines.</td>
+                </tr>
+                <tr>
+                    <td class="year">1981</td>
+                    <td class="type">Salida</td>
+                    <td>Paralelo (DB-25 Centronics)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Parallel_port.jpg" alt="Puerto Paralelo DB-25" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port1981p')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Puerto paralelo para impresoras y escáneres. Transmisión de 8 bits simultáneos, hasta 150 KB/s.</td>
+                </tr>
+                <tr>
+                    <td class="year">1987</td>
+                    <td class="type">Entrada</td>
+                    <td>PS/2 (Teclado/Ratón)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/PS2_port.jpg" alt="Puerto PS/2" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port1987')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">IBM PS/2 introduce conectores mini-DIN de 6 pines dedicados para teclado (púrpura) y ratón (verde). Más rápido que serial.</td>
+                </tr>
+                <tr>
+                    <td class="year">1996</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>USB 1.0</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/USB_Type-A.jpg" alt="USB 1.0 Type-A" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port1996')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Universal Serial Bus 1.0 (1.5-12 Mbps). Conector Type-A estándar. Plug & Play, soporta hasta 127 dispositivos.</td>
+                </tr>
+                <tr>
+                    <td class="year">2000</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>USB 2.0</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/USB_2.0_connector.jpg" alt="USB 2.0" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2000')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Velocidad hasta 480 Mbps (Hi-Speed). Color negro en conectores. Estándar dominante durante más de una década.</td>
+                </tr>
+                <tr>
+                    <td class="year">2008</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>USB 3.0 (SuperSpeed)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/USB_3.0_ports.jpg" alt="USB 3.0" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2008')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Hasta 5 Gbps, conectores azules (Type-A), más pines para mayor corriente (900 mA) y transferencia bidireccional.</td>
+                </tr>
+                <tr>
+                    <td class="year">2013</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>USB 3.1 Gen 2 / USB-C</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/USB_Type-C.jpg" alt="USB Type-C" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2013')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">10 Gbps, conector reversible Type-C, hasta 100 W de potencia (Power Delivery), soporte para video (DisplayPort/HDMI alt mode).</td>
+                </tr>
+                <tr>
+                    <td class="year">2017</td>
+                    <td class="type">Salida</td>
+                    <td>HDMI 2.0</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/HDMI_connector.jpg" alt="HDMI 2.0" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2017')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Soporta 4K@60Hz, HDR, 18 Gbps. Conector Type-A estándar en PCs y TVs.</td>
+                </tr>
+                <tr>
+                    <td class="year">2019</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>USB4 (Thunderbolt 4 opcional)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/USB4_port.jpg" alt="USB4" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2019')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Hasta 40 Gbps, obligatorio Type-C, compatible con Thunderbolt 3/4, 100 W PD, tunneling PCIe y DisplayPort.</td>
+                </tr>
+                <tr>
+                    <td class="year">2022</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>USB4 Versión 2.0</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/USB4_v2_port.jpg" alt="USB4 v2" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2022')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Hasta 80 Gbps (asimétrico 120 Gbps), PAM3, obligatorio en Thunderbolt 5, soporta PCIe 4.0 tunneling.</td>
+                </tr>
+                <tr>
+                    <td class="year">2024</td>
+                    <td class="type">Salida</td>
+                    <td>HDMI 2.1b</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/HDMI_2.1_port.jpg" alt="HDMI 2.1" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2024')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">48 Gbps, 8K@60Hz, 4K@240Hz, VRR, eARC, HDR dinámico. Estándar en GPUs modernas y TVs premium.</td>
+                </tr>
+                <tr>
+                    <td class="year">2025</td>
+                    <td class="type">Entrada/Salida</td>
+                    <td>USB 5Gbps (oficial USB 5)</td>
+                    <td class="image-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/USB_5Gbps_logo.jpg" alt="USB 5Gbps 2025" class="large-image">
+                        <button class="fullscreen-btn" onclick="openModal('modal-port2025')">Ver en pantalla completa</button>
+                    </td>
+                    <td class="description">Renombrado por USB-IF, hasta 80 Gbps simétrico (USB 5 Gen 4), 240 W EPR, obligatorio en nuevos dispositivos de alta velocidad.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // Cerrar modal al hacer clic fuera de la imagen
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
