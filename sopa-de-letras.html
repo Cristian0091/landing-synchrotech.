@@ -116,8 +116,8 @@
         }
 
         .cell.found {
-            background: #10b981;
             color: white;
+            font-weight: bold;
         }
 
         .words-section {
@@ -272,6 +272,17 @@
             'RECUPERACION', 'POSTURA', 'TECNICA', 'CONDICION', 'META'
         ];
 
+        const colors = [
+            '#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6',
+            '#1abc9c', '#e91e63', '#00bcd4', '#ff9800', '#673ab7',
+            '#009688', '#ff5722', '#8bc34a', '#ffeb3b', '#607d8b',
+            '#795548', '#f44336', '#2196f3', '#4caf50', '#ffc107',
+            '#9c27b0', '#00acc1', '#ff6f00', '#7b1fa2', '#0097a7',
+            '#d32f2f', '#1976d2', '#388e3c', '#f57c00', '#5e35b1'
+        ];
+
+        const wordColors = {};
+
         const gridSize = 20;
         let grid = [];
         let wordPositions = [];
@@ -284,6 +295,11 @@
             grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
             wordPositions = [];
             foundWords.clear();
+            
+            // Asignar un color a cada palabra
+            words.forEach((word, index) => {
+                wordColors[word] = colors[index];
+            });
             
             words.forEach(word => placeWord(word));
             fillEmptyCells();
@@ -425,10 +441,12 @@
             
             if (foundWord) {
                 foundWords.add(foundWord);
+                const color = wordColors[foundWord];
                 selectedCells.forEach(cell => {
                     const cellEl = document.querySelector(`[data-row="${cell.row}"][data-col="${cell.col}"]`);
                     cellEl.classList.remove('selected');
                     cellEl.classList.add('found');
+                    cellEl.style.backgroundColor = color;
                 });
                 renderWordsList();
                 updateProgress();
