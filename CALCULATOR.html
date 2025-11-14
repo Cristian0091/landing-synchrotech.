@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Calculadora profesional de IMC, ICC e ICA. Evalúa tu salud con resultados claros y recomendaciones personalizadas." />
+    <title>Calculadora de IMC, ICC e ICA | Salud Integral</title>
+    <style>
+        /* ========================================
+           RESET Y ESTILOS BASE
+        ======================================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========================================
+           CABECERA
+        ======================================== */
+        header {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* ========================================
+           FORMULARIO
+        ======================================== */
+        .form-section {
+            padding: 2rem;
+            flex: 1;
+        }
+        .form-grid {
+            display: grid;
+            gap: 1.2rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 640px) {
+            .form-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-grid .full { grid-column: span 2; }
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .field-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        label {
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
+        }
+        input[type="number"], select {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+        .unit-select {
+            width: 80px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4a90e2;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            min-height: 1.2em;
+        }
+
+        /* ========================================
+           BOTONES
+        ======================================== */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        button {
+            padding: 0.9rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 140px;
+        }
+        .btn-primary {
+            background: #4a90e2;
+            color: white;
+        }
+        .btn-primary:hover { background: #357abd; transform: translateY(-1px); }
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        .btn-secondary:hover { background: #7f8c8d; }
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        .btn-danger:hover { background: #c0392b; }
+
+        /* ========================================
+           RESULTADOS
+        ======================================== */
+        .results-section {
+            background: #f8fafc;
+            padding: 2rem;
+            border-top: 1px solid #eee;
+            display: none;
+            flex-direction: column;
+            gap: 1.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .results-section.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .result-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #4a90e2;
+        }
+        .result-card h3 {
+            color: #4a90e2;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .result-interpretation {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .interpret-bajo { background: #d1f2eb; color: #117a65; }
+        .interpret-normal { background: #d5f5e3; color: #27ae60; }
+        .interpret-sobrepeso { background: #fef9e7; color: #f39c12; }
+        .interpret-obesidad { background: #fadbd8; color: #c0392b; }
+        .interpret-riesgo { background: #fadbd8; color: #c0392b; }
+        .interpret-alto { background: #f5b7b1; color: #a93226; }
+
+        .recommendations {
+            background: #ebf3fd;
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-left: 4px solid #4a90e2;
+        }
+        .cta {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            color: #4a90e2;
+        }
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid #eee;
+        }
+
+        /* Iconos simples con pseudo-elementos */
+        .icon {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            position: relative;
+        }
+        .icon-imc::before { content: "⚖"; }
+        .icon-icc::before { content: "📏"; }
+        .icon-ica::before { content: "↕"; }
+        .icon-info::before { content: "ℹ"; }
+
+        /* Print styles */
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .btn-group, .form-section { display: none; }
+            .results-section { display: block !important; opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculadora de Salud Integral</h1>
+            <p>IMC • ICC • ICA | Evalúa tu bienestar con precisión</p>
+        </header>
+
+        <section class="form-section" aria-labelledby="form-title">
+            <h2 id="form-title" class="visually-hidden">Formulario de Medidas</h2>
+            <form id="healthForm" novalidate>
+                <div class="form-grid">
+
+                    <!-- Sexo -->
+                    <div class="field-group full">
+                        <label>Sexo</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="sexo" value="hombre" required />
+                                <span>Hombre</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="sexo" value="mujer" required />
+                                <span>Mujer</span>
+                            </label>
+                        </div>
+                        <div class="error" id="error-sexo"></div>
+                    </div>
+
+                    <!-- Peso -->
+                    <div class="field-group">
+                        <label for="peso">Peso</label>
+                        <div class="field-row">
+                            <input type="number" id="peso" step="0.1" min="0" required aria-describedby="error-peso unit-peso" />
+                            <select id="unidad-peso" class="unit-select" aria-label="Unidad de peso">
+                                <option value="kg">kg</option>
+                                <option value="lb">lb</option>
+                            </select>
+                        </div>
+                        <div class="error" id="error-peso"></div>
+                    </div>
+
+                    <!-- Estatura -->
+                    <div class="field-group">
+                        <label for="estatura">Estatura</label>
+                        <div class="field-row">
+                            <input type="number" id="estatura" step="0.1" min="0" required aria-describedby="error-estatura unit-estatura" />
+                            <select id="unidad-estatura" class="unit-select" aria-label="Unidad de estatura">
+                                <option value="cm">cm</option>
+                                <option value="m">m</option>
+                                <option value="ft">ft</option>
+                            </select>
+                        </div>
+                        <div class="error" id="error-estatura"></div>
+                    </div>
+
+                    <!-- Cintura -->
+                    <div class="field-group">
+                        <label for="cintura">Cintura</label>
+                        <div class="field-row">
+                            <input type="number" id="cintura" step="0.1" min="0" required aria-describedby="error-cintura unit-cintura" />
+                            <select id="unidad-cintura" class="unit-select" aria-label="Unidad de cintura">
+                                <option value="cm">cm</option>
+                                <option value="in">in</option>
+                            </select>
+                        </div>
+                        <div class="error" id="error-cintura"></div>
+                    </div>
+
+                    <!-- Cadera -->
+                    <div class="field-group">
+                        <label for="cadera">Cadera</label>
+                        <div class="field-row">
+                            <input type="number" id="cadera" step="0.1" min="0" required aria-describedby="error-cadera unit-cadera" />
+                            <select id="unidad-cadera" class="unit-select" aria-label="Unidad de cadera">
+                                <option value="cm">cm</option>
+                                <option value="in">in</option>
+                            </select>
+                        </div>
+                        <div class="error" id="error-cadera"></div>
+                    </div>
+
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn-primary">Calcular</button>
+                    <button type="button" id="limpiar" class="btn-secondary">Limpiar</button>
+                    <button type="button" id="imprimir" class="btn-secondary" style="display:none;">Imprimir</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Resultados -->
+        <section id="results" class="results-section" aria-live="polite">
+            <div class="result-card">
+                <h3><span class="icon icon-imc"></span> IMC: <span id="imc-valor">--</span></h3>
+                <p class="result-interpretation" id="imc-interpretacion">—</p>
+            </div>
+
+            <div class="result-card">
+                <h3><span class="icon icon-icc"></span> ICC: <span id="icc-valor">--</span></h3>
+                <p class="result-interpretation" id="icc-interpretacion">—</p>
+            </div>
+
+            <div class="result-card">
+                <h3><span class="icon icon-ica"></span> ICA: <span id="ica-valor">--</span></h3>
+                <p class="result-interpretation" id="ica-interpretacion">—</p>
+            </div>
+
+            <div class="recommendations" id="recomendaciones">
+                <strong><span class="icon icon-info"></span> Recomendaciones:</strong><br>
+                <span id="texto-recomendacion">Ingresa tus datos para obtener recomendaciones personalizadas.</span>
+            </div>
+
+            <p class="cta">Siempre consulta con un profesional de la salud para una evaluación completa.</p>
+        </section>
+
+        <footer>
+            <p>Calculadora desarrollada POR CRISTIAN VIDALES con fines informativos. No sustituye diagnóstico médico.</p>
+        </footer>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURACIÓN Y CONSTANTES
+        // ========================================
+        const FORM = document.getElementById('healthForm');
+        const RESULTS = document.getElementById('results');
+        const BTN_LIMPIAR = document.getElementById('limpiar');
+        const BTN_IMPRIMIR = document.getElementById('imprimir');
+
+        // Selectores de unidades
+        const UNIDAD_PESO = document.getElementById('unidad-peso');
+        const UNIDAD_ESTATURA = document.getElementById('unidad-estatura');
+        const UNIDAD_CINTURA = document.getElementById('unidad-cintura');
+        const UNIDAD_CADERA = document.getElementById('unidad-cadera');
+
+        // Inputs
+        const INPUTS = {
+            sexo: () => document.querySelector('input[name="sexo"]:checked'),
+            peso: document.getElementById('peso'),
+            estatura: document.getElementById('estatura'),
+            cintura: document.getElementById('cintura'),
+            cadera: document.getElementById('cadera')
+        };
+
+        // Errores
+        const ERRORS = {
+            sexo: document.getElementById('error-sexo'),
+            peso: document.getElementById('error-peso'),
+            estatura: document.getElementById('error-estatura'),
+            cintura: document.getElementById('error-cintura'),
+            cadera: document.getElementById('error-cadera')
+        };
+
+        // Resultados
+        const RESULTADOS = {
+            imc: document.getElementById('imc-valor'),
+            imcInt: document.getElementById('imc-interpretacion'),
+            icc: document.getElementById('icc-valor'),
+            iccInt: document.getElementById('icc-interpretacion'),
+            ica: document.getElementById('ica-valor'),
+            icaInt: document.getElementById('ica-interpretacion'),
+            recomendacion: document.getElementById('texto-recomendacion')
+        };
+
+        // Conversión de unidades
+        const CONVERSIONS = {
+            lb_to_kg: v => v * 0.453592,
+            kg_to_lb: v => v / 0.453592,
+            in_to_cm: v => v * 2.54,
+            cm_to_in: v => v / 2.54,
+            ft_to_cm: v => v * 30.48,
+            m_to_cm: v => v * 100,
+            cm_to_m: v => v / 100
+        };
+
+        // ========================================
+        // CARGA DE DATOS GUARDADOS
+        // ========================================
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('ultimaMedicion');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    cargarDatos(data);
+                    calcularYMostrar();
+                } catch (e) {
+                    console.warn("Datos guardados corruptos");
+                }
+            }
+        });
+
+        function cargarDatos(data) {
+            document.querySelector(`input[name="sexo"][value="${data.sexo}"]`).checked = true;
+            INPUTS.peso.value = data.peso.valor;
+            UNIDAD_PESO.value = data.peso.unidad;
+            INPUTS.estatura.value = data.estatura.valor;
+            UNIDAD_ESTATURA.value = data.estatura.unidad;
+            INPUTS.cintura.value = data.cintura.valor;
+            UNIDAD_CINTURA.value = data.cintura.unidad;
+            INPUTS.cadera.value = data.cadera.valor;
+            UNIDAD_CADERA.value = data.cadera.unidad;
+        }
+
+        // ========================================
+        // CONVERSIÓN AUTOMÁTICA DE UNIDADES
+        // ========================================
+        function setupUnitConversion(inputId, unitSelectId, conversions) {
+            const input = document.getElementById(inputId);
+            const select = document.getElementById(unitSelectId);
+            let lastUnit = select.value;
+
+            select.addEventListener('change', () => {
+                const currentValue = parseFloat(input.value);
+                if (isNaN(currentValue)) return;
+
+                const from = lastUnit;
+                const to = select.value;
+
+                if (from === to) return;
+
+                let cmValue;
+
+                // Convertir a cm/kg primero
+                if (from === 'lb') cmValue = CONVERSIONS.lb_to_kg(currentValue);
+                else if (from === 'kg') cmValue = currentValue;
+                else if (from === 'in') cmValue = CONVERSIONS.in_to_cm(currentValue);
+                else if (from === 'cm') cmValue = currentValue;
+                else if (from === 'ft') cmValue = CONVERSIONS.ft_to_cm(currentValue);
+                else if (from === 'm') cmValue = CONVERSIONS.m_to_cm(currentValue);
+
+                // Convertir a la nueva unidad
+                let newValue;
+                if (to === 'lb') newValue = CONVERSIONS.kg_to_lb(cmValue);
+                else if (to === 'kg') newValue = cmValue;
+                else if (to === 'in') newValue = CONVERSIONS.cm_to_in(cmValue);
+                else if (to === 'cm') newValue = cmValue;
+                else if (to === 'ft') newValue = cmValue / 30.48;
+                else if (to === 'm') newValue = cmValue / 100;
+
+                input.value = newValue.toFixed(2).replace(/\.?0+$/, '');
+                lastUnit = to;
+            });
+        }
+
+        setupUnitConversion('peso', 'unidad-peso', ['kg', 'lb']);
+        setupUnitConversion('estatura', 'unidad-estatura', ['cm', 'm', 'ft']);
+        setupUnitConversion('cintura', 'unidad-cintura', ['cm', 'in']);
+        setupUnitConversion('cadera', 'unidad-cadera', ['cm', 'in']);
+
+        // ========================================
+        // VALIDACIÓN Y CÁLCULO
+        // ========================================
+        FORM.addEventListener('submit', e => {
+            e.preventDefault();
+            if (validarFormulario()) {
+                calcularYMostrar();
+                guardarDatos();
+            }
+        });
+
+        function validarFormulario() {
+            let valido = true;
+            Object.values(ERRORS).forEach(el => el.textContent = '');
+
+            // Sexo
+            if (!INPUTS.sexo()) {
+                ERRORS.sexo.textContent = 'Por favor selecciona tu sexo.';
+                valido = false;
+            }
+
+            // Valores numéricos
+            ['peso', 'estatura', 'cintura', 'cadera'].forEach(campo => {
+                const valor = parseFloat(INPUTS[campo].value);
+                if (isNaN(valor) || valor <= 0) {
+                    ERRORS[campo].textContent = 'Ingresa un valor mayor a 0.';
+                    valido = false;
+                }
+            });
+
+            return valido;
+        }
+
+        function obtenerValorEnCM(id, unidadId) {
+            const valor = parseFloat(document.getElementById(id).value);
+            const unidad = document.getElementById(unidadId).value;
+            switch (unidad) {
+                case 'cm': return valor;
+                case 'in': return CONVERSIONS.in_to_cm(valor);
+                case 'm': return CONVERSIONS.m_to_cm(valor);
+                case 'ft': return CONVERSIONS.ft_to_cm(valor);
+                default: return valor;
+            }
+        }
+
+        function obtenerPesoEnKG() {
+            const valor = parseFloat(INPUTS.peso.value);
+            return UNIDAD_PESO.value === 'lb' ? CONVERSIONS.lb_to_kg(valor) : valor;
+        }
+
+        function calcularYMostrar() {
+            const sexo = INPUTS.sexo().value;
+            const pesoKG = obtenerPesoEnKG();
+            const estaturaCM = obtenerValorEnCM('estatura', 'unidad-estatura');
+            const cinturaCM = obtenerValorEnCM('cintura', 'unidad-cintura');
+            const caderaCM = obtenerValorEnCM('cadera', 'unidad-cadera');
+
+            // Cálculos
+            const imc = pesoKG / Math.pow(estaturaCM / 100, 2);
+            const icc = cinturaCM / caderaCM;
+            const ica = cinturaCM / estaturaCM;
+
+            // Mostrar resultados
+            RESULTADOS.imc.textContent = imc.toFixed(2);
+            RESULTADOS.icc.textContent = icc.toFixed(2);
+            RESULTADOS.ica.textContent = ica.toFixed(2);
+
+            // Interpretaciones
+            interpretarIMC(imc);
+            interpretarICC(icc, sexo);
+            interpretarICA(ica);
+            generarRecomendaciones(imc, icc, ica, sexo);
+
+            RESULTS.classList.add('show');
+            BTN_IMPRIMIR.style.display = 'inline-block';
+        }
+
+        // ========================================
+        // INTERPRETACIONES
+        // ========================================
+        function interpretarIMC(imc) {
+            let categoria, clase;
+            if (imc < 18.5) { categoria = 'Bajo peso'; clase = 'interpret-bajo'; }
+            else if (imc < 25) { categoria = 'Peso normal'; clase = 'interpret-normal'; }
+            else if (imc < 30) { categoria = 'Sobrepeso'; clase = 'interpret-sobrepeso'; }
+            else { categoria = 'Obesidad'; clase = 'interpret-obesidad'; }
+
+            RESULTADOS.imcInt.textContent = categoria;
+            RESULTADOS.imcInt.className = `result-interpretation ${clase}`;
+        }
+
+        function interpretarICC(icc, sexo) {
+            let categoria, clase;
+            const limiteNormal = sexo === 'hombre' ? 0.90 : 0.85;
+            const limiteAlto = sexo === 'hombre' ? 1.0 : 0.9;
+
+            if (icc < limiteNormal) { categoria = 'Riesgo bajo'; clase = 'interpret-normal'; }
+            else if (icc < limiteAlto) { categoria = 'Riesgo aumentado'; clase = 'interpret-riesgo'; }
+            else { categoria = 'Alto riesgo'; clase = 'interpret-alto'; }
+
+            RESULTADOS.iccInt.textContent = categoria;
+            RESULTADOS.iccInt.className = `result-interpretation ${clase}`;
+        }
+
+        function interpretarICA(ica) {
+            const texto = ica < 0.5
+                ? 'Aceptable (cintura < 50% de la estatura)'
+                : 'Riesgo elevado (cintura ≥ 50% de la estatura)';
+            const clase = ica < 0.5 ? 'interpret-normal' : 'interpret-riesgo';
+
+            RESULTADOS.icaInt.textContent = texto;
+            RESULTADOS.icaInt.className = `result-interpretation ${clase}`;
+        }
+
+        function generarRecomendaciones(imc, icc, ica, sexo) {
+            const msgs = [];
+
+            if (imc < 18.5) msgs.push("Considera aumentar tu ingesta calórica con alimentos nutritivos.");
+            else if (imc >= 25) msgs.push("Una dieta balanceada y actividad física regular pueden ayudarte a mejorar tu IMC.");
+
+            if (icc >= (sexo === 'hombre' ? 0.90 : 0.85)) {
+                msgs.push("El ICC elevado sugiere mayor grasa abdominal. Ejercicio aeróbico y fuerza pueden reducirlo.");
+            }
+
+            if (ica >= 0.5) {
+                msgs.push("El ICA alto indica riesgo cardiovascular. Controlar la cintura es clave.");
+            }
+
+            if (msgs.length === 0) {
+                msgs.push("¡Felicidades! Tus índices están en rangos saludables. Mantén un estilo de vida activo.");
+            }
+
+            msgs.push("Recuerda: estos son indicadores generales. Consulta a un médico o nutricionista para un plan personalizado.");
+
+            RESULTADOS.recomendacion.innerHTML = msgs.join('<br><br>');
+        }
+
+        // ========================================
+        // GUARDADO EN LOCALSTORAGE
+        // ========================================
+        function guardarDatos() {
+            const data = {
+                sexo: INPUTS.sexo().value,
+                peso: { valor: INPUTS.peso.value, unidad: UNIDAD_PESO.value },
+                estatura: { valor: INPUTS.estatura.value, unidad: UNIDAD_ESTATURA.value },
+                cintura: { valor: INPUTS.cintura.value, unidad: UNIDAD_CINTURA.value },
+                cadera: { valor: INPUTS.cadera.value, unidad: UNIDAD_CADERA.value },
+                fecha: new Date().toLocaleString()
+            };
+            localStorage.setItem('ultimaMedicion', JSON.stringify(data));
+        }
+
+        // ========================================
+        // LIMPIAR Y RESETEAR
+        // ========================================
+        BTN_LIMPIAR.addEventListener('click', () => {
+            FORM.reset();
+            Object.values(ERRORS).forEach(el => el.textContent = '');
+            RESULTS.classList.remove('show');
+            BTN_IMPRIMIR.style.display = 'none';
+            localStorage.removeItem('ultimaMedicion');
+        });
+
+        BTN_IMPRIMIR.addEventListener('click', () => {
+            window.print();
+        });
+
+        // ========================================
+        // ACCESIBILIDAD: Teclas
+        // ========================================
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                const form = e.target.form;
+                const index = Array.prototype.indexOf.call(form, e.target);
+                if (index === form.elements.length - 1) {
+                    FORM.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+
+        // ========================================
+        // FÓRMULAS (para referencia en comentarios)
+        // ========================================
+        /*
+         IMC  = peso (kg) / (estatura (m))²
+         ICC  = cintura (cm) / cadera (cm)
+         ICA  = cintura (cm) / estatura (cm)
+
+         Umbrales ICC:
+           Hombres: <0.90 (normal), 0.90–1.0 (riesgo), >1.0 (alto)
+           Mujeres: <0.85 (normal), 0.85–0.9 (riesgo), >0.9 (alto)
+
+         ICA: <0.5 = aceptable, ≥0.5 = riesgo
+        */
+    </script>
+</body>
+</html>
