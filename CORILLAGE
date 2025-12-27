@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Gasca Barber - Barbería profesional en florencia caqueta. Estilo, precisión y confianza en cada corte. Agenda tu cita por WhatsApp.">
     <meta name="keywords" content="barbería, corte de cabello, fade, barba, Bogotá, barbería profesional">
-    <title>Gasca Barber - Estilo y Precisión</title>
+    <title>CORILLAGE😎</title>
     <style>
         * {
             margin: 0;
@@ -549,7 +549,7 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="logo">Gasca Barber</div>
+        <div class="logo">CORILLAGE BARBER</div>
         <nav>
             <ul>
                 <li><a href="#inicio">Inicio</a></li>
@@ -563,7 +563,7 @@
     <!-- Hero Section -->
     <section id="inicio" class="hero">
         <h1>Estilo, Precisión y Confianza</h1>
-        <p>Tu look habla por ti — ven a Gasca Barber</p>
+        <p>Tu look habla por ti — ven a corillage barber</p>
         <a href="https://wa.me/573208058756?text=Hola,%20quiero%20agendar%20una%20cita" class="cta-button">Agenda tu Cita por WhatsApp</a>
         
         <!-- Barbers Section -->
@@ -574,19 +574,11 @@
                     <div class="barber-image-wrapper">
                         <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400" alt="Barbero 1" class="barber-image">
                     </div>
-                    <h4 class="barber-name">Daniel Gasca</h4>
+                    <h4 class="barber-name">MAURICIO FIGUE</h4>
                     <p class="barber-specialty">⭐BARBERO PROFESIONAL</p>
-                    <a href="https://wa.me/573208058756?text=Hola,%20quiero%20agendar%20una%20cita%20con%20Daniel" class="barber-cta">Agendar con Daniel</a>
+                    <a href="https://wa.me/573118842454?text=Hola,%20quiero%20agendar%20una%20cita%20con%20Daniel" class="barber-cta">Agendar con Daniel</a>
                 </div>
                 
-                <div class="barber-card">
-                    <div class="barber-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400" alt="Barbero 2" class="barber-image">
-                    </div>
-                    <h4 class="barber-name">victorino barber</h4>
-                    <p class="barber-specialty">⭐BARBERO PROFESIONAL</p>
-                    <a href="https://wa.me/573208058756?text=Hola,%20quiero%20agendar%20una%20cita%20con%20victorino" class="barber-cta">Agendar con victorino</a>
-                </div>
             </div>
         </div>
     </section>
@@ -656,7 +648,7 @@
         <div class="contact-info">
             <div class="contact-card">
                 <h3>📍 Ubicación</h3>
-                <p>avenida principal la ciudadela<br>florencia, caqueta</p>
+                <p>avenida principal <br>florencia, caqueta</p>
             </div>
             <div class="contact-card">
                 <h3>🕐 Horario</h3>
@@ -664,7 +656,7 @@
             </div>
             <div class="contact-card">
                 <h3>📱 Contacto</h3>
-                <p><a href="https://wa.me/573208058756">+573208058756</a><br>
+                <p><a href="https://wa.me/573118842454">+573118842454</a><br>
                 <a href="https://instagram.com/gasca_barber" target="_blank">@gasca_barber</a></p>
             </div>
             
@@ -672,7 +664,7 @@
             <div class="contact-map">
                 <h3>🗺️ Cómo Llegar</h3>
                 <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d588.4389970805645!2d-75.63116227629823!3d1.619416872233682!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sco!4v1762191648302!5m2!1ses!2sco" 
+                    <iframe src="https://maps.app.goo.gl/nnQ3r5FnnytoM8pA9" 
                             allowfullscreen="" 
                             loading="lazy" 
                             referrerpolicy="no-referrer-when-downgrade">
@@ -684,11 +676,11 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Gasca Barber. Todos los derechos reservados. | Diseño profesional para caballeros con estilo.</p>
+        <p>&copy; 2025 corillage barber. Todos los derechos reservados. | Diseño profesional para caballeros con estilo.</p>
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/573208058756?text=Hola,%20quiero%20agendar%20una%20cita" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/573118842454?text=Hola,%20quiero%20agendar%20una%20cita" class="whatsapp-float" target="_blank">
         💬
     </a>
 
@@ -752,9 +744,6 @@
 </html>
 </body>
 </html>
-
-
-
 
 
 
