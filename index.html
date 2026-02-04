@@ -3,154 +3,461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Quieres ser mi novia?</title>
-    <link href=" https://cristian0091.github.io/landing-synchrotech./2.html " rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
-            overflow: hidden;
-            padding: 20px;
-        }
-
-        .container {
-            text-align: center;
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        h1 {
-            font-size: clamp(28px, 8vw, 48px);
-            color: #fff;
-            margin-bottom: 50px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        .buttons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            position: relative;
-            min-height: 200px;
-        }
-
-        button {
-            font-family: 'Poppins', sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-            padding: 18px 60px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            color: #fff;
-        }
-
-        #btnSi {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            z-index: 1;
-        }
-
-        #btnSi:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        #btnSi:active {
-            transform: translateY(-1px);
-        }
-
-        #btnNo {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            position: absolute;
-            z-index: 1;
-        }
-
-        #btnNo:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(245, 87, 108, 0.4);
-        }
-
-        @media (max-width: 480px) {
-            button {
-                font-size: 18px;
-                padding: 15px 40px;
-            }
-
-            h1 {
-                margin-bottom: 40px;
-            }
-        }
-    </style>
+    <title>Drogadicción: Causas, Efectos y Prevención | Exposición Educativa</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
 </head>
 <body>
-    <div class="container">
-        <h1>¿Quieres ser mi novia?</h1>
-        <div class="buttons-container">
-            <button id="btnSi">Sí</button>
-            <button id="btnNo">No</button>
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">La drogadicción: causas, efectos y prevención</h1>
+            <p class="hero-subtitle">Una exposición educativa para comprender el problema de la drogadicción desde una perspectiva integral y preventiva</p>
+            <div class="hero-buttons">
+                <a href="#what-is" class="btn btn-primary">Comprender el problema</a>
+                <a href="#fishbone" class="btn btn-secondary">Ver diagrama interactivo</a>
+            </div>
         </div>
-    </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
 
-    <script>
-        const btnSi = document.getElementById('btnSi');
-        const btnNo = document.getElementById('btnNo');
-        let clickCount = 0;
+    <!-- Sección: ¿Qué es la drogadicción? -->
+    <section class="section what-is-section" id="what-is">
+        <div class="container">
+            <h2 class="section-title">¿Qué es la drogadicción?</h2>
+            <div class="what-is-content">
+                <div class="what-is-text">
+                    <p>La drogadicción, también conocida como trastorno por consumo de sustancias, es una enfermedad compleja caracterizada por el consumo compulsivo de drogas a pesar de las consecuencias negativas para la salud, las relaciones y el funcionamiento social.</p>
+                    <p>Se trata de un trastorno cerebral que afecta el comportamiento, la capacidad de toma de decisiones y el autocontrol. No es una simple falta de voluntad, sino una condición médica que requiere tratamiento y apoyo.</p>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="fas fa-brain"></i>
+                            <h3>Enfermedad cerebral</h3>
+                            <p>Afecta estructuras y funciones del cerebro</p>
+                        </div>
+                        <div class="key-point">
+                            <i class="fas fa-heartbeat"></i>
+                            <h3>Dependencia física y psicológica</h3>
+                            <p>Genera tolerancia, abstinencia y consumo compulsivo</p>
+                        </div>
+                        <div class="key-point">
+                            <i class="fas fa-sync-alt"></i>
+                            <h3>Condición crónica</h3>
+                            <p>Requiere tratamiento continuo y seguimiento</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="what-is-image">
+                    <div class="illustration">
+                        <div class="brain-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="connection-lines">
+                            <div class="line line-1"></div>
+                            <div class="line line-2"></div>
+                            <div class="line line-3"></div>
+                        </div>
+                        <div class="impact-icons">
+                            <div class="impact-icon">
+                                <i class="fas fa-user"></i>
+                                <span>Personal</span>
+                            </div>
+                            <div class="impact-icon">
+                                <i class="fas fa-home"></i>
+                                <span>Familiar</span>
+                            </div>
+                            <div class="impact-icon">
+                                <i class="fas fa-users"></i>
+                                <span>Social</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        btnSi.addEventListener('click', function() {
-            window.location.href = 'https://cristian0091.github.io/landing-synchrotech./2.html';
-        });
-
-        btnNo.addEventListener('click', function(e) {
-            e.preventDefault();
-            clickCount++;
-
-            if (clickCount >= 3) {
-                btnNo.textContent = '¿Por qué no dices que sí?';
-            }
-
-            moveButton();
-        });
-
-        function moveButton() {
-            const container = document.querySelector('.buttons-container');
-            const containerRect = container.getBoundingClientRect();
-            const btnRect = btnNo.getBoundingClientRect();
-
-            const maxX = containerRect.width - btnRect.width;
-            const maxY = containerRect.height - btnRect.height;
-
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
-
-            btnNo.style.left = randomX + 'px';
-            btnNo.style.top = randomY + 'px';
-        }
-
-        // Posicionar el botón "No" inicialmente
-        window.addEventListener('load', function() {
-            const container = document.querySelector('.buttons-container');
-            const btnRect = btnNo.getBoundingClientRect();
+    <!-- Sección Principal: Diagrama Espina de Pescado -->
+    <section class="section fishbone-section" id="fishbone">
+        <div class="container">
+            <h2 class="section-title">Causas de la drogadicción: Diagrama de Ishikawa</h2>
+            <p class="section-subtitle">Interactúa con cada categoría para explorar los factores que contribuyen al problema</p>
             
-            btnNo.style.left = (container.offsetWidth / 2 - btnRect.width / 2) + 'px';
-            btnNo.style.top = '80px';
-        });
-    </script>
-</html>
+            <div class="diagram-controls">
+                <button id="reset-diagram" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Reiniciar diagrama
+                </button>
+                <button id="show-all" class="btn btn-secondary">
+                    <i class="fas fa-eye"></i> Ver todas las causas
+                </button>
+            </div>
+            
+            <div class="diagram-container">
+                <!-- Cabeza del pez (problema) -->
+                <div class="fish-head">
+                    <div class="fish-head-content">
+                        <h3>DROGADICCIÓN</h3>
+                        <p>Problema central</p>
+                        <div class="fish-head-details">
+                            <p>Enfermedad compleja que requiere comprensión multidimensional</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Línea central (espina principal) -->
+                <div class="central-line">
+                    <div class="line-segment"></div>
+                    <div class="line-segment"></div>
+                    <div class="line-segment"></div>
+                </div>
+                
+                <!-- Espinas (causas) - LADO IZQUIERDO -->
+                <div class="fishbone-left">
+                    <!-- Factores Familiares -->
+                    <div class="bone bone-family" data-category="family">
+                        <div class="bone-line"></div>
+                        <div class="bone-arrow"></div>
+                        <div class="bone-content">
+                            <div class="bone-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <h3>Factores Familiares</h3>
+                            <div class="bone-details">
+                                <ul>
+                                    <li><strong>Historial familiar</strong> de consumo</li>
+                                    <li><strong>Conflictos familiares</strong> constantes</li>
+                                    <li>Falta de supervisión parental</li>
+                                    <li>Comunicación deficiente</li>
+                                    <li>Experiencias de abuso o negligencia</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Factores Sociales -->
+                    <div class="bone bone-social" data-category="social">
+                        <div class="bone-line"></div>
+                        <div class="bone-arrow"></div>
+                        <div class="bone-content">
+                            <div class="bone-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Factores Sociales</h3>
+                            <div class="bone-details">
+                                <ul>
+                                    <li><strong>Presión de grupo</strong></li>
+                                    <li>Normalización del consumo</li>
+                                    <li>Disponibilidad de sustancias</li>
+                                    <li>Falta de oportunidades</li>
+                                    <li>Marginación social</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Factores Psicológicos -->
+                    <div class="bone bone-psychological" data-category="psychological">
+                        <div class="bone-line"></div>
+                        <div class="bone-arrow"></div>
+                        <div class="bone-content">
+                            <div class="bone-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>Factores Psicológicos</h3>
+                            <div class="bone-details">
+                                <ul>
+                                    <li><strong>Baja autoestima</strong></li>
+                                    <li>Problemas de salud mental</li>
+                                    <li>Dificultad para manejar emociones</li>
+                                    <li>Curiosidad y búsqueda de sensaciones</li>
+                                    <li>Problemas de conducta</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Espinas (causas) - LADO DERECHO -->
+                <div class="fishbone-right">
+                    <!-- Factores Económicos -->
+                    <div class="bone bone-economic" data-category="economic">
+                        <div class="bone-line"></div>
+                        <div class="bone-arrow"></div>
+                        <div class="bone-content">
+                            <div class="bone-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Factores Económicos</h3>
+                            <div class="bone-details">
+                                <ul>
+                                    <li><strong>Pobreza y desigualdad</strong></li>
+                                    <li>Desempleo</li>
+                                    <li>Falta de oportunidades educativas</li>
+                                    <li>Acceso limitado a servicios de salud</li>
+                                    <li>Economías ilícitas atractivas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Presión del Entorno -->
+                    <div class="bone bone-environmental" data-category="environmental">
+                        <div class="bone-line"></div>
+                        <div class="bone-arrow"></div>
+                        <div class="bone-content">
+                            <div class="bone-icon">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <h3>Presión del Entorno</h3>
+                            <div class="bone-details">
+                                <ul>
+                                    <li><strong>Ambiente de alto riesgo</strong></li>
+                                    <li>Exposición temprana a drogas</li>
+                                    <li>Influencia de medios de comunicación</li>
+                                    <li>Ambientes laborales estresantes</li>
+                                    <li>Vivienda en zonas conflictivas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Falta de Información -->
+                    <div class="bone bone-information" data-category="information">
+                        <div class="bone-line"></div>
+                        <div class="bone-arrow"></div>
+                        <div class="bone-content">
+                            <div class="bone-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <h3>Falta de Información</h3>
+                            <div class="bone-details">
+                                <ul>
+                                    <li><strong>Desconocimiento de riesgos</strong></li>
+                                    <li>Información errónea sobre drogas</li>
+                                    <li>Falta de educación preventiva</li>
+                                    <li>Estigmatización que dificulta el diálogo</li>
+                                    <li>Acceso limitado a fuentes confiables</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panel de información detallada -->
+            <div class="info-panel">
+                <div class="info-header">
+                    <h3 id="info-title">Selecciona una categoría para ver detalles</h3>
+                    <div class="info-stats">
+                        <span id="info-count">1 de 6</span> categorías exploradas
+                    </div>
+                </div>
+                <div class="info-content">
+                    <div class="info-description">
+                        <p id="info-text">Haz clic en cualquiera de las causas del diagrama para obtener información detallada sobre cómo contribuye al problema de la drogadicción.</p>
+                        <div class="info-visual">
+                            <div class="visual-bar">
+                                <div class="visual-fill" id="visual-fill"></div>
+                            </div>
+                            <div class="visual-label">Impacto relativo</div>
+                        </div>
+                    </div>
+                    <div class="info-details">
+                        <h4>Factores específicos:</h4>
+                        <ul id="info-list">
+                            <li>Selecciona una categoría para ver sus factores específicos</li>
+                        </ul>
+                        <div class="info-sources">
+                            <h4>Fuentes y datos:</h4>
+                            <p id="info-sources">La información se basa en estudios de la OMS y organizaciones de salud pública.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-footer">
+                    <button id="prev-category" class="btn-nav">
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <div class="progress-indicator" id="progress-indicator">
+                        <div class="progress-dot active" data-category="family"></div>
+                        <div class="progress-dot" data-category="social"></div>
+                        <div class="progress-dot" data-category="psychological"></div>
+                        <div class="progress-dot" data-category="economic"></div>
+                        <div class="progress-dot" data-category="environmental"></div>
+                        <div class="progress-dot" data-category="information"></div>
+                    </div>
+                    <button id="next-category" class="btn-nav">
+                        Siguiente <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="diagram-instructions">
+                <p><i class="fas fa-mouse-pointer"></i> <strong>Interactúa con el diagrama:</strong> Haz clic en cada categoría • Mantén el cursor para ver detalles • Usa los botones de navegación</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Consecuencias -->
+    <section class="section consequences-section" id="consequences">
+        <div class="container">
+            <h2 class="section-title">Consecuencias de la drogadicción</h2>
+            <p class="section-subtitle">El consumo de drogas afecta múltiples aspectos de la vida personal, familiar y social</p>
+            
+            <div class="consequences-cards">
+                <div class="consequence-card">
+                    <div class="consequence-icon">
+                        <i class="fas fa-user-injured"></i>
+                    </div>
+                    <h3>Consecuencias Personales</h3>
+                    <ul>
+                        <li>Deterioro de la salud física y mental</li>
+                        <li>Problemas de memoria y concentración</li>
+                        <li>Dependencia física y psicológica</li>
+                        <li>Aumento del riesgo de enfermedades</li>
+                        <li>Dificultades financieras</li>
+                        <li>Pérdida de motivación y objetivos</li>
+                    </ul>
+                </div>
+                
+                <div class="consequence-card">
+                    <div class="consequence-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Consecuencias Familiares</h3>
+                    <ul>
+                        <li>Conflictos y desintegración familiar</li>
+                        <li>Problemas económicos en el hogar</li>
+                        <li>Negligencia en responsabilidades</li>
+                        <li>Transmisión intergeneracional del problema</li>
+                        <li>Estrés y preocupación constante</li>
+                        <li>Aislamiento social de la familia</li>
+                    </ul>
+                </div>
+                
+                <div class="consequence-card">
+                    <div class="consequence-icon">
+                        <i class="fas fa-users-slash"></i>
+                    </div>
+                    <h3>Consecuencias Sociales</h3>
+                    <ul>
+                        <li>Dificultades laborales y desempleo</li>
+                        <li>Problemas legales y delincuencia</li>
+                        <li>Estigmatización y marginación</li>
+                        <li>Costos elevados para los sistemas de salud</li>
+                        <li>Inseguridad y violencia asociada</li>
+                        <li>Pérdida de productividad social</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Prevención y Concientización -->
+    <section class="section prevention-section" id="prevention">
+        <div class="container">
+            <h2 class="section-title">Prevención y Concientización</h2>
+            <p class="section-subtitle">La prevención es la herramienta más efectiva para combatir la drogadicción</p>
+            
+            <div class="prevention-content">
+                <div class="prevention-item">
+                    <div class="prevention-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="prevention-text">
+                        <h3>Educación Temprana</h3>
+                        <p>Implementar programas educativos desde la infancia que informen sobre los riesgos del consumo de drogas, promuevan habilidades para la vida y fortalezcan la toma de decisiones responsables.</p>
+                    </div>
+                </div>
+                
+                <div class="prevention-item">
+                    <div class="prevention-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="prevention-text">
+                        <h3>Comunicación Familiar</h3>
+                        <p>Fomentar el diálogo abierto y honesto en el hogar, establecer normas claras, supervisar actividades y crear un ambiente de apoyo emocional donde se puedan expresar preocupaciones sin temor.</p>
+                    </div>
+                </div>
+                
+                <div class="prevention-item">
+                    <div class="prevention-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="prevention-text">
+                        <h3>Apoyo Comunitario</h3>
+                        <p>Desarrollar redes de apoyo comunitario, ofrecer alternativas de ocio saludable, crear espacios libres de drogas y promover la inclusión social de personas en riesgo.</p>
+                    </div>
+                </div>
+                
+                <div class="prevention-item">
+                    <div class="prevention-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <div class="prevention-text">
+                        <h3>Búsqueda de Ayuda</h3>
+                        <p>Conocer y promover los recursos disponibles para prevención y tratamiento, eliminar el estigma asociado a pedir ayuda y normalizar la búsqueda de apoyo profesional cuando sea necesario.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="prevention-message">
+                <h3>Mensaje de Esperanza</h3>
+                <p>La drogadicción es una enfermedad tratable. Con el apoyo adecuado, las personas pueden recuperarse y reconstruir sus vidas. La prevención, la educación y la empatía son nuestras herramientas más poderosas para crear comunidades más saludables.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3><i class="fas fa-brain"></i> Conciencia Preventiva</h3>
+                    <p>Exposición educativa sobre drogadicción</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Secciones</h4>
+                    <ul>
+                        <li><a href="#hero">Inicio</a></li>
+                        <li><a href="#what-is">¿Qué es?</a></li>
+                        <li><a href="#fishbone">Causas</a></li>
+                        <li><a href="#consequences">Consecuencias</a></li>
+                        <li><a href="#prevention">Prevención</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Recursos de Ayuda</h4>
+                    <ul>
+                        <li><i class="fas fa-phone-alt"></i> Líneas de apoyo nacional</li>
+                        <li><i class="fas fa-hospital"></i> Centros de tratamiento</li>
+                        <li><i class="fas fa-user-md"></i> Profesionales de la salud</li>
+                        <li><i class="fas fa-book"></i> Material educativo</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-message">La información es la primera línea de defensa contra la drogadicción. Educar, prevenir y apoyar son compromisos de toda la sociedad.</p>
+                <div class="footer-copyright">
+                    <p>© <span id="current-year">2023</span> Exposición Educativa sobre Drogadicción. Proyecto con fines educativos y de concientización.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón para volver al inicio -->
+    <button id="back-to-top" class="back-to-top-btn">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js"></script>
 </body>
+</html>
