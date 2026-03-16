@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hola amor jeje</title>
+    <style>
+        /* Asegura que el body y html llenen la pantalla */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Contenedor con imagen de fondo */
+        .fondo {
+            background-image: url("https://cristian0091.github.io/landing-synchrotech./20260314_221227.jpg"); /* Reemplaza con tu imagen */
+            background-size: cover; /* Cubre toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Estilo del texto de bienvenida */
+        .bienvenida {
+            color: white;
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            animation: fadeIn 5s infinite; /* Animación de aparición */
+        }
+
+        /* Definición de la animación */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Hacer que sea responsivo */
+        @media (max-width: 600px) {
+            .bienvenida {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fondo">
+        <div class="bienvenida">
+            Hola amor mire lo que aprendi jeje
+        </div>
+    </div>
+</body>
+</html>
