@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PokéLanding</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #e0f7fa, #ffffff);
+        overflow: hidden;
+    }
+
+    /* Fondo sutil tipo Pokémon */
+    body::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,0,0,0.1) 10%, transparent 10%);
+        background-size: 50px 50px;
+        animation: moveBg 20s linear infinite;
+    }
+
+    @keyframes moveBg {
+        from { transform: translate(0,0); }
+        to { transform: translate(-50px, -50px); }
+    }
+
+    .container {
+        text-align: center;
+        z-index: 2;
+    }
+
+    /* Pokebola */
+    .pokeball {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: linear-gradient(to bottom, red 50%, white 50%);
+        border: 5px solid black;
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.5s ease;
+    }
+
+    .pokeball::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: black;
+        transform: translateY(-50%);
+    }
+
+    .pokeball::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30px;
+        height: 30px;
+        background: white;
+        border: 5px solid black;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .pokeball.open {
+        transform: rotate(20deg) scale(1.1);
+    }
+
+    /* Contenido oculto */
+    .content {
+        margin-top: 30px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease;
+    }
+
+    .content.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .content img {
+        width: 200px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        max-width: 300px;
+        margin: auto;
+    }
+
+    .card h2 {
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        color: #555;
+        line-height: 1.5;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="pokeball" onclick="openPokeball()"></div>
+
+    <div class="content" id="content">
+
+        <!-- 🔴 AQUÍ PONES TU IMAGEN -->
+        <img src="https://cristian0091.github.io/landing-synchrotech./20260314_221227.jpg" id="pokemonImage">
+
+        <div class="card">
+            <h2>Un solo Pokémon </h2>
+            <p>
+                En una pokébola solo cabe un Pokémon...  
+                y así como eso, hay cosas en la vida que son únicas, especiales  
+                y no se reemplazan. como tu mi amor chiquita
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function openPokeball() {
+    const ball = document.querySelector('.pokeball');
+    const content = document.getElementById('content');
+
+    ball.classList.add('open');
+
+    setTimeout(() => {
+        content.classList.add('show');
+    }, 400);
+}
+</script>
+
+</body>
+</html>
