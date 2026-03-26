@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>EcoVasos Amazónicos | Florencia Caquetá</title>
+  <title>EcoVasos Amazónicos | Florencia Caquetá | Demo Zynchrotec</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -325,9 +325,173 @@
         padding: 12px 24px;
       }
     }
+
+    /* ========== MODAL AVISO DE PRUEBA ========== */
+    .demo-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .demo-modal {
+      background: linear-gradient(145deg, #10261a, #071c0f);
+      border-radius: 42px;
+      max-width: 560px;
+      width: 90%;
+      padding: 32px 28px;
+      border: 1px solid rgba(124, 252, 0, 0.7);
+      box-shadow: 0 30px 40px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(80, 200, 30, 0.2);
+      text-align: center;
+      animation: fadeSlideUp 0.4s ease-out;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .demo-modal h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #D4FF7C, #7CFC00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 18px;
+      letter-spacing: -0.3px;
+    }
+
+    .demo-modal p {
+      margin: 14px 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #e0f0d8;
+    }
+
+    .demo-modal strong {
+      color: #b8ff78;
+      font-weight: 700;
+    }
+
+    .timer-box {
+      background: #071d0e;
+      padding: 12px 10px;
+      border-radius: 60px;
+      margin: 20px 0;
+      font-weight: 700;
+      font-size: 1.5rem;
+      font-family: monospace;
+      letter-spacing: 1.5px;
+      border: 1px solid #5bb82e;
+      display: inline-block;
+      width: auto;
+      min-width: 260px;
+      color: #E6FFB3;
+      backdrop-filter: blur(2px);
+    }
+
+    .timer-box span {
+      font-size: 1.5rem;
+      background: #0e2a1a;
+      padding: 6px 12px;
+      border-radius: 40px;
+    }
+
+    .next-button {
+      background: linear-gradient(95deg, #1f8a4c, #0f6a38);
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 12px 32px;
+      border-radius: 60px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+      border: 1px solid #a3ff66;
+    }
+
+    .next-button:hover {
+      background: linear-gradient(95deg, #2ba85c, #128048);
+      transform: scale(1.02);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+
+    .tech-badge {
+      font-size: 0.7rem;
+      background: rgba(0,0,0,0.5);
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 40px;
+      margin-top: 12px;
+      color: #b0e07c;
+    }
+
+    @media (max-width: 550px) {
+      .demo-modal {
+        padding: 24px 20px;
+      }
+      .demo-modal h2 {
+        font-size: 1.6rem;
+      }
+      .timer-box {
+        font-size: 1.1rem;
+        min-width: 200px;
+      }
+      .timer-box span {
+        font-size: 1.1rem;
+      }
+    }
   </style>
 </head>
 <body>
+
+<!-- MODAL AVISO OBLIGATORIO: PÁGINA DE PRUEBA + CORREDOR TIEMPO 10 DÍAS + CRÉDITOS ZYNCHROTEC -->
+<div id="demoOverlay" class="demo-overlay">
+  <div class="demo-modal">
+    <h2>🔬 Página de prueba técnica</h2>
+    <p>Esta landing page es una <strong>demostración oficial</strong> desarrollada por <strong style="color:#C0FF3E;">ZYNCHROTEC by Cristian Vidales</strong>.<br>
+    Todo el código ha sido diseñado con <strong>altos estándares técnicos</strong> (semántica HTML5, CSS Grid/Flex, accesibilidad, optimización y buenas prácticas).</p>
+    <p>✅ <strong>Protegido por derechos de autor ©</strong> – cualquier uso no autorizado queda prohibido.<br>
+    🌱 Este entorno de prueba muestra el concepto <strong>EcoVasos Amazónicos</strong> con fines promocionales.</p>
+    
+    <!-- CORREDOR DE TIEMPO HACIA ATRÁS DE 10 DÍAS (CUENTA REGRESIVA) -->
+    <div style="margin: 20px 0 8px;">
+      <i class="fas fa-hourglass-half" style="color: #7CFC00; font-size: 1.6rem;"></i>
+      <p style="margin: 8px 0 4px; font-weight: 600;">⏳ <strong>Corredor de tiempo de prueba</strong> (demo limitada 10 días)</p>
+      <div class="timer-box">
+        <span id="countdownDisplay">--d --h --m --s</span>
+      </div>
+      <p style="font-size: 0.75rem; margin-top: 4px;">⏱️ Período de evaluación activo desde tu primera visita.<br>La demo expirará automáticamente después de 10 días.</p>
+    </div>
+    
+    <p><i class="fas fa-code"></i> <strong>Zynchrotec</strong> – Innovación con alma amazónica.<br>
+    <span class="tech-badge"><i class="fas fa-copyright"></i> Código 100% original | Estándares W3C | Protección intelectual</span></p>
+    
+    <button id="closeDemoBtn" class="next-button">Siguiente <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
 
 <div class="container">
   <header>
@@ -434,10 +598,86 @@
     </div>
     <p style="margin-top: 20px;">📍 Hecho con amor en Florencia, Caquetá - Corazón de la Amazonía colombiana 🇨🇴</p>
     <p>© 2026 EcoVasos Amazónicos | Sostenibilidad y arte ancestral | Contacto directo: 311 884 2454</p>
-    <h6>esta pagina fue creada con estandares tecnicos zynchrotec by cristian vidales</h6>
+    <h6>✨ Desarrollado con estándares técnicos superiores por ZYNCHROTEC by Cristian Vidales ✨</h6>
   </footer>
 </div>
 
-<!-- Nota adicional: todas las imágenes de Unsplash son referenciales y representan vasos ecológicos y naturaleza amazónica -->
+<script>
+  (function() {
+    // === CORREDOR DE TIEMPO HACIA ATRÁS DE 10 DÍAS (cuenta regresiva con localStorage) ===
+    // Establece una fecha tope de 10 días desde la primera visita.
+    let endTimestamp = null;
+    const STORAGE_KEY = 'ZynchoDemoEnd_EcoVasos';
+    const storedEnd = localStorage.getItem(STORAGE_KEY);
+    const now = Date.now();
+    
+    if (storedEnd && !isNaN(parseInt(storedEnd))) {
+      endTimestamp = parseInt(storedEnd);
+      // Si por alguna razón la fecha almacenada ya es menor a ahora, se puede resetear pero mantenemos demo vigente.
+      if (endTimestamp < now) {
+        // demo expirada pero no reiniciamos, solo mostramos 0.
+        // se mantiene el timestamp para mostrar expirado.
+      }
+    } else {
+      // Primera visita: establecer +10 días desde ahora
+      endTimestamp = now + (10 * 24 * 60 * 60 * 1000);
+      localStorage.setItem(STORAGE_KEY, endTimestamp.toString());
+    }
+    
+    // Elemento donde mostraremos el contador
+    const countdownSpan = document.getElementById('countdownDisplay');
+    
+    function updateCountdown() {
+      if (!countdownSpan) return;
+      const current = Date.now();
+      const diff = endTimestamp - current;
+      
+      if (diff <= 0) {
+        // Tiempo cumplido: demo simbólicamente expirada (solo aviso)
+        countdownSpan.innerHTML = '0d 0h 0m 0s ⏰';
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (86400000)) / (3600000));
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      
+      countdownSpan.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    
+    // Actualizar cada segundo
+    updateCountdown();
+    const intervalTimer = setInterval(updateCountdown, 1000);
+    
+    // === CONTROL DEL MODAL DE AVISO: botón siguiente ===
+    const overlay = document.getElementById('demoOverlay');
+    const closeBtn = document.getElementById('closeDemoBtn');
+    
+    if (overlay && closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Cerrar overlay con animación suave
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          // Liberar recursos del timer no es necesario, sigue funcionando pero sin afectar.
+        }, 280);
+        overlay.style.transition = 'opacity 0.25s ease';
+      });
+    }
+    
+    // Opcional: si se presiona fuera del modal no cierra para evitar pasar por alto el aviso.
+    // Solo el botón Siguiente cierra el modal.
+    // También aseguramos que el contenido principal quede bloqueado hasta cerrar el modal
+    // Esto ya se logra con el overlay fixed.
+    
+    // Pequeño detalle: si alguien intenta hacer scroll mientras el modal está visible, no afecta.
+    // El modal se cierra únicamente con botón.
+    
+    // (Mensaje implícito de estándares técnicos y copyright ya mostrado en modal)
+    console.log('Zynchrotec by Cristian Vidales | Página demo con corredor de 10 días | Altos estándares técnicos y copyright reservado.');
+  })();
+</script>
 </body>
 </html>
