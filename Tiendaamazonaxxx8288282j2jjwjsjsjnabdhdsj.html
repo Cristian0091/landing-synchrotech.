@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>EcoVasos Amazónicos | Florencia Caquetá</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0a1f12;
+      color: #f0f7ea;
+      line-height: 1.5;
+      /* Fondo AMAZÓNICO impresionante: selva densa con río y neblina */
+      background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=90');
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center 30%;
+      position: relative;
+    }
+
+    /* Overlay profundo para resaltar contenido y dar misticismo */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, rgba(10, 40, 20, 0.75), rgba(2, 20, 8, 0.88));
+      backdrop-filter: blur(2px);
+      z-index: -2;
+    }
+
+    /* Textura sutil de hojas (efecto decorativo) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" opacity="0.08"><path fill="none" stroke="%2380ff66" stroke-width="1.2" d="M320,250 Q380,180 440,220 Q500,260 520,320 Q540,380 500,440 Q460,500 390,490 Q320,480 300,400 Q280,320 320,250Z M620,520 Q670,470 720,490 Q770,510 750,570 Q730,630 680,640 Q630,650 610,600 Q590,550 620,520Z M120,720 Q180,680 230,710 Q280,740 260,800 Q240,860 180,870 Q120,880 100,810 Q80,740 120,720Z"/></svg>');
+      background-repeat: repeat;
+      background-size: 280px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* contenedor general para dar estructura */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HEADER con esencia de selva */
+    header {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      border-bottom: 2px solid rgba(124, 252, 0, 0.3);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      background: rgba(10, 30, 18, 0.55);
+      backdrop-filter: blur(6px);
+      border-radius: 48px;
+      padding: 40px 32px;
+      border: 1px solid rgba(124, 252, 0, 0.5);
+      box-shadow: 0 25px 40px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #C0FF3E, #7CFC00, #3EAC2A);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      letter-spacing: -0.5px;
+    }
+
+    .hero-content p {
+      font-size: 1.25rem;
+      margin: 20px 0 10px;
+      font-weight: 400;
+      color: #e9f5e0;
+    }
+
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(95deg, #25D366, #128C7E);
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 14px 32px;
+      border-radius: 60px;
+      text-decoration: none;
+      transition: 0.25s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-wa i {
+      font-size: 1.6rem;
+    }
+
+    .btn-wa:hover {
+      transform: scale(1.03);
+      background: linear-gradient(95deg, #20bd59, #0e6b5e);
+      box-shadow: 0 15px 25px rgba(0,0,0,0.4);
+    }
+
+    /* SECCIÓN PRODUCTOS */
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .section-title span {
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      padding: 8px 24px;
+      border-radius: 60px;
+      border-left: 5px solid #7CFC00;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: rgba(20, 45, 30, 0.82);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(124, 252, 0, 0.35);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover {
+      transform: translateY(-12px);
+      border-color: #7CFC00;
+      background: rgba(28, 65, 40, 0.9);
+      box-shadow: 0 25px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.02);
+    }
+
+    .card-content {
+      padding: 20px 18px 24px;
+    }
+
+    .card-content h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #d9ffb8;
+    }
+
+    .card-content p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #C0FF3E;
+      margin: 12px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .price small {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #c6e6b0;
+    }
+
+    .btn-card-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #1f3b2c;
+      border: 1px solid #7CFC00;
+      color: #E9FFCF;
+      padding: 8px 18px;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: 0.2s;
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn-card-wa i {
+      font-size: 1.1rem;
+      color: #25D366;
+    }
+
+    .btn-card-wa:hover {
+      background: #2e553b;
+      color: white;
+      border-color: #A3FF4A;
+    }
+
+    /* sección valores */
+    .values-section {
+      text-align: center;
+      margin: 60px 0 30px;
+      background: rgba(0, 25, 10, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      padding: 40px 20px;
+      border: 1px solid rgba(124,252,0,0.4);
+    }
+
+    .values-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .value-item {
+      flex: 1;
+      min-width: 180px;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .value-item i {
+      font-size: 2.8rem;
+      color: #7CFC00;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* footer */
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      margin-top: 50px;
+      background: rgba(6, 20, 10, 0.85);
+      backdrop-filter: blur(5px);
+      border-top: 1px solid #2e6b3e;
+      font-size: 0.9rem;
+    }
+
+    .social-links a {
+      color: #BCF87C;
+      margin: 0 12px;
+      font-size: 1.5rem;
+      transition: 0.2s;
+      display: inline-block;
+    }
+
+    .social-links a:hover {
+      color: #F0FFA2;
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 680px) {
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+      .section-title {
+        font-size: 1.9rem;
+      }
+      .products-grid {
+        gap: 20px;
+      }
+      .card-content h3 {
+        font-size: 1.3rem;
+      }
+      .btn-wa {
+        font-size: 1rem;
+        padding: 12px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="hero-content">
+      <h1>🌿 EcoVasos Amazónicos</h1>
+      <p>Arte sostenible inspirado en la selva, el río y la magia de Florencia Caquetá.<br>Cada vaso cuenta una historia de conservación y cultura local.</p>
+      <!-- Botón principal que lleva a WhatsApp (número 3118842454) -->
+      <a href="https://wa.me/573118842454?text=Hola%20%F0%9F%8C%B4%20me%20encant%C3%B3%20la%20colecci%C3%B3n%20EcoVasos.%20Quiero%20comprar%20y%20apoyar%20el%20arte%20amaz%C3%B3nico." class="btn-wa" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i> Comprar ahora por WhatsApp
+      </a>
+    </div>
+  </header>
+
+  <section style="margin: 30px 0 20px;">
+    <h2 class="section-title"><span>✨ Nuestros 6 diseños únicos ✨</span></h2>
+    <div class="products-grid">
+      
+      <!-- PRODUCTO 1: Río Amazónico -->
+      <div class="card">
+        <img class="card-img" src="https://cristian0091.github.io/landing-synchrotech./1774530918362.png" alt="Vaso ecológico Río Amazónico">
+        <div class="card-content">
+          <h3>🏞️ Río Amazónico</h3>
+          <p>Vaso elaborado con materiales reciclados, grabado artesanal con olas y peces de agua dulce.</p>
+          <div class="price">$25.900 COP <small>+ envío</small></div>
+          <a href="https://wa.me/573118842454?text=Me%20interesa%20el%20VASO%20R%C3%8DO%20AMAZ%C3%93NICO%20(%2425.900)%20%E2%9D%A4%EF%B8%8F%20Quiero%20hacer%20mi%20pedido." class="btn-card-wa" target="_blank"><i class="fab fa-whatsapp"></i> Consultar compra</a>
+        </div>
+      </div>
+
+      <!-- PRODUCTO 2: Selva Viva -->
+      <div class="card">
+        <img class="card-img" src="https://cristian0091.github.io/landing-synchrotech./1774531186225.png" alt="Vaso Selva Viva textura de hojas">
+        <div class="card-content">
+          <h3>🌿 Selva Viva</h3>
+          <p>Inspirado en la biodiversidad, relieve de hojas de palma y tonos esmeralda, 100% biodegradable.</p>
+          <div class="price">$28.500 COP <small>+ envío</small></div>
+          <a href="https://wa.me/573118842454?text=Hola%20quiero%20el%20VASO%20SELVA%20VIVA%20(%2428.500)%20%E2%80%94%20dise%C3%B1o%20con%20hojas%20amaz%C3%B3nicas." class="btn-card-wa" target="_blank"><i class="fab fa-whatsapp"></i> Consultar compra</a>
+        </div>
+      </div>
+
+      <!-- PRODUCTO 3: Montaña Verde (Florencia) -->
+      <div class="card">
+        <img class="card-img" src="https://cristian0091.github.io/landing-synchrotech./1774534807962.png" alt="Vaso Montaña Verde paisaje andino-amazónico">
+        <div class="card-content">
+          <h3>⛰️ Montaña Verde</h3>
+          <p>Edición especial Florencia: cerro de las 3 cruces, guardián de la cordillera y la selva.</p>
+          <div class="price">$30.900 COP <small>+ envío</small></div>
+          <a href="https://wa.me/573118842454?text=Deseo%20el%20VASO%20MONTA%C3%91A%20VERDE%20(Edici%C3%B3n%20Florencia)%20%2430.900%20%E2%9A%A1%EF%B8%8F%20Gracias." class="btn-card-wa" target="_blank"><i class="fab fa-whatsapp"></i> Consultar compra</a>
+        </div>
+      </div>
+
+      <!-- PRODUCTO 4: Jaguar Negro (nuevo diseño) -->
+      <div class="card">
+        <img class="card-img" src="https://cristian0091.github.io/landing-synchrotech./1774534696474.png" alt="Vaso Jaguar Negro felino misterioso">
+        <div class="card-content">
+          <h3>🐆 Jaguar Negro</h3>
+          <p>Poder y misticismo del felino amazónico. Detalles pintados a mano, acabado mate texturizado.</p>
+          <div class="price">$32.500 COP <small>+ envío</small></div>
+          <a href="https://wa.me/573118842454?text=%F0%9F%90%86%20Me%20fascina%20el%20VASO%20JAGUAR%20NEGRO%20(%2432.500)%20para%20regalo%20o%20colecci%C3%B3n." class="btn-card-wa" target="_blank"><i class="fab fa-whatsapp"></i> Consultar compra</a>
+        </div>
+      </div>
+
+      <!-- PRODUCTO 5: Flor de la Victoria (planta acuática emblemática) -->
+      <div class="card">
+        <img class="card-img" src="https://cristian0091.github.io/landing-synchrotech./1774534699867.png" alt="Vaso Flor de la Victoria victoria regia">
+        <div class="card-content">
+          <h3>🌸 Flor de la Victoria</h3>
+          <p>Homenaje a la flor acuática más grande del Amazonas. Tonos lilas y verde profundo.</p>
+          <div class="price">$29.900 COP <small>+ envío</small></div>
+          <a href="https://wa.me/573118842454?text=Quiero%20el%20VASO%20FLOR%20DE%20LA%20VICTORIA%20%2430.000%20aproximadamente%20para%20decoraci%C3%B3n%20eco%20amigable." class="btn-card-wa" target="_blank"><i class="fab fa-whatsapp"></i> Consultar compra</a>
+        </div>
+      </div>
+
+      <!-- PRODUCTO 6: Aves del Amazonas (colorido) -->
+      <div class="card">
+        <img class="card-img" src="https://cristian0091.github.io/landing-synchrotech./1774534696474.png" alt="Vaso Aves del Amazonas tucanes y guacamayas">
+        <div class="card-content">
+          <h3>🦜 Aves del Amazonas</h3>
+          <p>Guacamayas, tucanes y plumas exuberantes. Ideal para amantes de la fauna tropical.</p>
+          <div class="price">$34.900 COP <small>+ envío</small></div>
+          <a href="https://wa.me/573118842454?text=%F0%9F%A6%9C%20Encantado%20con%20el%20VASO%20AVES%20DEL%20AMAZONAS%20(%2434.900)%20quiero%20saber%20stock%20y%20env%C3%ADo." class="btn-card-wa" target="_blank"><i class="fab fa-whatsapp"></i> Consultar compra</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de valores + esencia amazónica -->
+  <div class="values-section">
+    <h2 style="font-size: 2rem; margin-bottom: 10px;">🌎 Por una Amazonía viva 🌎</h2>
+    <div class="values-grid">
+      <div class="value-item"><i class="fas fa-recycle"></i> 100% materiales reciclados</div>
+      <div class="value-item"><i class="fas fa-leaf"></i> Diseños auténticos de Florencia</div>
+      <div class="value-item"><i class="fas fa-hand-holding-heart"></i> Apoyo a artesanos locales</div>
+      <div class="value-item"><i class="fas fa-tree"></i> 1 árbol sembrado por cada compra</div>
+    </div>
+    <p style="margin-top: 30px; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto;">"Cada vaso es un pedazo de selva que llevas contigo, un recordatorio de cuidar nuestra casa común."</p>
+  </div>
+
+  <footer>
+    <div class="social-links">
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://wa.me/573118842454" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <p style="margin-top: 20px;">📍 Hecho con amor en Florencia, Caquetá - Corazón de la Amazonía colombiana 🇨🇴</p>
+    <p>© 2026 EcoVasos Amazónicos | Sostenibilidad y arte ancestral | Contacto directo: 311 884 2454</p>
+    <h6>esta pagina fue creada con estandares tecnicos zynchrotec by cristian vidales</h6>
+  </footer>
+</div>
+
+<!-- Nota adicional: todas las imágenes de Unsplash son referenciales y representan vasos ecológicos y naturaleza amazónica -->
+</body>
+</html>
