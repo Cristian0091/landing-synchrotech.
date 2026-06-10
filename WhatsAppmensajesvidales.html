@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparador de Mensajes WhatsApp</title>
+
+    <style>
+        /* ============================================================
+               RESET Y ESTILOS BASE
+            ============================================================ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Paleta de colores inspirada en WhatsApp */
+            --wa-green: #25D366;
+            --wa-green-dark: #128C7E;
+            --wa-green-darker: #075E54;
+            --wa-light-bg: #f0f2f5;
+            --wa-white: #ffffff;
+            --wa-chat-bg: #e5ddd5;
+            --wa-text: #1a1a1a;
+            --wa-text-secondary: #555555;
+            --wa-border: #d1d5db;
+            --wa-error: #dc3545;
+            --wa-error-bg: #fef2f2;
+            --wa-error-border: #fecaca;
+            --wa-success-bg: #f0fdf4;
+            --wa-success-border: #bbf7d0;
+            --wa-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --wa-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+            --wa-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.10), 0 4px 10px rgba(0, 0, 0, 0.06);
+            --wa-radius-sm: 8px;
+            --wa-radius: 12px;
+            --wa-radius-lg: 16px;
+            --transition: 0.2s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #e8eaed;
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(37, 211, 102, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(18, 140, 126, 0.03) 0%, transparent 60%);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px 16px 40px;
+            color: var(--wa-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================================
+               CONTENEDOR PRINCIPAL (TARJETA)
+            ============================================================ */
+        .main-container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--wa-white);
+            border-radius: var(--wa-radius-lg);
+            box-shadow: var(--wa-shadow-lg);
+            overflow: hidden;
+            margin-top: 10px;
+            transition: box-shadow var(--transition);
+        }
+
+        /* ============================================================
+               HEADER
+            ============================================================ */
+        .app-header {
+            background: linear-gradient(135deg, var(--wa-green-darker) 0%, var(--wa-green-dark) 60%, #0d9488 100%);
+            color: #fff;
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap; /* permite que la cinta baje en móviles si es necesario */
+        }
+
+        .app-header::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .app-header .header-icon {
+            font-size: 2.2rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+            animation: subtle-bounce 3s ease-in-out infinite;
+        }
+
+        @keyframes subtle-bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .app-header .header-text h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+        }
+
+        .app-header .header-text p {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+               CINTA LED (RIBÓN CON EFECTO DE LUCES)
+            ============================================================ */
+        .led-ribbon {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            padding: 8px 20px 8px 28px;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(6px);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.4px;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.3), inset 0 0 8px rgba(255,255,255,0.1);
+            overflow: visible;
+            white-space: nowrap;
+            transition: box-shadow 0.3s;
+            width: auto; /* se ajusta al contenido */
+        }
+
+        .led-ribbon:hover {
+            box-shadow: 0 0 30px rgba(37, 211, 102, 0.5), inset 0 0 12px rgba(255,255,255,0.15);
+        }
+
+        /* Contenedor de las luces LED (los puntitos) */
+        .led-lights {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 75%;
+            height: 12px;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        /* Cada luz LED simulada con pseudo-elementos múltiples */
+        .led-lights::before,
+        .led-lights::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 8px;
+            height: 8px;
+            background: #ffdd57;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #ffdd57, 0 0 25px #ffaa00;
+            animation: ledPulse 1.2s ease-in-out infinite alternate;
+        }
+
+        .led-lights::before {
+            left: 0;
+            animation-delay: 0s;
+            /* luces adicionales usando sombras múltiples */
+            box-shadow:
+                0 0 12px #ffdd57,
+                0 0 25px #ffaa00,
+                20px 0 0 #4fc3f7,
+                20px 0 12px #4fc3f7,
+                20px 0 25px #0288d1,
+                40px 0 0 #f06292,
+                40px 0 12px #f06292,
+                40px 0 25px #c2185b,
+                60px 0 0 #ffdd57,
+                60px 0 12px #ffdd57,
+                60px 0 25px #ffaa00,
+                80px 0 0 #00e676,
+                80px 0 12px #00e676,
+                80px 0 25px #00c853;
+        }
+
+        .led-lights::after {
+            right: 0;
+            background: #00e676;
+            box-shadow: 0 0 12px #00e676, 0 0 25px #00c853;
+            animation-delay: 0.6s;
+        }
+
+        /* Animación de parpadeo */
+        @keyframes ledPulse {
+            0% { opacity: 0.6; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Texto dentro de la cinta */
+        .led-text {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        /* ============================================================
+               CUERPO PRINCIPAL
+            ============================================================ */
+        .app-body {
+            padding: 24px 28px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ============================================================
+               SECCIÓN: MENSAJE
+            ============================================================ */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--wa-text);
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .section-label .label-icon {
+            font-size: 1.1rem;
+        }
+
+        .textarea-wrapper {
+            position: relative;
+        }
+
+        .message-textarea {
+            width: 100%;
+            min-height: 130px;
+            resize: vertical;
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            line-height: 1.6;
+            border: 2px solid var(--wa-border);
+            border-radius: var(--wa-radius);
+            transition: all var(--transition);
+            background: #fafbfc;
+            color: var(--wa-text);
+            outline: none;
+        }
+
+        .message-textarea:focus {
+            border-color: var(--wa-green);
+            box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.08);
+            background: #fff;
+        }
+
+        .message-textarea::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* Contador de caracteres */
+        .char-counter {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--wa-text-secondary);
+            margin-top: 6px;
+            font-weight: 500;
+            transition: color var(--transition);
+        }
+
+        .char-counter.warning {
+            color: #e67e22;
+        }
+
+        .char-counter.danger {
+            color: var(--wa-error);
+            font-weight: 700;
+        }
+
+        .char-counter .counter-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: background var(--transition);
+        }
+
+        .char-counter.warning .counter-dot {
+            background: #e67e22;
+        }
+
+        .char-counter.danger .counter-dot {
+            background: var(--wa-error);
+            animation: pulse-dot 0.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* ============================================================
+               SECCIÓN: NÚMEROS DE TELÉFONO
+            ============================================================ */
+        .numbers-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .number-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: #fafbfc;
+            padding: 10px 14px;
+            border-radius: var(--wa-radius-sm);
+            border: 1px solid #eef0f2;
+            transition: all var(--transition);
+            animation: fadeInRow 0.3s ease forwards;
+        }
+
+        @keyframes fadeInRow {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .number-row:hover {
+            border-color: #dce1e7;
+            box-shadow: var(--wa-shadow-sm);
+        }
+
+        .number-row .row-label {
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--wa-text-secondary);
+            min-width: 65px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            letter-spacing: -0.2px;
+        }
+
+        .number-row input[type="tel"] {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+            letter-spacing: 0.3px;
+            border: 2px solid var(--wa-border);
+            border-radius: var(--wa-radius-sm);
+            transition: all var(--transition);
+            background: #fff;
+            color: var(--wa-text);
+            outline: none;
+        }
+
+        .number-row input[type="tel"]:focus {
+            border-color: var(--wa-green);
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.07);
+        }
+
+        .number-row input[type="tel"].input-error {
+            border-color: var(--wa-error);
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.07);
+            background: #fffbfb;
+        }
+
+        .number-row .btn-open-chat {
+            flex-shrink: 0;
+            padding: 10px 16px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--wa-green);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition);
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
+        }
+
+        .number-row .btn-open-chat:hover {
+            background: #1fbd5a;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .number-row .btn-open-chat:active {
+            transform: scale(0.96);
+            box-shadow: 0 1px 3px rgba(37, 211, 102, 0.3);
+            transition: all 0.08s ease;
+        }
+
+        .number-row .btn-remove {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            font-size: 1rem;
+            background: transparent;
+            color: #999;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .number-row .btn-remove:hover {
+            background: #fef2f2;
+            color: var(--wa-error);
+            border-color: var(--wa-error-border);
+        }
+
+        .number-row .btn-remove:active {
+            transform: scale(0.9);
+            transition: all 0.08s ease;
+        }
+
+        /* ============================================================
+               BOTONES DE ACCIÓN GLOBALES
+            ============================================================ */
+        .actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 11px 20px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            border-radius: 22px;
+            border: none;
+            cursor: pointer;
+            letter-spacing: -0.2px;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            font-family: inherit;
+            text-decoration: none;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            transition: all 0.08s ease;
+        }
+
+        .btn-add {
+            background: #fff;
+            color: var(--wa-green-dark);
+            border: 2px dashed #cbd5e1;
+            font-weight: 500;
+        }
+        .btn-add:hover {
+            border-color: var(--wa-green);
+            background: #f8fdf9;
+            color: var(--wa-green);
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.12);
+        }
+
+        .btn-open-all {
+            background: var(--wa-green-dark);
+            color: #fff;
+            font-size: 0.92rem;
+            padding: 12px 24px;
+            box-shadow: 0 4px 14px rgba(18, 140, 126, 0.35);
+            font-weight: 700;
+        }
+        .btn-open-all:hover {
+            background: #107a6e;
+            box-shadow: 0 6px 20px rgba(18, 140, 126, 0.45);
+            transform: translateY(-2px);
+        }
+
+        .btn-clear {
+            background: #fff;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+            font-weight: 500;
+        }
+        .btn-clear:hover {
+            background: #f9fafb;
+            border-color: #cbd5e1;
+            color: #374151;
+            box-shadow: var(--wa-shadow-sm);
+        }
+
+        /* ============================================================
+               TOAST / NOTIFICACIONES
+            ============================================================ */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 420px;
+            width: calc(100% - 40px);
+            pointer-events: none;
+        }
+
+        .toast {
+            padding: 14px 18px;
+            border-radius: var(--wa-radius-sm);
+            font-size: 0.88rem;
+            font-weight: 500;
+            box-shadow: var(--wa-shadow-lg);
+            animation: slideInToast 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.4;
+            letter-spacing: -0.1px;
+        }
+
+        .toast.removing {
+            animation: slideOutToast 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+        }
+
+        @keyframes slideInToast {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutToast {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(80px);
+            }
+        }
+
+        .toast-error {
+            background: #fef2f2;
+            border-left: 4px solid var(--wa-error);
+            color: #991b1b;
+        }
+
+        .toast-success {
+            background: #f0fdf4;
+            border-left: 4px solid var(--wa-green);
+            color: #14532d;
+        }
+
+        .toast-warning {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            color: #78350f;
+        }
+
+        .toast .toast-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+               FOOTER
+            ============================================================ */
+        .app-footer {
+            padding: 14px 28px;
+            background: #fafbfc;
+            border-top: 1px solid #eef0f2;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            letter-spacing: -0.1px;
+            line-height: 1.5;
+        }
+
+        .app-footer strong {
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+               RESPONSIVE
+            ============================================================ */
+        @media (max-width: 600px) {
+            .app-body {
+                padding: 16px 14px 16px;
+                gap: 18px;
+            }
+            .app-header {
+                padding: 16px 18px;
+                gap: 10px;
+            }
+            .app-header .header-text h1 {
+                font-size: 1.15rem;
+            }
+            .app-header .header-icon {
+                font-size: 1.7rem;
+            }
+            .number-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 12px 10px;
+            }
+            .number-row .row-label {
+                min-width: auto;
+                font-size: 0.78rem;
+            }
+            .number-row input[type="tel"] {
+                min-width: auto;
+                width: 100%;
+            }
+            .number-row .btn-open-chat {
+                align-self: flex-end;
+                font-size: 0.8rem;
+                padding: 9px 14px;
+            }
+            .number-row .btn-remove {
+                align-self: flex-end;
+                width: 32px;
+                height: 32px;
+                font-size: 0.85rem;
+            }
+            .actions-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .actions-row .btn {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+            .btn-open-all {
+                order: -1;
+            }
+            .toast-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                width: auto;
+            }
+            .toast {
+                font-size: 0.82rem;
+                padding: 12px 14px;
+            }
+            .app-footer {
+                padding: 10px 14px;
+                font-size: 0.7rem;
+            }
+
+            /* Cinta LED en responsive */
+            .led-ribbon {
+                font-size: 0.7rem;
+                padding: 6px 14px 6px 20px;
+                margin-top: 10px;
+                white-space: normal;
+                text-align: center;
+                border-radius: 20px;
+            }
+            .led-lights {
+                width: 60%;
+                height: 10px;
+            }
+            .led-lights::before {
+                box-shadow:
+                    0 0 10px #ffdd57,
+                    15px 0 0 #4fc3f7,
+                    15px 0 10px #4fc3f7,
+                    30px 0 0 #f06292,
+                    30px 0 10px #f06292,
+                    45px 0 0 #ffdd57,
+                    45px 0 10px #ffdd57;
+                /* reducimos la cantidad de luces en móvil */
+            }
+        }
+
+        @media (max-width: 380px) {
+            .app-header .header-text h1 {
+                font-size: 1rem;
+            }
+            .app-header .header-icon {
+                font-size: 1.4rem;
+            }
+            .message-textarea {
+                min-height: 100px;
+                font-size: 0.85rem;
+            }
+            .number-row .btn-open-chat {
+                font-size: 0.75rem;
+                padding: 8px 12px;
+                border-radius: 16px;
+            }
+
+            .led-ribbon {
+                font-size: 0.65rem;
+                padding: 5px 10px;
+            }
+            .led-lights {
+                display: none; /* oculta luces en pantallas muy pequeñas para ahorrar espacio */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    CONTENEDOR PRINCIPAL
+    ============================================================ -->
+    <div class="main-container">
+
+        <!-- ============================================================
+        HEADER
+        ============================================================ -->
+        <header class="app-header">
+            <span class="header-icon" aria-hidden="true">💬</span>
+            <div class="header-text">
+                <h1>Preparador de Mensajes</h1>
+                <p>Abre chats de WhatsApp con texto precargado</p>
+            </div>
+
+            <!-- ============================================================
+            CINTA LED CON INFORMACIÓN DE MARCA
+            (Escribe tu texto en el <span> con clase "led-text")
+            ============================================================ -->
+            <div class="led-ribbon">
+                <div class="led-lights" aria-hidden="true">
+                    <!-- Los LEDs se generan con CSS -->
+                </div>
+                <span class="led-text">🌐 juan david es gay by ZYNCHROTECH empresa de sofware</span>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        CUERPO DE LA APLICACIÓN
+        ============================================================ -->
+        <div class="app-body">
+
+            <!-- ============================================================
+            SECCIÓN: MENSAJE
+            ============================================================ -->
+            <div>
+                <div class="section-label">
+                    <span class="label-icon">✏️</span>
+                    <span>Mensaje a enviar</span>
+                </div>
+                <div class="textarea-wrapper">
+                    <textarea
+                    id="messageTextarea"
+                    class="message-textarea"
+                    placeholder="Escribe aquí el mensaje que quieres precargar en WhatsApp..."
+                    maxlength="5000"
+                    aria-label="Mensaje de WhatsApp"
+                ></textarea>
+            </div>
+            <div class="char-counter" id="charCounter">
+                <span class="counter-dot" aria-hidden="true"></span>
+                <span id="charCountText">0 caracteres</span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SECCIÓN: NÚMEROS DE TELÉFONO
+        ============================================================ -->
+        <div>
+            <div class="section-label">
+                <span class="label-icon">📞</span>
+                <span>Números de teléfono</span>
+                <span style="font-size:0.7rem;color:#6b7280;font-weight:400;margin-left:4px;">
+                    (10 dígitos → se agrega +57 automáticamente)
+                </span>
+            </div>
+            <div class="numbers-section" id="numbersContainer">
+                <!-- Los 5 campos fijos se generan dinámicamente en JS -->
+            </div>
+            <!-- Contenedor para campos de número adicionales (dinámicos) -->
+            <div class="numbers-section" id="extraNumbersContainer" style="margin-top:4px;"></div>
+
+            <!-- Botón para agregar más números -->
+            <button class="btn btn-add" id="btnAddNumber" style="margin-top:8px;" aria-label="Agregar otro número">
+                ➕ Agregar otro número
+            </button>
+        </div>
+
+        <!-- ============================================================
+        BOTONES DE ACCIÓN GLOBALES
+        ============================================================ -->
+        <div class="actions-row">
+            <button class="btn btn-open-all" id="btnOpenAll" aria-label="Abrir todos los chats">
+                📨 Abrir todos los chats
+            </button>
+            <button class="btn btn-clear" id="btnClearAll" aria-label="Limpiar todo el formulario">
+                🗑️ Limpiar todo
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer class="app-footer">
+        <strong>⚠️ Uso responsable:</strong> Esta herramienta solo precarga mensajes. El envío debe hacerlo
+        manualmente en WhatsApp. Úsala solo con contactos que hayan dado su consentimiento.
+    </footer>
+</div>
+
+<!-- ============================================================
+TOAST CONTAINER (notificaciones flotantes)
+============================================================ -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+<script>
+    (function() {
+        // ============================================================
+        // REFERENCIAS A ELEMENTOS DEL DOM
+        // ============================================================
+        const messageTextarea = document.getElementById('messageTextarea');
+        const charCountText = document.getElementById('charCountText');
+        const charCounter = document.getElementById('charCounter');
+        const numbersContainer = document.getElementById('numbersContainer');
+        const extraNumbersContainer = document.getElementById('extraNumbersContainer');
+        const btnAddNumber = document.getElementById('btnAddNumber');
+        const btnOpenAll = document.getElementById('btnOpenAll');
+        const btnClearAll = document.getElementById('btnClearAll');
+        const toastContainer = document.getElementById('toastContainer');
+
+        let dynamicFieldCounter = 0;
+        const FIXED_FIELDS_COUNT = 5;
+
+        // ============================================================
+        // FUNCIONES DE UTILIDAD
+        // ============================================================
+
+        /**
+         * Limpia un número de teléfono eliminando espacios, guiones,
+         * paréntesis, signos + y cualquier carácter no numérico.
+         */
+        function cleanPhoneNumber(raw) {
+            if (!raw) return '';
+            return raw.replace(/\D/g, '');
+        }
+
+        /**
+         * Convierte un número limpio en formato internacional válido para WhatsApp.
+         * Si tiene 10 dígitos y no comienza con '57', se asume número colombiano
+         * y se le antepone el código de país +57.
+         */
+        function getInternationalNumber(cleaned) {
+            if (cleaned.length === 10 && !cleaned.startsWith('57')) {
+                return '57' + cleaned;
+            }
+            // En cualquier otro caso, se devuelve tal cual (ya debería incluir código de país)
+            return cleaned;
+        }
+
+        /**
+         * Valida que un número limpio (antes de añadir código de país) tenga una longitud razonable.
+         */
+        function isValidPhoneNumber(cleaned) {
+            return cleaned.length >= 7 && cleaned.length <= 15;
+        }
+
+        /**
+         * Genera el enlace de WhatsApp con el número internacional y mensaje codificado.
+         */
+        function generateWhatsAppLink(cleanedNumber, message) {
+            const finalNumber = getInternationalNumber(cleanedNumber);
+            const encodedMessage = encodeURIComponent(message);
+            return `https://wa.me/${finalNumber}?text=${encodedMessage}`;
+        }
+
+        function openInNewTab(url) {
+            return window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function showToast(message, type = 'error', duration = 4000) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            const iconMap = {
+                error: '⚠️',
+                success: '✅',
+                warning: 'ℹ️',
+            };
+            const icon = iconMap[type] || 'ℹ️';
+            toast.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
+            toastContainer.appendChild(toast);
+
+            const removeTimeout = setTimeout(() => removeToast(toast), duration);
+            toast.addEventListener('click', () => {
+                clearTimeout(removeTimeout);
+                removeToast(toast);
+            });
+
+            const allToasts = toastContainer.querySelectorAll('.toast');
+            if (allToasts.length > 4) {
+                removeToast(allToasts[0]);
+            }
+        }
+
+        function removeToast(toastElement) {
+            if (!toastElement || toastElement.classList.contains('removing')) return;
+            toastElement.classList.add('removing');
+            toastElement.addEventListener('animationend', () => {
+                if (toastElement.parentNode) toastElement.parentNode.removeChild(toastElement);
+            }, { once: true });
+            setTimeout(() => {
+                if (toastElement.parentNode) toastElement.parentNode.removeChild(toastElement);
+            }, 350);
+        }
+
+        // ============================================================
+        // ACTUALIZAR CONTADOR DE CARACTERES
+        // ============================================================
+        function updateCharCounter() {
+            const length = messageTextarea.value.length;
+            charCountText.textContent = `${length} caracteres`;
+            charCounter.classList.remove('warning', 'danger');
+            if (length > 3000) {
+                charCounter.classList.add('danger');
+            } else if (length > 2000) {
+                charCounter.classList.add('warning');
+            }
+        }
+
+        messageTextarea.addEventListener('input', updateCharCounter);
+
+        // ============================================================
+        // CREAR FILA DE NÚMERO
+        // ============================================================
+        function createNumberRow(index, isFixed = false, uniqueId = null) {
+            const rowId = uniqueId || `phone-${isFixed ? 'fixed' : 'dynamic'}-${index}-${Date.now()}-${Math.random().toString(36).substr(2,5)}`;
+            const inputId = `input-${rowId}`;
+
+            const row = document.createElement('div');
+            row.className = 'number-row';
+            row.setAttribute('data-row-id', rowId);
+
+            const label = document.createElement('span');
+            label.className = 'row-label';
+            label.textContent = `📱 Número ${index}`;
+
+            const input = document.createElement('input');
+            input.type = 'tel';
+            input.id = inputId;
+            input.placeholder = 'Ej: 3001234567';
+            input.setAttribute('aria-label', `Número de teléfono ${index}`);
+            input.setAttribute('inputmode', 'numeric');
+            input.addEventListener('input', function() {
+                if (this.classList.contains('input-error')) {
+                    this.classList.remove('input-error');
+                }
+            });
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    openSingleChatFromRow(row);
+                }
+            });
+
+            const btnOpen = document.createElement('button');
+            btnOpen.className = 'btn-open-chat';
+            btnOpen.textContent = '💬 Abrir chat';
+            btnOpen.setAttribute('aria-label', `Abrir chat para número ${index}`);
+            btnOpen.addEventListener('click', function() {
+                openSingleChatFromRow(row);
+            });
+
+            row.appendChild(label);
+            row.appendChild(input);
+            row.appendChild(btnOpen);
+
+            if (!isFixed) {
+                const btnRemove = document.createElement('button');
+                btnRemove.className = 'btn-remove';
+                btnRemove.textContent = '✕';
+                btnRemove.setAttribute('aria-label', `Eliminar número ${index}`);
+                btnRemove.title = 'Eliminar este número';
+                btnRemove.addEventListener('click', function() {
+                    removeDynamicRow(row);
+                });
+                row.appendChild(btnRemove);
+            }
+
+            row._index = index;
+            row._isFixed = isFixed;
+            return row;
+        }
+
+        function getPhoneInputFromRow(row) {
+            return row.querySelector('input[type="tel"]');
+        }
+
+        function openSingleChatFromRow(row) {
+            const message = messageTextarea.value.trim();
+            if (!message) {
+                showToast('Primero escribe un mensaje antes de abrir un chat.', 'error');
+                messageTextarea.focus();
+                return;
+            }
+
+            const input = getPhoneInputFromRow(row);
+            const rawNumber = input.value;
+            const cleanedNumber = cleanPhoneNumber(rawNumber);
+
+            if (!rawNumber.trim()) {
+                input.classList.add('input-error');
+                showToast('Este campo de número está vacío. Escribe un número válido.', 'error');
+                input.focus();
+                return;
+            }
+
+            if (!isValidPhoneNumber(cleanedNumber)) {
+                input.classList.add('input-error');
+                showToast(
+                    `El número ingresado no es válido (${cleanedNumber.length} dígitos). Debe tener entre 7 y 15 dígitos.`,
+                    'error');
+                input.focus();
+                return;
+            }
+
+            const link = generateWhatsAppLink(cleanedNumber, message);
+            const opened = openInNewTab(link);
+            if (!opened) {
+                showToast('El navegador bloqueó la apertura de la pestaña. Revisa el bloqueador de pop-ups.', 'warning', 5000);
+            } else {
+                const btnOpen = row.querySelector('.btn-open-chat');
+                if (btnOpen) {
+                    const originalText = btnOpen.textContent;
+                    btnOpen.textContent = '✅ Abierto';
+                    btnOpen.style.background = '#059669';
+                    setTimeout(() => {
+                        btnOpen.textContent = originalText;
+                        btnOpen.style.background = '';
+                    }, 1500);
+                }
+            }
+        }
+
+        function removeDynamicRow(row) {
+            if (row._isFixed) return;
+            row.style.transition = 'all 0.25s ease';
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(30px)';
+            row.style.maxHeight = row.offsetHeight + 'px';
+            row.style.marginBottom = '0';
+            row.style.paddingTop = '0';
+            row.style.paddingBottom = '0';
+            row.style.overflow = 'hidden';
+
+            row.addEventListener('transitionend', function handler() {
+                row.removeEventListener('transitionend', handler);
+                if (row.parentNode) row.parentNode.removeChild(row);
+                renumberAllRows();
+            }, { once: true });
+
+            setTimeout(() => {
+                if (row.parentNode) {
+                    row.parentNode.removeChild(row);
+                    renumberAllRows();
+                }
+            }, 300);
+        }
+
+        function renumberAllRows() {
+            const allRows = getAllRows();
+            allRows.forEach((row, idx) => {
+                const newIndex = idx + 1;
+                row._index = newIndex;
+                const label = row.querySelector('.row-label');
+                if (label) label.textContent = `📱 Número ${newIndex}`;
+                const input = getPhoneInputFromRow(row);
+                if (input) input.setAttribute('aria-label', `Número de teléfono ${newIndex}`);
+                const btnOpen = row.querySelector('.btn-open-chat');
+                if (btnOpen) btnOpen.setAttribute('aria-label', `Abrir chat para número ${newIndex}`);
+                const btnRemove = row.querySelector('.btn-remove');
+                if (btnRemove) btnRemove.setAttribute('aria-label', `Eliminar número ${newIndex}`);
+            });
+        }
+
+        function getAllRows() {
+            const fixedRows = Array.from(numbersContainer.querySelectorAll('.number-row'));
+            const extraRows = Array.from(extraNumbersContainer.querySelectorAll('.number-row'));
+            return [...fixedRows, ...extraRows];
+        }
+
+        function addDynamicRow() {
+            dynamicFieldCounter++;
+            const allRows = getAllRows();
+            const newIndex = allRows.length + 1;
+            const uniqueId = `dynamic-${dynamicFieldCounter}-${Date.now()}`;
+            const newRow = createNumberRow(newIndex, false, uniqueId);
+            extraNumbersContainer.appendChild(newRow);
+            newRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const newInput = getPhoneInputFromRow(newRow);
+            if (newInput) setTimeout(() => newInput.focus(), 150);
+        }
+
+        // ============================================================
+        // ABRIR TODOS LOS CHATS
+        // ============================================================
+        function openAllChats() {
+            const message = messageTextarea.value.trim();
+            if (!message) {
+                showToast('Escribe un mensaje antes de abrir los chats.', 'error');
+                messageTextarea.focus();
+                return;
+            }
+
+            const allRows = getAllRows();
+            const validLinks = [];
+            const errors = [];
+
+            allRows.forEach((row) => {
+                const input = getPhoneInputFromRow(row);
+                const rawNumber = input.value;
+                if (!rawNumber.trim()) return;
+
+                const cleanedNumber = cleanPhoneNumber(rawNumber);
+                if (!isValidPhoneNumber(cleanedNumber)) {
+                    input.classList.add('input-error');
+                    errors.push({
+                        index: row._index,
+                        raw: rawNumber,
+                        cleaned: cleanedNumber,
+                    });
+                } else {
+                    input.classList.remove('input-error');
+                    validLinks.push({
+                        index: row._index,
+                        link: generateWhatsAppLink(cleanedNumber, message),
+                    });
+                }
+            });
+
+            if (errors.length > 0) {
+                showToast(
+                    `Hay ${errors.length} número(s) inválido(s). Corrígelos antes de continuar.`,
+                    'error', 6000
+                );
+                errors.forEach(e => {
+                    const row = allRows.find(r => r._index === e.index);
+                    if (row) {
+                        const input = getPhoneInputFromRow(row);
+                        if (input) input.classList.add('input-error');
+                    }
+                });
+                return;
+            }
+
+            if (validLinks.length === 0) {
+                showToast('No hay ningún número ingresado. Escribe al menos un número de teléfono.', 'warning');
+                return;
+            }
+
+            let openedCount = 0;
+            let blockedCount = 0;
+
+            validLinks.forEach((item, idx) => {
+                setTimeout(() => {
+                    const opened = openInNewTab(item.link);
+                    if (opened) openedCount++;
+                    else blockedCount++;
+
+                    if (idx === validLinks.length - 1) {
+                        setTimeout(() => {
+                            if (blockedCount > 0) {
+                                showToast(
+                                    `Se abrieron ${openedCount} de ${validLinks.length} chats. El navegador bloqueó ${blockedCount}. Revisa el bloqueador de pop-ups.`,
+                                    'warning', 7000
+                                );
+                            } else if (openedCount > 1) {
+                                showToast(
+                                    `✅ Se abrieron ${openedCount} chats de WhatsApp en pestañas separadas.`,
+                                    'success', 3500
+                                );
+                            }
+                        }, 400);
+                    }
+                }, idx * 350);
+            });
+
+            if (validLinks.length > 3) {
+                showToast(
+                    `Abriendo ${validLinks.length} pestañas... Si se bloquean, revisa el bloqueador de pop-ups.`,
+                    'warning', 5000
+                );
+            }
+        }
+
+        // ============================================================
+        // LIMPIAR TODO
+        // ============================================================
+        function clearAll() {
+            messageTextarea.value = '';
+            updateCharCounter();
+
+            const fixedRows = Array.from(numbersContainer.querySelectorAll('.number-row'));
+            fixedRows.forEach(row => {
+                const input = getPhoneInputFromRow(row);
+                if (input) {
+                    input.value = '';
+                    input.classList.remove('input-error');
+                }
+            });
+
+            extraNumbersContainer.innerHTML = '';
+            dynamicFieldCounter = 0;
+            renumberAllRows();
+            messageTextarea.focus();
+            showToast('🧹 Formulario limpiado correctamente.', 'success', 2500);
+        }
+
+        // ============================================================
+        // INICIALIZACIÓN
+        // ============================================================
+        function initializeFixedFields() {
+            numbersContainer.innerHTML = '';
+            for (let i = 1; i <= FIXED_FIELDS_COUNT; i++) {
+                const row = createNumberRow(i, true, `fixed-${i}`);
+                numbersContainer.appendChild(row);
+            }
+        }
+
+        btnAddNumber.addEventListener('click', addDynamicRow);
+        btnOpenAll.addEventListener('click', openAllChats);
+        btnClearAll.addEventListener('click', clearAll);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'Enter') {
+                e.preventDefault();
+                openAllChats();
+            }
+        });
+
+        function init() {
+            initializeFixedFields();
+            updateCharCounter();
+            setTimeout(() => messageTextarea.focus(), 300);
+        }
+
+        init();
+
+        console.log('✅ Preparador de Mensajes WhatsApp inicializado.');
+        console.log('📱 Los números de 10 dígitos se completan automáticamente con +57.');
+        console.log('💡 Usa Ctrl+Shift+Enter para abrir todos los chats.');
+    })();
+</script>
+</body>
+</html>
