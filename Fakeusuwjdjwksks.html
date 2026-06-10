@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Landing Simple</title>
+  <title>Landing con Playlist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -27,32 +27,74 @@
 
     h1 {
       font-size: 2em;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     img {
       width: 100%;
       border-radius: 12px;
-      margin-top: 20px;
+      margin-top: 10px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     }
 
-    /* Estilos para el reproductor / botón de play */
-    .audio-player {
+    /* Reproductor con playlist */
+    .player-section {
       margin-top: 25px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      gap: 12px;
+    }
+
+    .song-name {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      opacity: 0.9;
+      min-height: 24px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-btn {
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.3);
+      color: white;
+      font-size: 1.4rem;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,0.25);
+      transform: scale(1.08);
+    }
+
+    .nav-btn:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
     }
 
     .play-btn {
       background: #25D366;
       border: none;
       color: white;
-      font-size: 1.5rem;
-      width: 60px;
-      height: 60px;
+      font-size: 1.8rem;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       cursor: pointer;
       box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
@@ -72,8 +114,10 @@
     }
 
     .status-text {
-      font-size: 0.9rem;
-      opacity: 0.8;
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-top: 8px;
+      min-height: 20px;
     }
   </style>
 </head>
@@ -83,69 +127,195 @@
     <!-- TEXTO PRINCIPAL -->
     <h1>positivo para gerrillero</h1>
 
-    <!-- IMAGEN: pega aquí tu URL -->
+    <!-- IMAGEN -->
     <img src="https://cristian0091.github.io/landing-synchrotech./20260610_151035.jpg" alt="Imagen principal">
 
-    <!-- REPRODUCTOR DE AUDIO -->
-    <div class="audio-player">
-      <button class="play-btn" id="playButton" aria-label="Reproducir música">▶️</button>
-      <span class="status-text" id="statusText">Cargando...</span>
+    <!-- REPRODUCTOR CON PLAYLIST -->
+    <div class="player-section">
+      <div class="song-name" id="songName">...</div>
+
+      <div class="controls">
+        <button class="nav-btn" id="prevButton" aria-label="Canción anterior">⏮️</button>
+        <button class="play-btn" id="playButton" aria-label="Reproducir">▶️</button>
+        <button class="nav-btn" id="nextButton" aria-label="Siguiente canción">⏭️</button>
+      </div>
+
+      <div class="status-text" id="statusText">Cargando...</div>
     </div>
 
-    <!-- Elemento de audio (oculto, pero funcional) -->
-    <audio id="audioElement" preload="auto" style="display: none;">
-      <source src="https://cristian0091.github.io/landing-synchrotech./Cesar%20Mora%20-%20Mar%C3%ADa%20Canela%20(JAIME%20GARZ%C3%93N)%20(Letra).mp3" type="audio/mpeg">
-      Tu navegador no soporta el elemento de audio.
-    </audio>
+    <!-- Elemento de audio oculto -->
+    <audio id="audioElement" preload="auto"></audio>
   </div>
 
   <script>
     (function() {
+      // ========================================================
+      // 🎵 PLAYLIST – Agrega aquí tus canciones
+      // Cada objeto: { name: "Nombre visible", url: "https://..." }
+      // ========================================================
+      const playlist = [
+        {
+          name: "María Canela (JAIME GARZÓN)",
+          url: "https://cristian0091.github.io/landing-synchrotech./Cesar%20Mora%20-%20Mar%C3%ADa%20Canela%20(JAIME%20GARZ%C3%93N)%20(Letra).mp3"
+        },
+        {
+          name: "procura ",
+          url: "https://cristian0091.github.io/landing-synchrotech./Chichi%20Peralta%20%20%20Procura.mp3"
+        },
+        {
+          name: "me gustas tu",
+          url: "https://cristian0091.github.io/landing-synchrotech./Manu%20Chao%20-%20Me%20Gustas%20Tu%20(Official%20Audio).mp3"
+        },
+        // Ejemplo de segunda canción (descomenta y cambia la URL/nombre):
+        // {
+        //   name: "Otra canción",
+        //   url: "https://ejemplo.com/cancion2.mp3"
+        // },
+        // {
+        //   name: "Tercera canción",
+        //   url: "https://ejemplo.com/cancion3.mp3"
+        // }
+      ];
+
+      // Referencias al DOM
       const audio = document.getElementById('audioElement');
       const playButton = document.getElementById('playButton');
-      const statusText = document.getElementById('statusText');
+      const prevButton = document.getElementById('prevButton');
+      const nextButton = document.getElementById('nextButton');
+      const songNameEl = document.getElementById('songName');
+      const statusTextEl = document.getElementById('statusText');
 
-      // Intentar reproducción automática al cargar
-      function attemptAutoplay() {
+      let currentIndex = 0;
+      let isPlayRequested = false; // Para diferenciar entre play/pausa y cambio de canción
+
+      // Cargar canción actual en el elemento de audio
+      function loadSong(index) {
+        if (index < 0 || index >= playlist.length) return;
+        const song = playlist[index];
+        audio.src = song.url;
+        audio.load();
+        songNameEl.textContent = song.name;
+        updateButtonsState();
+      }
+
+      // Intentar reproducir y manejar errores de autoplay
+      function playAudio() {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            // Autoplay exitoso
-            playButton.textContent = '⏸️';
-            statusText.textContent = 'Reproduciendo...';
+            setPlayingState(true);
           }).catch((error) => {
-            // Autoplay bloqueado -> mostramos botón para iniciar
-            console.log('Autoplay bloqueado:', error);
-            playButton.textContent = '▶️';
-            statusText.textContent = 'Toca para escuchar';
+            console.log('Reproducción bloqueada:', error);
+            setPlayingState(false);
+            statusTextEl.textContent = 'Toca ▶️ para escuchar';
           });
         }
       }
 
-      // Alternar play/pause al hacer clic en el botón
+      function pauseAudio() {
+        audio.pause();
+        setPlayingState(false);
+      }
+
+      function setPlayingState(playing) {
+        if (playing) {
+          playButton.textContent = '⏸️';
+          statusTextEl.textContent = 'Reproduciendo...';
+        } else {
+          playButton.textContent = '▶️';
+          statusTextEl.textContent = 'Pausado';
+        }
+      }
+
+      // Actualizar estado de botones siguiente/anterior
+      function updateButtonsState() {
+        prevButton.disabled = (currentIndex === 0);
+        nextButton.disabled = (currentIndex === playlist.length - 1);
+      }
+
+      // Cambiar a una canción por índice y reproducir
+      function changeSong(index) {
+        if (index === currentIndex && !audio.paused) return; // ya está sonando
+        currentIndex = index;
+        loadSong(currentIndex);
+        isPlayRequested = true;
+        playAudio();
+      }
+
+      // Siguiente canción
+      function nextSong() {
+        if (currentIndex < playlist.length - 1) {
+          currentIndex++;
+          loadSong(currentIndex);
+          isPlayRequested = true;
+          playAudio();
+        }
+      }
+
+      // Canción anterior
+      function prevSong() {
+        if (currentIndex > 0) {
+          currentIndex--;
+          loadSong(currentIndex);
+          isPlayRequested = true;
+          playAudio();
+        }
+      }
+
+      // Eventos de los botones
       playButton.addEventListener('click', () => {
         if (audio.paused) {
-          audio.play().then(() => {
-            playButton.textContent = '⏸️';
-            statusText.textContent = 'Reproduciendo...';
-          }).catch(() => {
-            statusText.textContent = 'Error al reproducir';
-          });
+          playAudio();
         } else {
-          audio.pause();
-          playButton.textContent = '▶️';
-          statusText.textContent = 'Pausado';
+          pauseAudio();
         }
       });
 
-      // Actualizar estado si el audio termina
+      prevButton.addEventListener('click', prevSong);
+      nextButton.addEventListener('click', nextSong);
+
+      // Cuando termina una canción, pasar automáticamente a la siguiente (si existe)
       audio.addEventListener('ended', () => {
-        playButton.textContent = '▶️';
-        statusText.textContent = 'Finalizado';
+        if (currentIndex < playlist.length - 1) {
+          nextSong();
+        } else {
+          // Fin de la playlist
+          setPlayingState(false);
+          statusTextEl.textContent = 'Playlist terminada';
+          playButton.textContent = '▶️';
+        }
       });
 
-      // Iniciar intento de autoplay cuando la página cargue
-      window.addEventListener('load', attemptAutoplay);
+      // Cuando ocurre un error en la carga (URL incorrecta, etc.)
+      audio.addEventListener('error', () => {
+        statusTextEl.textContent = 'Error al cargar la canción';
+        playButton.textContent = '▶️';
+      });
+
+      // Al hacer clic en siguiente/anterior, actualizar el estado visual
+      audio.addEventListener('play', () => {
+        setPlayingState(true);
+      });
+      audio.addEventListener('pause', () => {
+        setPlayingState(false);
+      });
+
+      // Iniciar con la primera canción e intentar autoplay
+      function initPlayer() {
+        if (playlist.length === 0) {
+          songNameEl.textContent = 'Sin canciones';
+          statusTextEl.textContent = '';
+          playButton.disabled = true;
+          return;
+        }
+        loadSong(0);
+        // Intento de autoplay
+        isPlayRequested = true;
+        playAudio();
+      }
+
+      // Esperar a que la página cargue completamente
+      window.addEventListener('load', initPlayer);
     })();
   </script>
 
