@@ -14,13 +14,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     .container {
       max-width: 500px;
-      padding: 20px;
+      width: 100%;
     }
 
     h1 {
@@ -34,6 +36,45 @@
       margin-top: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     }
+
+    /* Estilos para el reproductor / botón de play */
+    .audio-player {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .play-btn {
+      background: #25D366;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+    }
+
+    .play-btn:active {
+      transform: scale(0.95);
+    }
+
+    .status-text {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
   </style>
 </head>
 <body>
@@ -45,7 +86,68 @@
     <!-- IMAGEN: pega aquí tu URL -->
     <img src="https://cristian0091.github.io/landing-synchrotech./20260610_151035.jpg" alt="Imagen principal">
 
+    <!-- REPRODUCTOR DE AUDIO -->
+    <div class="audio-player">
+      <button class="play-btn" id="playButton" aria-label="Reproducir música">▶️</button>
+      <span class="status-text" id="statusText">Cargando...</span>
+    </div>
+
+    <!-- Elemento de audio (oculto, pero funcional) -->
+    <audio id="audioElement" preload="auto" style="display: none;">
+      <source src="https://cristian0091.github.io/landing-synchrotech./Cesar%20Mora%20-%20Mar%C3%ADa%20Canela%20(JAIME%20GARZ%C3%93N)%20(Letra).mp3" type="audio/mpeg">
+      Tu navegador no soporta el elemento de audio.
+    </audio>
   </div>
+
+  <script>
+    (function() {
+      const audio = document.getElementById('audioElement');
+      const playButton = document.getElementById('playButton');
+      const statusText = document.getElementById('statusText');
+
+      // Intentar reproducción automática al cargar
+      function attemptAutoplay() {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            // Autoplay exitoso
+            playButton.textContent = '⏸️';
+            statusText.textContent = 'Reproduciendo...';
+          }).catch((error) => {
+            // Autoplay bloqueado -> mostramos botón para iniciar
+            console.log('Autoplay bloqueado:', error);
+            playButton.textContent = '▶️';
+            statusText.textContent = 'Toca para escuchar';
+          });
+        }
+      }
+
+      // Alternar play/pause al hacer clic en el botón
+      playButton.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play().then(() => {
+            playButton.textContent = '⏸️';
+            statusText.textContent = 'Reproduciendo...';
+          }).catch(() => {
+            statusText.textContent = 'Error al reproducir';
+          });
+        } else {
+          audio.pause();
+          playButton.textContent = '▶️';
+          statusText.textContent = 'Pausado';
+        }
+      });
+
+      // Actualizar estado si el audio termina
+      audio.addEventListener('ended', () => {
+        playButton.textContent = '▶️';
+        statusText.textContent = 'Finalizado';
+      });
+
+      // Iniciar intento de autoplay cuando la página cargue
+      window.addEventListener('load', attemptAutoplay);
+    })();
+  </script>
 
 </body>
 </html>
