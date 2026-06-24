@@ -2,68 +2,1070 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Ticket Support | Reporte de incidencias</title>
-  <!-- Google Fonts + Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☕ sandra coffe & 20 Coffees - Landing</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: #f8f4f0;
+      color: #3e2c1b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background: #4a2c1a;
+      color: #f5e6d3;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    header h1 small {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #d9b99b;
+      margin-left: 0.5rem;
+    }
+
+    .cart-badge {
+      background: #c28a5a;
+      color: #fff;
+      border-radius: 50px;
+      padding: 0.5rem 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      border: none;
+      font-size: 1rem;
+    }
+    .cart-badge:hover {
+      background: #b0743e;
+      transform: scale(1.02);
+    }
+
+    /* NAV */
+    nav {
+      background: #fff;
+      padding: 0.5rem 2rem;
+      display: flex;
+      gap: 1.5rem;
+      border-bottom: 2px solid #e2d2c4;
+      flex-wrap: wrap;
+    }
+    nav button {
+      background: transparent;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #4a2c1a;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: 0.2s;
+    }
+    nav button.active {
+      border-bottom-color: #c28a5a;
+      color: #c28a5a;
+    }
+    nav button:hover {
+      background: #f0e6de;
+      border-radius: 6px 6px 0 0;
+    }
+
+    /* MAIN */
+    .container {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section {
+      display: none;
+      animation: fade 0.3s ease;
+    }
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PRODUCTOS */
+    .filters {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .filters button {
+      background: #fff;
+      border: 1px solid #d9c8b8;
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .filters button.active-filter {
+      background: #4a2c1a;
+      color: #fff;
+      border-color: #4a2c1a;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #eee;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .product-card .name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+      color: #2d1e12;
+    }
+    .product-card .category {
+      font-size: 0.8rem;
+      color: #a08472;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .product-card .price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #4a2c1a;
+      margin: 0.5rem 0;
+    }
+    .product-card .stock {
+      font-size: 0.9rem;
+      color: #6b4f3a;
+      margin-bottom: 0.5rem;
+    }
+    .product-card .stock span {
+      font-weight: 600;
+    }
+    .product-card .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .product-card .actions button {
+      background: #c28a5a;
+      border: none;
+      color: #fff;
+      padding: 0.4rem 0.9rem;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+    .product-card .actions button:disabled {
+      background: #b8a69a;
+      cursor: not-allowed;
+    }
+    .product-card .actions button:not(:disabled):hover {
+      background: #a06f44;
+    }
+    .product-card .actions .stock-btn {
+      background: #e8ddd4;
+      color: #3e2c1b;
+      flex: 0.5;
+      padding: 0.4rem 0.5rem;
+    }
+    .product-card .actions .stock-btn:hover {
+      background: #d5c6b9;
+    }
+
+    /* INVENTARIO */
+    .inventory-table-wrap {
+      overflow-x: auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th {
+      text-align: left;
+      padding: 0.8rem 0.5rem;
+      background: #f0e6de;
+      color: #3e2c1b;
+    }
+    td {
+      padding: 0.8rem 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .inv-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .inv-actions button {
+      background: #4a2c1a;
+      color: #fff;
+      border: none;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .inv-actions button:hover {
+      background: #2d1e12;
+    }
+    .inv-actions .danger {
+      background: #b33c3c;
+    }
+    .inv-actions .danger:hover {
+      background: #8a2e2e;
+    }
+
+    /* CARRITO (sidebar) */
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: none;
+      justify-content: flex-end;
+    }
+    .cart-overlay.open {
+      display: flex;
+    }
+    .cart-panel {
+      background: #fff;
+      width: min(420px, 100%);
+      height: 100%;
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+      box-shadow: -6px 0 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-panel h2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #f0e6de;
+      padding-bottom: 0.5rem;
+    }
+    .cart-panel .close-cart {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #6b4f3a;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #f0e6de;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-info .ci-name {
+      font-weight: 600;
+    }
+    .cart-item-info .ci-price {
+      font-size: 0.9rem;
+      color: #6b4f3a;
+    }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .cart-item-qty button {
+      background: #e8ddd4;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cart-item-qty button:hover {
+      background: #d5c6b9;
+    }
+    .cart-item-qty .qty-num {
+      min-width: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: #b33c3c;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .cart-total {
+      margin-top: 1rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: right;
+      padding-top: 0.5rem;
+      border-top: 2px solid #4a2c1a;
+    }
+    .cart-actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .cart-actions button {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-primary {
+      background: #4a2c1a;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #2d1e12;
+    }
+    .btn-secondary {
+      background: #e8ddd4;
+      color: #3e2c1b;
+    }
+    .btn-secondary:hover {
+      background: #d5c6b9;
+    }
+    .btn-success {
+      background: #2b7a4b;
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #1e5f38;
+    }
+    .btn-danger {
+      background: #b33c3c;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #8a2e2e;
+    }
+
+    /* FACTURA (ticket) */
+    .ticket {
+      font-family: 'Courier New', monospace;
+      width: 280px;
+      margin: 0 auto;
+      padding: 0.8rem;
+      background: #fff;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .ticket .ticket-header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      border-bottom: 1px dashed #333;
+      padding-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
+    }
+    .ticket .ticket-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.15rem 0;
+    }
+    .ticket .ticket-total {
+      border-top: 1px dashed #333;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .ticket .ticket-footer {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 10px;
+      border-top: 1px dashed #333;
+      padding-top: 0.3rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.5rem; }
+      .container { padding: 1rem; }
+      .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2d1e12;
+      color: #f5e6d3;
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
+
+<!-- HEADER -->
+<header>
+  <h1>☕ sandracoffe <small>&amp; 20 Coffees</small></h1>
+  <button class="cart-badge" id="openCartBtn">🛒 Carrito (<span id="cartCount">0</span>)</button>
+</header>
+
+<!-- NAV -->
+<nav>
+  <button class="active" data-section="products">Productos</button>
+  <button data-section="inventory">Inventario</button>
+  <button data-section="sales">Historial</button>
+</nav>
+
+<!-- MAIN CONTAINER -->
 <div class="container">
-  <div class="ticket-card">
-    <div class="card-header">
-      <h1><i class="fas fa-ticket-alt"></i> TECNI TICKET</h1>
-      <p>Registra tu incidencia, adjunta una imagen (opcional) y envía la solicitud directamente al soporte vía WhatsApp</p>
+
+  <!-- PRODUCTOS -->
+  <section id="section-products" class="section active">
+    <div class="filters" id="filterContainer">
+      <button class="active-filter" data-filter="all">Todos</button>
+      <!-- filtros se generan dinámicamente -->
     </div>
-    <div class="form-body">
-      <div id="alertBox" class="alert-message">
-        <i class="fas fa-info-circle"></i> Completa todos los campos obligatorios.
-      </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
 
-      <form id="ticketForm">
-        <div class="input-group">
-          <label><i class="fas fa-building"></i> Área / Departamento *</label>
-          <select id="area" required>
-            <option value="" disabled selected>-- Selecciona tu área --</option>
-            <option value="REGISTROS PUBLICOS">REGISTROS PUBLICOS</option>
-            <option value="PROMOCION Y DESARROLLO">PROMOCION Y DESARROLLO</option>
-            <option value="CONCILIACION Y ARBITRAJE">CONCILIACION Y ARBITRAJE</option>
-            <option value="PRESIDENCIA">PRESIDENCIA</option>
-            <option value="APOYO">APOYO</option>
-            <option value="Otros">Otros</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label><i class="fas fa-user"></i> Nombre completo *</label>
-          <input type="text" id="nombre" placeholder="Ej: Carlos Méndez" required autocomplete="name">
-        </div>
-
-        <div class="input-group">
-          <label><i class="fas fa-desktop"></i> Problema con el equipo / TIPO DE IQUIPO *</label>
-          <textarea id="problema" placeholder="Describe detalladamente el fallo, comportamiento inesperado, mensajes de error, etc." required></textarea>
-        </div>
-
-        <div class="image-zone">
-          <label class="file-label" for="file-input">
-            <i class="fas fa-camera"></i> Adjuntar imagen del problema
-            <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
-          </label>
-          <input type="file" id="file-input" accept="image/jpeg, image/png, image/jpg, image/webp">
-          <div class="info-size"><i class="fas fa-image"></i> Formatos: JPG, PNG, WEBP. Máx. 5 MB</div>
-          <div id="previewWrapper" class="preview-container"></div>
-        </div>
-
-        <button type="button" id="sendTicketBtn" class="submit-btn">
-          <i class="fab fa-whatsapp"></i> Enviar ticket a WhatsApp
-        </button>
-      </form>
+  <!-- INVENTARIO -->
+  <section id="section-inventory" class="section">
+    <h2 style="margin-bottom: 1rem;">📦 Gestión de Inventario</h2>
+    <div class="inventory-table-wrap">
+      <table>
+        <thead>
+          <tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="inventoryBody"></tbody>
+      </table>
     </div>
-  </div>
-  <footer><i class="fas fa-lock"></i> HERRAMIENTA DISEÑADA PARA REPORTAR INCIDENCIAS TÉCNICAS DERECHOS RESERVADOS © ZYNCHROTECH</footer>
+  </section>
+
+  <!-- HISTORIAL DE VENTAS (opcional) -->
+  <section id="section-sales" class="section">
+    <h2 style="margin-bottom: 1rem;">🧾 Historial de Ventas</h2>
+    <div id="salesHistory">
+      <p style="color: #a08472;">Aún no hay ventas registradas.</p>
+    </div>
+  </section>
 </div>
 
-<script src="script.js"></script>
+<!-- CARRITO SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay">
+  <div class="cart-panel">
+    <h2>
+      🛒 Carrito
+      <button class="close-cart" id="closeCartBtn">&times;</button>
+    </h2>
+    <div id="cartItems"></div>
+    <div class="cart-total" id="cartTotal">Total: $0</div>
+    <div class="cart-actions">
+      <button class="btn-secondary" id="clearCartBtn">Vaciar</button>
+      <button class="btn-success" id="checkoutBtn">✅ Vender</button>
+    </div>
+    <div style="margin-top: 1rem;">
+      <button class="btn-primary" id="printTicketBtn" style="width:100%;">🖨️ Imprimir Factura</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ==================== DATOS ====================
+  // Productos combinados de ambos menús
+  const rawProducts = [
+    // CoCoffe - Bebidas Calientes
+    { name: 'Café Filtrado Caturra', category: 'Café', price: 8000 },
+    { name: 'Café Negro', category: 'Café', price: 4000 },
+    { name: 'Americano', category: 'Café', price: 6000 },
+    { name: 'Latte Caliente', category: 'Café', price: 6000 },
+    { name: 'Capuccino', category: 'Café', price: 6000 },
+    { name: 'Moccaccino', category: 'Café', price: 6000 },
+    { name: 'Matcha Latte', category: 'Café', price: 7000 },
+    { name: 'Carajillo', category: 'Café', price: 7000 },
+    { name: 'Te Masala Chai', category: 'Café', price: 8000 },
+    { name: 'Capuccino Amaretto', category: 'Café', price: 12000 },
+    { name: 'Capuccino Vainilla', category: 'Café', price: 6000 },
+    { name: 'Chocolate en Leche', category: 'Café', price: 5000 },
+    // CoCoffe - Desayunos
+    { name: 'Sandwich De Pollo', category: 'Desayunos', price: 8000 },
+    { name: 'Huevos con Pancakes', category: 'Desayunos', price: 8000 },
+    { name: 'Pancakes Con Frutas', category: 'Desayunos', price: 8000 },
+    { name: 'Huevos', category: 'Desayunos', price: 10000 },
+    { name: 'Panzerotti', category: 'Desayunos', price: 5000 },
+    { name: 'Deditos de Queso', category: 'Desayunos', price: 4000 },
+    // CoCoffe - Bebidas Frías
+    { name: 'Granizado Café', category: 'Bebidas Frías', price: 12000 },
+    { name: 'Granizado De Oreo', category: 'Bebidas Frías', price: 12000 },
+    // 20 Coffees - Granizados
+    { name: 'Granizado De Brownie', category: 'Bebidas Frías', price: 14000 },
+    { name: 'Granizado Te Chai', category: 'Bebidas Frías', price: 15000 },
+    { name: 'Granizado Matcha', category: 'Bebidas Frías', price: 15000 },
+    { name: 'Café Latte Con Licor', category: 'Bebidas Frías', price: 14000 },
+    { name: 'Café Latte Frio', category: 'Bebidas Frías', price: 12000 },
+    { name: 'Matcha Latte Frio', category: 'Bebidas Frías', price: 12000 },
+    { name: 'Granizado de Milo', category: 'Bebidas Frías', price: 12000 },
+    { name: 'Soda De Maracuyá', category: 'Bebidas Frías', price: 10000 },
+    // 20 Coffees - Toppings (licores)
+    { name: 'Old Parr 12 años', category: 'Toppings', price: 10000 },
+    { name: 'Chivas Regal 12 años', category: 'Toppings', price: 10000 },
+    { name: 'Buchanan\'s Deluxe 12 años', category: 'Toppings', price: 10000 },
+    { name: 'Smirnoff de Lulo', category: 'Toppings', price: 7000 },
+    { name: 'Jose Cuervo', category: 'Toppings', price: 7000 },
+    { name: 'Absolute Vodka', category: 'Toppings', price: 7000 },
+    // 20 Coffees - Reposteria
+    { name: 'Torta de Almojabana', category: 'Reposteria', price: 10000 },
+    { name: 'Torta de Red Velvet', category: 'Reposteria', price: 7000 },
+    { name: 'Torta de Amapola', category: 'Reposteria', price: 7000 },
+    { name: 'Torta de Zanahoria', category: 'Reposteria', price: 7000 },
+    { name: 'Torta de Chocolate', category: 'Reposteria', price: 8000 }
+  ];
+
+  // Inicializar productos con stock y id
+  let products = [];
+  let cart = [];
+  let sales = []; // historial
+  let currentFilter = 'all';
+
+  // ==================== INICIALIZACIÓN ====================
+  function initData() {
+    // Cargar desde localStorage o crear
+    const stored = localStorage.getItem('coffee_products');
+    if (stored) {
+      products = JSON.parse(stored);
+    } else {
+      products = rawProducts.map((p, index) => ({
+        id: index + 1,
+        ...p,
+        stock: 10 // stock inicial
+      }));
+      saveProducts();
+    }
+
+    const cartStored = localStorage.getItem('coffee_cart');
+    if (cartStored) {
+      cart = JSON.parse(cartStored);
+    }
+
+    const salesStored = localStorage.getItem('coffee_sales');
+    if (salesStored) {
+      sales = JSON.parse(salesStored);
+    }
+
+    renderAll();
+  }
+
+  function saveProducts() {
+    localStorage.setItem('coffee_products', JSON.stringify(products));
+  }
+
+  function saveCart() {
+    localStorage.setItem('coffee_cart', JSON.stringify(cart));
+  }
+
+  function saveSales() {
+    localStorage.setItem('coffee_sales', JSON.stringify(sales));
+  }
+
+  // ==================== RENDER ====================
+  function renderAll() {
+    renderFilters();
+    renderProducts();
+    renderInventory();
+    renderCart();
+    renderSalesHistory();
+    updateCartBadge();
+  }
+
+  function renderFilters() {
+    const container = document.getElementById('filterContainer');
+    const cats = ['all', ...new Set(products.map(p => p.category))];
+    container.innerHTML = cats.map(cat =>
+      `<button class="${cat === currentFilter ? 'active-filter' : ''}" data-filter="${cat}">${cat === 'all' ? 'Todos' : cat}</button>`
+    ).join('');
+    container.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentFilter = btn.dataset.filter;
+        renderFilters();
+        renderProducts();
+      });
+    });
+  }
+
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+    if (filtered.length === 0) {
+      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#a08472;">No hay productos en esta categoría.</p>';
+      return;
+    }
+    grid.innerHTML = filtered.map(p => `
+      <div class="product-card" data-id="${p.id}">
+        <div class="name">${p.name}</div>
+        <div class="category">${p.category}</div>
+        <div class="price">$${p.price.toLocaleString()}</div>
+        <div class="stock">Stock: <span>${p.stock}</span></div>
+        <div class="actions">
+          <button class="add-to-cart" data-id="${p.id}" ${p.stock <= 0 ? 'disabled' : ''}>Añadir</button>
+          <button class="stock-btn" data-id="${p.id}" title="Agregar 5 unidades">+5</button>
+        </div>
+      </div>
+    `).join('');
+
+    // Eventos
+    grid.querySelectorAll('.add-to-cart').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        addToCart(id);
+      });
+    });
+    grid.querySelectorAll('.stock-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        addStock(id, 5);
+      });
+    });
+  }
+
+  function renderInventory() {
+    const tbody = document.getElementById('inventoryBody');
+    tbody.innerHTML = products.map(p => `
+      <tr>
+        <td><strong>${p.name}</strong></td>
+        <td>${p.category}</td>
+        <td>$${p.price.toLocaleString()}</td>
+        <td>${p.stock}</td>
+        <td>
+          <div class="inv-actions">
+            <button class="inv-add" data-id="${p.id}">+1</button>
+            <button class="inv-add5" data-id="${p.id}">+5</button>
+            <button class="inv-remove danger" data-id="${p.id}">-1</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+    tbody.querySelectorAll('.inv-add').forEach(btn => {
+      btn.addEventListener('click', () => addStock(parseInt(btn.dataset.id), 1));
+    });
+    tbody.querySelectorAll('.inv-add5').forEach(btn => {
+      btn.addEventListener('click', () => addStock(parseInt(btn.dataset.id), 5));
+    });
+    tbody.querySelectorAll('.inv-remove').forEach(btn => {
+      btn.addEventListener('click', () => removeStock(parseInt(btn.dataset.id), 1));
+    });
+  }
+
+  function renderCart() {
+    const container = document.getElementById('cartItems');
+    if (cart.length === 0) {
+      container.innerHTML = '<p style="color:#a08472;">El carrito está vacío.</p>';
+      document.getElementById('cartTotal').textContent = 'Total: $0';
+      return;
+    }
+
+    let html = '';
+    let total = 0;
+    cart.forEach(item => {
+      const prod = products.find(p => p.id === item.id);
+      if (!prod) return;
+      const subtotal = prod.price * item.qty;
+      total += subtotal;
+      html += `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="ci-name">${prod.name}</div>
+            <div class="ci-price">$${prod.price.toLocaleString()} c/u</div>
+          </div>
+          <div class="cart-item-qty">
+            <button class="cart-dec" data-id="${item.id}">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="cart-inc" data-id="${item.id}">+</button>
+            <button class="cart-item-remove" data-id="${item.id}">✕</button>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+    document.getElementById('cartTotal').textContent = `Total: $${total.toLocaleString()}`;
+
+    // Eventos
+    container.querySelectorAll('.cart-inc').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        addToCart(id);
+      });
+    });
+    container.querySelectorAll('.cart-dec').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        removeFromCart(id, 1);
+      });
+    });
+    container.querySelectorAll('.cart-item-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        removeFromCart(id, Infinity);
+      });
+    });
+  }
+
+  function renderSalesHistory() {
+    const container = document.getElementById('salesHistory');
+    if (sales.length === 0) {
+      container.innerHTML = '<p style="color:#a08472;">Aún no hay ventas registradas.</p>';
+      return;
+    }
+    // Mostrar las últimas 10 ventas
+    const recent = sales.slice(-10).reverse();
+    container.innerHTML = recent.map((sale, idx) => `
+      <div style="background:#fff; border-radius:12px; padding:1rem; margin-bottom:0.8rem; border-left:4px solid #4a2c1a;">
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
+          <strong>#${sale.id}</strong>
+          <span>${new Date(sale.date).toLocaleString()}</span>
+          <span><strong>Total: $${sale.total.toLocaleString()}</strong></span>
+        </div>
+        <div style="font-size:0.9rem; color:#6b4f3a; margin-top:0.3rem;">
+          ${sale.items.map(i => `${i.name} x${i.qty}`).join(', ')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function updateCartBadge() {
+    const count = cart.reduce((acc, i) => acc + i.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+  }
+
+  // ==================== ACCIONES ====================
+  function addToCart(productId) {
+    const prod = products.find(p => p.id === productId);
+    if (!prod) return;
+    if (prod.stock <= 0) {
+      showToast('⚠️ Producto sin stock');
+      return;
+    }
+    const existing = cart.find(item => item.id === productId);
+    if (existing) {
+      if (existing.qty >= prod.stock) {
+        showToast('⚠️ No hay suficiente stock');
+        return;
+      }
+      existing.qty++;
+    } else {
+      cart.push({ id: productId, qty: 1 });
+    }
+    saveCart();
+    renderAll();
+    showToast(`➕ ${prod.name} añadido`);
+  }
+
+  function removeFromCart(productId, qty = 1) {
+    const idx = cart.findIndex(item => item.id === productId);
+    if (idx === -1) return;
+    if (qty >= cart[idx].qty) {
+      cart.splice(idx, 1);
+    } else {
+      cart[idx].qty -= qty;
+    }
+    saveCart();
+    renderAll();
+  }
+
+  function addStock(productId, amount) {
+    const prod = products.find(p => p.id === productId);
+    if (!prod) return;
+    prod.stock += amount;
+    saveProducts();
+    renderAll();
+    showToast(`📦 Stock de ${prod.name} aumentado en ${amount}`);
+  }
+
+  function removeStock(productId, amount) {
+    const prod = products.find(p => p.id === productId);
+    if (!prod) return;
+    if (prod.stock - amount < 0) {
+      showToast('⚠️ No se puede reducir por debajo de 0');
+      return;
+    }
+    prod.stock -= amount;
+    saveProducts();
+    renderAll();
+    showToast(`📦 Stock de ${prod.name} reducido en ${amount}`);
+  }
+
+  function clearCart() {
+    cart = [];
+    saveCart();
+    renderAll();
+    showToast('🗑️ Carrito vaciado');
+  }
+
+  // ==================== CHECKOUT ====================
+  function checkout() {
+    if (cart.length === 0) {
+      showToast('⚠️ El carrito está vacío');
+      return;
+    }
+
+    // Verificar stock
+    for (const item of cart) {
+      const prod = products.find(p => p.id === item.id);
+      if (!prod || prod.stock < item.qty) {
+        showToast(`⚠️ Stock insuficiente para ${prod ? prod.name : 'producto'}`);
+        return;
+      }
+    }
+
+    // Descontar stock
+    let total = 0;
+    const items = cart.map(item => {
+      const prod = products.find(p => p.id === item.id);
+      prod.stock -= item.qty;
+      total += prod.price * item.qty;
+      return { name: prod.name, qty: item.qty, price: prod.price };
+    });
+
+    // Guardar venta
+    const sale = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      items: items,
+      total: total
+    };
+    sales.push(sale);
+
+    // Limpiar carrito
+    cart = [];
+    saveProducts();
+    saveCart();
+    saveSales();
+    renderAll();
+
+    showToast(`✅ Venta realizada por $${total.toLocaleString()}`);
+    // Mostrar factura
+    showTicket(sale);
+  }
+
+  // ==================== TICKET / FACTURA ====================
+  function showTicket(sale) {
+    // Generar HTML del ticket
+    const ticketHTML = `
+      <div class="ticket" id="ticketContent">
+        <div class="ticket-header">☕ CoCoffe &amp; 20 Coffees</div>
+        <div style="text-align:center; font-size:10px; margin-bottom:0.3rem;">${new Date(sale.date).toLocaleString()}</div>
+        <div style="border-bottom:1px dashed #333; margin-bottom:0.5rem;"></div>
+        ${sale.items.map(i => `
+          <div class="ticket-item">
+            <span>${i.name} x${i.qty}</span>
+            <span>$${(i.price * i.qty).toLocaleString()}</span>
+          </div>
+        `).join('')}
+        <div class="ticket-total">
+          <span>TOTAL</span>
+          <span>$${sale.total.toLocaleString()}</span>
+        </div>
+        <div class="ticket-footer">
+          ¡Gracias por su compra!<br>
+          Productos de calidad
+        </div>
+      </div>
+    `;
+
+    // Abrir ventana para impresión
+    const win = window.open('', '_blank', 'width=400,height=600');
+    win.document.write(`
+      <html>
+        <head>
+          <title>Factura</title>
+          <style>
+            body { margin:0; padding:0; background:#f0f0f0; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+            .ticket {
+              font-family: 'Courier New', monospace;
+              width: 280px;
+              margin: 0 auto;
+              padding: 0.8rem;
+              background: #fff;
+              font-size: 12px;
+              line-height: 1.4;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+            .ticket .ticket-header {
+              text-align: center;
+              font-weight: bold;
+              font-size: 16px;
+              border-bottom: 1px dashed #333;
+              padding-bottom: 0.3rem;
+              margin-bottom: 0.5rem;
+            }
+            .ticket .ticket-item {
+              display: flex;
+              justify-content: space-between;
+              padding: 0.15rem 0;
+            }
+            .ticket .ticket-total {
+              border-top: 1px dashed #333;
+              margin-top: 0.5rem;
+              padding-top: 0.5rem;
+              font-weight: bold;
+              font-size: 14px;
+              display: flex;
+              justify-content: space-between;
+            }
+            .ticket .ticket-footer {
+              text-align: center;
+              margin-top: 0.5rem;
+              font-size: 10px;
+              border-top: 1px dashed #333;
+              padding-top: 0.3rem;
+            }
+            @media print {
+              body { background: #fff; }
+              .ticket { box-shadow: none; }
+            }
+          </style>
+        </head>
+        <body>
+          ${ticketHTML}
+          <script>
+            window.onload = function() {
+              setTimeout(() => { window.print(); }, 500);
+            };
+          <\/script>
+        </body>
+      </html>
+    `);
+    win.document.close();
+  }
+
+  // ==================== TOAST ====================
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // ==================== EVENTOS UI ====================
+  // Navegación
+  document.querySelectorAll('nav button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const section = btn.dataset.section;
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(`section-${section}`).classList.add('active');
+    });
+  });
+
+  // Carrito sidebar
+  document.getElementById('openCartBtn').addEventListener('click', () => {
+    document.getElementById('cartOverlay').classList.add('open');
+  });
+  document.getElementById('closeCartBtn').addEventListener('click', () => {
+    document.getElementById('cartOverlay').classList.remove('open');
+  });
+  document.getElementById('cartOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      document.getElementById('cartOverlay').classList.remove('open');
+    }
+  });
+
+  // Botones del carrito
+  document.getElementById('clearCartBtn').addEventListener('click', clearCart);
+  document.getElementById('checkoutBtn').addEventListener('click', checkout);
+  document.getElementById('printTicketBtn').addEventListener('click', () => {
+    if (sales.length === 0) {
+      showToast('⚠️ No hay ventas para imprimir');
+      return;
+    }
+    const lastSale = sales[sales.length - 1];
+    showTicket(lastSale);
+  });
+
+  // ==================== INICIO ====================
+  initData();
+
+  // También permitir imprimir desde el historial (opcional) - se puede extender
+  console.log('☕ CoCoffe & 20 Coffees - Sistema listo');
+</script>
 </body>
 </html>
