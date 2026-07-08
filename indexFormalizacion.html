@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formalización de Comerciantes - Cámara de Comercio</title>
+  <!-- Fuentes e iconos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ============================
+       ESTILOS CSS (todo en línea)
+       ============================ */
+
+    /* --- Reset y variables --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #1a5f7a;
+      --primary-dark: #0e3e52;
+      --primary-light: #2c8bb3;
+      --secondary: #f39c12;
+      --success: #27ae60;
+      --danger: #e74c3c;
+      --gray: #6c757d;
+      --light-gray: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 8px 24px rgba(0,0,0,0.08);
+      --border-radius: 12px;
+      --transition: 0.3s ease;
+      --font: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--light-gray);
+      color: #1e2a3a;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* --- Encabezado / Navbar --- */
+    .navbar {
+      background: var(--white);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .logo i {
+      font-size: 2rem;
+      color: var(--primary-light);
+    }
+
+    .logo span {
+      letter-spacing: -0.5px;
+    }
+
+    .logo small {
+      font-weight: 400;
+      font-size: 0.7rem;
+      color: var(--gray);
+      display: block;
+      margin-top: -4px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 8px 20px;
+      border-radius: 40px;
+      border: 2px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* --- Hero / Tarjetas informativas --- */
+    .hero {
+      padding: 40px 0 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 20px 15px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card i {
+      font-size: 2rem;
+      color: var(--primary-light);
+      margin-bottom: 8px;
+    }
+
+    .card h4 {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    /* --- Formulario --- */
+    .form-section {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 30px 25px;
+      margin: 20px 0 40px;
+    }
+
+    .form-section h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--primary-dark);
+    }
+
+    .form-section .subtitle {
+      color: var(--gray);
+      margin-bottom: 25px;
+      font-size: 0.95rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #1e2a3a;
+    }
+
+    .form-group label .required {
+      color: var(--danger);
+      margin-left: 2px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 10px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      font-family: var(--font);
+      background: var(--white);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.12);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group .helper {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .form-group .error-text {
+      color: var(--danger);
+      font-size: 0.8rem;
+      display: none;
+    }
+
+    .form-group.invalid input,
+    .form-group.invalid select {
+      border-color: var(--danger);
+    }
+
+    .form-group.invalid .error-text {
+      display: block;
+    }
+
+    /* Campos condicionales (se muestran/ocultan) */
+    .conditional-group {
+      display: none;
+    }
+    .conditional-group.visible {
+      display: block;
+    }
+
+    /* Botón de envío */
+    .form-actions {
+      margin-top: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      min-width: 160px;
+      justify-content: center;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .btn-submit .loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .btn-submit.loading .loader {
+      display: inline-block;
+    }
+    .btn-submit.loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mensajes de respuesta */
+    .response-message {
+      padding: 14px 18px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      display: none;
+      margin-top: 15px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .response-message.success {
+      display: flex;
+      background: #d4edda;
+      color: #155724;
+      border-left: 5px solid var(--success);
+    }
+
+    .response-message.error {
+      display: flex;
+      background: #f8d7da;
+      color: #721c24;
+      border-left: 5px solid var(--danger);
+    }
+
+    .response-message i {
+      font-size: 1.4rem;
+    }
+
+    /* --- Footer --- */
+    .footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.85rem;
+      color: var(--gray);
+      border-top: 1px solid #e2e8f0;
+      margin-top: 20px;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .navbar .container {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-submit {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 12px;
+      }
+      .form-section {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">
+      <i class="fas fa-store"></i>
+      <div>
+        <span>Formalización</span>
+        <small>Cámara de Comercio By ZYNCRHITEC</small>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <span style="font-size:0.9rem; color:var(--gray);"><i class="fas fa-users"></i> Formalizadores</span>
+      <a href="#" class="btn-outline"><i class="fas fa-sign-in-alt"></i> Acceder</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero container">
+  <h1>Registro de Visitas de Formalización</h1>
+  <p>Ingresa los datos de los comerciantes visitados. Toda la información se guarda automáticamente en la nube.</p>
+
+  <div class="cards">
+    <div class="card">
+      <i class="fas fa-clock"></i>
+      <h4>Rápido</h4>
+      <p>Formulario optimizado para capturar datos en menos de 2 minutos.</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <h4>Seguro</h4>
+      <p>Los datos se almacenan en Google Sheets con respaldo automático.</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-mobile-alt"></i>
+      <h4>Accesible</h4>
+      <p>Funciona en computadoras, tablets y celulares.</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-chart-line"></i>
+      <h4>Analítico</h4>
+      <p>Los datos quedan listos para generar reportes en tiempo real.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FORMULARIO ===== -->
+<section class="container">
+  <div class="form-section">
+    <h2><i class="fas fa-pen-alt" style="color:var(--primary-light);"></i> Diligenciar Visita</h2>
+    <p class="subtitle">Completa todos los campos obligatorios (*).</p>
+
+    <form id="formulario" novalidate>
+      <div class="form-grid">
+
+        <!-- Municipio -->
+        <div class="form-group">
+          <label>Municipio <span class="required">*</span></label>
+          <select id="municipio" required>
+            <option value="">Seleccione...</option>
+            <option value="Albania">Albania</option>
+            <option value="Belén de los Andaquíes">Belén de los Andaquíes</option>
+            <option value="Cartagena del Chairá">Cartagena del Chairá</option>
+            <option value="Curillo">Curillo</option>
+            <option value="El Doncello">El Doncello</option>
+            <option value="El Paujil">El Paujil</option>
+            <option value="Florencia" selected>Florencia</option>
+            <option value="La Montañita">La Montañita</option>
+            <option value="Milán">Milán</option>
+            <option value="Morelia">Morelia</option>
+            <option value="Puerto Rico">Puerto Rico</option>
+            <option value="San José del Fragua">San José del Fragua</option>
+            <option value="San Vicente del Caguán">San Vicente del Caguán</option>
+            <option value="Solano">Solano</option>
+            <option value="Solita">Solita</option>
+            <option value="Valparaíso">Valparaíso</option>
+          </select>
+          <div class="error-text">Selecciona un municipio.</div>
+        </div>
+
+        <!-- Formalizador -->
+        <div class="form-group">
+          <label>Formalizador <span class="required">*</span></label>
+          <select id="formalizador" required>
+            <option value="">Seleccione...</option>
+            <option value="ASTRID DE LA CRUZ">ASTRID DE LA CRUZ</option>
+            <option value="BRAYAN HERNANDEZ">BRAYAN HERNANDEZ</option>
+            <option value="DANIEL MARIN SILVA">DANIEL MARIN SILVA</option>
+            <option value="DAVID LABRADOR">DAVID LABRADOR</option>
+            <option value="JOHANA GUACANEME">JOHANA GUACANEME</option>
+            <option value="LUIS COSSIO">LUIS COSSIO</option>
+            <option value="SEBASTIAN MONTIEL">SEBASTIAN MONTIEL</option>
+            <option value="VALERIA BELTRAN">VALERIA BELTRAN</option>
+          </select>
+          <div class="error-text">Selecciona el formalizador.</div>
+        </div>
+
+        <!-- Fecha Visita -->
+        <div class="form-group">
+          <label>Fecha de Visita <span class="required">*</span></label>
+          <input type="date" id="fechaVisita" required>
+          <div class="error-text">Fecha obligatoria.</div>
+        </div>
+
+        <!-- Datos del empresario -->
+        <div class="form-group">
+          <label>Nombres y Apellidos <span class="required">*</span></label>
+          <input type="text" id="nombres" placeholder="Ej: Juan Carlos Pérez" required>
+          <div class="error-text">Campo obligatorio.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Cédula <span class="required">*</span></label>
+          <input type="text" id="cedula" placeholder="Solo números" required>
+          <div class="error-text">Cédula inválida (mínimo 7 dígitos).</div>
+        </div>
+
+        <div class="form-group">
+          <label>Dirección <span class="required">*</span></label>
+          <input type="text" id="direccion" placeholder="Calle, carrera, barrio" required>
+          <div class="error-text">Campo obligatorio.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Celular <span class="required">*</span></label>
+          <input type="tel" id="celular" placeholder="3001234567" required>
+          <div class="error-text">Celular inválido (solo números).</div>
+        </div>
+
+        <div class="form-group">
+          <label>Correo Electrónico <span class="required">*</span></label>
+          <input type="email" id="correo" placeholder="comerciante@email.com" required>
+          <div class="error-text">Correo electrónico inválido.</div>
+        </div>
+
+        <!-- Actividad económica -->
+        <div class="form-group">
+          <label>Código CIIU</label>
+          <input type="text" id="codigoCIIU" placeholder="Ej: 4711">
+          <div class="helper">Opcional</div>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Establecimiento <span class="required">*</span></label>
+          <input type="text" id="nombreEstablecimiento" placeholder="Razón social o nombre comercial" required>
+          <div class="error-text">Campo obligatorio.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Activos (COP)</label>
+          <input type="text" id="activos" placeholder="Ej: 25000000">
+          <div class="helper">Valor en pesos, sin puntos ni comas.</div>
+        </div>
+
+        <!-- Trámite -->
+        <div class="form-group">
+          <label>¿Realizó trámite? <span class="required">*</span></label>
+          <select id="realizoTramite" required>
+            <option value="">Seleccione...</option>
+            <option value="SI">Sí</option>
+            <option value="NO">No</option>
+          </select>
+          <div class="error-text">Selecciona una opción.</div>
+        </div>
+
+        <div class="form-group conditional-group" id="tramiteGroup">
+          <label>Trámite que realiza <span class="required">*</span></label>
+          <select id="tramite">
+            <option value="">Seleccione...</option>
+            <option value="MATRÍCULA">Matrícula</option>
+            <option value="RENOVACIÓN">Renovación</option>
+            <option value="MUTACIÓN">Mutación</option>
+            <option value="CANCELACIÓN">Cancelación</option>
+            <option value="OTRO">Otro</option>
+          </select>
+          <div class="error-text">Selecciona el trámite.</div>
+        </div>
+
+        <!-- Formalizado -->
+        <div class="form-group">
+          <label>¿El comerciante está formalizado? <span class="required">*</span></label>
+          <select id="estaFormalizado" required>
+            <option value="">Seleccione...</option>
+            <option value="SI">Sí</option>
+            <option value="NO">No</option>
+          </select>
+          <div class="error-text">Selecciona una opción.</div>
+        </div>
+
+        <!-- Seguimiento (si está formalizado) -->
+        <div class="form-group conditional-group" id="seguimientoGroup" style="grid-column: 1 / -1;">
+          <fieldset style="border:1px solid #e2e8f0; border-radius:8px; padding:15px; margin-top:10px;">
+            <legend style="font-weight:600; padding:0 10px; color:var(--primary);">Seguimiento (obligatorio si está formalizado)</legend>
+            <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:15px;">
+              <div class="form-group">
+                <label>Fecha Formalización <span class="required">*</span></label>
+                <input type="date" id="fechaFormalizacion">
+                <div class="error-text">Campo obligatorio.</div>
+              </div>
+              <div class="form-group">
+                <label>No. Matrícula Mercantil <span class="required">*</span></label>
+                <input type="text" id="numeroMatricula" placeholder="Número de matrícula">
+                <div class="error-text">Campo obligatorio.</div>
+              </div>
+              <div class="form-group">
+                <label>Nombre/Razón Social <span class="required">*</span></label>
+                <input type="text" id="nombreRazonSocial" placeholder="Razón social del comerciante">
+                <div class="error-text">Campo obligatorio.</div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+      </div><!-- fin form-grid -->
+
+      <!-- Botón y mensajes -->
+      <div class="form-actions">
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span class="loader"></span>
+          <span class="btn-text"><i class="fas fa-paper-plane"></i> Enviar</span>
+        </button>
+        <div id="responseMessage" class="response-message">
+          <i class="fas fa-check-circle"></i>
+          <span id="responseText"></span>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer container">
+  <p>&copy; 2026 Cámara de Comercio de Florencia. Sistema de Formalización.</p>
+</footer>
+
+<!-- ============================
+     JAVASCRIPT (todo en línea)
+     ============================ -->
+<script>
+  (function() {
+    'use strict';
+
+    // --- Configuración ---
+    // REEMPLAZA ESTA URL CON LA DE TU WEB APP PUBLICADA
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyeGWuGrYZ71NQ_f4v1GRRH84aBpaeKiueQorXT_4bygIy5PqWjaAfxaYfFwOq5y0bL/exec'; // <-- CAMBIAR
+
+    // --- Elementos DOM ---
+    const form = document.getElementById('formulario');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const responseMessage = document.getElementById('responseMessage');
+    const responseText = document.getElementById('responseText');
+
+    // Campos condicionales
+    const tramiteGroup = document.getElementById('tramiteGroup');
+    const seguimientoGroup = document.getElementById('seguimientoGroup');
+
+    // Obtener referencias a todos los campos para validación
+    const fields = {
+      municipio: document.getElementById('municipio'),
+      formalizador: document.getElementById('formalizador'),
+      fechaVisita: document.getElementById('fechaVisita'),
+      nombres: document.getElementById('nombres'),
+      cedula: document.getElementById('cedula'),
+      direccion: document.getElementById('direccion'),
+      celular: document.getElementById('celular'),
+      correo: document.getElementById('correo'),
+      codigoCIIU: document.getElementById('codigoCIIU'),
+      nombreEstablecimiento: document.getElementById('nombreEstablecimiento'),
+      activos: document.getElementById('activos'),
+      realizoTramite: document.getElementById('realizoTramite'),
+      tramite: document.getElementById('tramite'),
+      estaFormalizado: document.getElementById('estaFormalizado'),
+      fechaFormalizacion: document.getElementById('fechaFormalizacion'),
+      numeroMatricula: document.getElementById('numeroMatricula'),
+      nombreRazonSocial: document.getElementById('nombreRazonSocial')
+    };
+
+    // --- Funciones auxiliares ---
+    function setError(element, isValid) {
+      const group = element.closest('.form-group');
+      if (!group) return;
+      if (isValid) {
+        group.classList.remove('invalid');
+      } else {
+        group.classList.add('invalid');
+      }
+    }
+
+    function validateField(element) {
+      const value = element.value.trim();
+      const type = element.id;
+      let valid = false;
+
+      // Validación específica por campo
+      switch (type) {
+        case 'municipio':
+        case 'formalizador':
+        case 'fechaVisita':
+        case 'nombres':
+        case 'direccion':
+        case 'nombreEstablecimiento':
+          valid = value !== '';
+          break;
+        case 'cedula':
+          valid = /^\d{7,15}$/.test(value);
+          break;
+        case 'celular':
+          valid = /^\d{7,15}$/.test(value);
+          break;
+        case 'correo':
+          valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+          break;
+        case 'realizoTramite':
+          valid = value === 'SI' || value === 'NO';
+          break;
+        case 'tramite':
+          // Solo obligatorio si realizó trámite = SI
+          const realizo = fields.realizoTramite.value;
+          if (realizo === 'SI') {
+            valid = value !== '';
+          } else {
+            valid = true; // No es requerido
+          }
+          break;
+        case 'estaFormalizado':
+          valid = value === 'SI' || value === 'NO';
+          break;
+        case 'fechaFormalizacion':
+        case 'numeroMatricula':
+        case 'nombreRazonSocial':
+          const formalizado = fields.estaFormalizado.value;
+          if (formalizado === 'SI') {
+            valid = value !== '';
+          } else {
+            valid = true;
+          }
+          break;
+        default:
+          valid = true;
+      }
+
+      setError(element, valid);
+      return valid;
+    }
+
+    function validateAll() {
+      let allValid = true;
+      // Campos que siempre se validan
+      const alwaysValidate = ['municipio', 'formalizador', 'fechaVisita', 'nombres', 'cedula', 'direccion', 'celular', 'correo', 'nombreEstablecimiento', 'realizoTramite', 'estaFormalizado'];
+      for (let id of alwaysValidate) {
+        const el = document.getElementById(id);
+        if (!validateField(el)) allValid = false;
+      }
+      // Validar tramite solo si realizó trámite = SI
+      if (fields.realizoTramite.value === 'SI') {
+        if (!validateField(fields.tramite)) allValid = false;
+      }
+      // Validar seguimiento si está formalizado = SI
+      if (fields.estaFormalizado.value === 'SI') {
+        if (!validateField(fields.fechaFormalizacion)) allValid = false;
+        if (!validateField(fields.numeroMatricula)) allValid = false;
+        if (!validateField(fields.nombreRazonSocial)) allValid = false;
+      }
+      return allValid;
+    }
+
+    // --- Mostrar/ocultar campos condicionales ---
+    function toggleConditionalFields() {
+      // Grupo de trámite
+      if (fields.realizoTramite.value === 'SI') {
+        tramiteGroup.classList.add('visible');
+        // Marcar el select como required
+        fields.tramite.setAttribute('required', 'required');
+      } else {
+        tramiteGroup.classList.remove('visible');
+        fields.tramite.removeAttribute('required');
+        // Limpiar error
+        setError(fields.tramite, true);
+      }
+
+      // Grupo de seguimiento
+      if (fields.estaFormalizado.value === 'SI') {
+        seguimientoGroup.classList.add('visible');
+        fields.fechaFormalizacion.setAttribute('required', 'required');
+        fields.numeroMatricula.setAttribute('required', 'required');
+        fields.nombreRazonSocial.setAttribute('required', 'required');
+      } else {
+        seguimientoGroup.classList.remove('visible');
+        fields.fechaFormalizacion.removeAttribute('required');
+        fields.numeroMatricula.removeAttribute('required');
+        fields.nombreRazonSocial.removeAttribute('required');
+        setError(fields.fechaFormalizacion, true);
+        setError(fields.numeroMatricula, true);
+        setError(fields.nombreRazonSocial, true);
+      }
+    }
+
+    // --- Event listeners para validación en tiempo real ---
+    Object.values(fields).forEach(el => {
+      if (el) {
+        el.addEventListener('blur', function() {
+          validateField(this);
+        });
+        el.addEventListener('change', function() {
+          validateField(this);
+          toggleConditionalFields(); // Por si cambia select
+        });
+        el.addEventListener('input', function() {
+          // Solo para campos de texto, no select
+          if (this.tagName === 'INPUT' || this.tagName === 'TEXTAREA') {
+            validateField(this);
+          }
+        });
+      }
+    });
+
+    // --- Inicializar fecha por defecto ---
+    const today = new Date().toISOString().split('T')[0];
+    if (fields.fechaVisita) fields.fechaVisita.value = today;
+
+    // --- Estado de carga y respuesta ---
+    function showResponse(success, message) {
+      responseMessage.className = 'response-message ' + (success ? 'success' : 'error');
+      responseMessage.style.display = 'flex';
+      responseText.textContent = message;
+      // Ocultar después de 8 segundos
+      clearTimeout(window.responseTimeout);
+      window.responseTimeout = setTimeout(() => {
+        responseMessage.style.display = 'none';
+      }, 8000);
+    }
+
+    function setLoading(loading) {
+      if (loading) {
+        btnSubmit.classList.add('loading');
+        btnSubmit.disabled = true;
+      } else {
+        btnSubmit.classList.remove('loading');
+        btnSubmit.disabled = false;
+      }
+    }
+
+    // --- Envío del formulario ---
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Validar todos los campos
+      if (!validateAll()) {
+        showResponse(false, 'Por favor, corrige los campos marcados en rojo.');
+        // Enfocar el primer campo inválido
+        const firstInvalid = document.querySelector('.form-group.invalid input, .form-group.invalid select');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
+      // Recoger datos
+      const data = {
+        municipio: fields.municipio.value.trim(),
+        formalizador: fields.formalizador.value.trim(),
+        fechaVisita: fields.fechaVisita.value.trim(),
+        nombres: fields.nombres.value.trim(),
+        cedula: fields.cedula.value.trim(),
+        direccion: fields.direccion.value.trim(),
+        celular: fields.celular.value.trim(),
+        correo: fields.correo.value.trim(),
+        codigoCIIU: fields.codigoCIIU.value.trim(),
+        nombreEstablecimiento: fields.nombreEstablecimiento.value.trim(),
+        activos: fields.activos.value.trim(),
+        realizoTramite: fields.realizoTramite.value,
+        tramite: fields.tramite.value,
+        estaFormalizado: fields.estaFormalizado.value,
+        fechaFormalizacion: fields.fechaFormalizacion.value.trim(),
+        numeroMatricula: fields.numeroMatricula.value.trim(),
+        nombreRazonSocial: fields.nombreRazonSocial.value.trim()
+      };
+
+      // Mostrar loader
+      setLoading(true);
+
+      try {
+        const response = await fetch(WEBAPP_URL, {
+          method: 'POST',
+          mode: 'no-cors', // Importante para evitar CORS en Apps Script
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+
+        // Debido a mode: 'no-cors', no podemos leer la respuesta directamente,
+        // pero Apps Script devuelve un texto. Usamos response.text().
+        const text = await response.text();
+        let result;
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          // Si no es JSON válido, puede ser un mensaje de error de CORS o Script
+          // Pero con no-cors debería funcionar.
+          throw new Error('Respuesta inesperada del servidor.');
+        }
+
+        if (result.success) {
+          showResponse(true, '✅ ' + result.message);
+          form.reset(); // Limpiar formulario
+          // Restaurar fecha por defecto
+          fields.fechaVisita.value = today;
+          // Ocultar campos condicionales
+          toggleConditionalFields();
+          // Remover clases de error
+          document.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
+        } else {
+          showResponse(false, '❌ ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error en la petición:', error);
+        showResponse(false, '❌ Error de conexión. Verifica tu internet y la URL del Web App.');
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    // --- Inicializar condicionales y validación ---
+    toggleConditionalFields();
+    // Disparar validación inicial para mostrar errores si los hay
+    setTimeout(() => {
+      validateAll();
+    }, 100);
+
+  })();
+</script>
+
+</body>
+</html>
