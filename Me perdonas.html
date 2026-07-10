@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Me perdonas?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+        }
+
+        .emoji-banner {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 {
+            color: #ff477e;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 60px;
+            align-items: center;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        #btn-si {
+            background-color: #25d366; /* Verde WhatsApp */
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        #btn-si:hover {
+            background-color: #20ba5a;
+            transform: scale(1.05);
+        }
+
+        #btn-no {
+            background-color: #ff477e;
+            color: white;
+            position: absolute;
+            box-shadow: 0 4px 15px rgba(255, 71, 126, 0.4);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="emoji-banner">🥺👉👈</div>
+        <h1>¿Me perdonas?</h1>
+        
+        <div class="btn-container" id="container-botones">
+            <button id="btn-si">Sí</button>
+            <button id="btn-no">No</button>
+        </div>
+    </div>
+
+    <script>
+        const btnSi = document.getElementById('btn-si');
+        const btnNo = document.getElementById('btn-no');
+
+        // --- CONFIGURACIÓN AQUÍ ---
+        const NUMERO_TELEFONO = "573118842464"; // Reemplaza con el número (incluye código de país, ej: 57 para Colombia)
+        const MENSAJE = "¡Sí, te perdono! ❤️"; 
+        // ---------------------------
+
+        // Acción para el botón SÍ (API de WhatsApp)
+        btnSi.addEventListener('click', () => {
+            const url = `https://api.whatsapp.com/send?phone=${NUMERO_TELEFONO}&text=${encodeURIComponent(MENSAJE)}`;
+            window.location.href = url;
+        });
+
+        // Acción para el botón NO (Moverse aleatoriamente)
+        // Usamos 'mouseover' para PC y 'touchstart' para celulares para que sea imposible de oprimir
+        const moverBoton = () => {
+            // Calculamos límites basados en la ventana para evitar que se salga de la pantalla
+            const padding = 20;
+            const maxX = window.innerWidth - btnNo.offsetWidth - padding;
+            const maxY = window.innerHeight - btnNo.offsetHeight - padding;
+
+            // Generar posiciones aleatorias dentro del viewport
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            // Cambiamos su comportamiento a fixed para que se mueva por TODA la pantalla libremente
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+        };
+
+        btnNo.addEventListener('mouseover', moverBoton);
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Evita el click nativo en móviles
+            moverBoton();
+        });
+    </script>
+</body>
+</html>
